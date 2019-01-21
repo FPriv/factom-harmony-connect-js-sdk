@@ -1,0 +1,55 @@
+# JavaScript CircleCI 2.0 configuration file
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
+      - image: circleci/node:8.11.3
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - node_js_sdk_deps-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - node_js_sdk_deps-
+
+      - run:
+          name: install dependencies
+          command: |
+            npm install --package-lock
+
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: node_js_sdk_deps-{{ checksum "package.json" }}
+
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            npm run test
+
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+
+      - run:
+          name: built dist
+          command: |
+            npm run build-dist
+
+      - store_artifacts:
+          path: ./dist
+          destination: node_sdk
