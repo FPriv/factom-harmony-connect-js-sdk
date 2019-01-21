@@ -7,7 +7,8 @@
     "test": "jest",
     "build": "gulp babel",
     "prepublish": "npm run build",
-    "build-dist": "gulp build"
+    "build-dist": "gulp build",
+    "dev": "rollup -c -w"
   },
   "author": "",
   "license": "ISC",
@@ -30,6 +31,9 @@
     "jest-cli": "^23.6.0",
     "jest-mock-axios": "^2.1.11",
     "path": "^0.12.7",
+    "rollup": "^1.0.0",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
     "webpack": "^1.14.0"
   },
   "dependencies": {
