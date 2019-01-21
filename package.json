@@ -1,0 +1,42 @@
+{
+  "name": "factom-connect-sdk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "gulp babel",
+    "prepublish": "npm run build",
+    "build-dist": "gulp build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-core": "^6.20.0",
+    "babel-loader": "^6.2.9",
+    "babel-polyfill": "^6.20.0",
+    "babel-preset-env": "^1.1.1",
+    "eslint": "^5.12.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-connect": "^5.0.0",
+    "gulp-eslint": "^3.0.1",
+    "gulp-jsdoc3": "^0.3.0",
+    "istanbul": "^0.4.5",
+    "jest": "^23.6.0",
+    "jest-cli": "^23.6.0",
+    "jest-mock-axios": "^2.1.11",
+    "path": "^0.12.7",
+    "webpack": "^1.14.0"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "gulp-jest": "^4.0.2",
+    "is-url": "^1.2.4",
+    "proper-url-join": "^1.2.0"
+  }
+}

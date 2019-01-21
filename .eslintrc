@@ -1,0 +1,10 @@
+{
+    "extends": "airbnb-base",
+    "rules": {
+        "object-shorthand": [
+            "error",
+            "never"
+        ],
+        "func-style": 0
+    }
+}
