@@ -37,6 +37,10 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "gulp-jest": "^4.0.2",
     "is-url": "^1.2.4",
-    "proper-url-join": "^1.2.0"
+    "proper-url-join": "^1.2.0",
+    "secure-random": "^1.1.1",
+    "base-58": "0.0.1",
+    "elliptic": "^6.4.1",
+    "js-sha256": "^0.9.0"
   }
 }
