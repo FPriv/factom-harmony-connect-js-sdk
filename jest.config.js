@@ -1,6 +1,6 @@
 module.exports = {
   verbose: true,
-  collectCoverage: false,
+  collectCoverage: true,
   coverageReporters: ['json', 'html'],
   coverageThreshold: {
     global: {
