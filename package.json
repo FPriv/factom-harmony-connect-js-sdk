@@ -2,13 +2,15 @@
   "name": "factom-connect-sdk",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/sdk-rollup-test-lib.cjs.js",
+  "module": "dist/sdk-rollup-test-lib.esm.js",
+  "browser": "dist/sdk-rollup-test-lib.umd.js",
   "scripts": {
     "test": "jest",
     "build": "gulp babel",
     "prepublish": "npm run build",
     "build-dist": "gulp build",
-    "dev": "rollup -c -w"
+    "dev": "rollup -c"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +18,7 @@
     "babel": "^6.5.2",
     "babel-core": "^6.20.0",
     "babel-loader": "^6.2.9",
+    "babel-plugin-external-helpers": "^6.22.0",
     "babel-polyfill": "^6.20.0",
     "babel-preset-env": "^1.1.1",
     "eslint": "^5.12.1",
@@ -31,8 +34,11 @@
     "jest-cli": "^23.6.0",
     "jest-mock-axios": "^2.1.11",
     "path": "^0.12.7",
-    "rollup": "^1.0.0",
+    "rollup": "^1.1.2",
+    "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-node-resolve": "^4.0.0",
     "webpack": "^1.14.0"
   },

@@ -1,43 +1,30 @@
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
+// Rollup plugins.
 import babel from 'rollup-plugin-babel';
+import cjs from 'rollup-plugin-commonjs';
+import globals from 'rollup-plugin-node-globals';
+import resolve from 'rollup-plugin-node-resolve';
+import json from 'rollup-plugin-json';
 import pkg from './package.json';
 
 export default [
-	// browser-friendly UMD build
-	{
-		input: 'src/main.js',
-		output: {
-			name: 'factomHarmonyConnectSDK',
-			file: pkg.browser,
-			format: 'umd'
-		},
-		plugins: [
-			resolve(), // so Rollup can find `ms`
-			commonjs(), // so Rollup can convert `ms` to an ES module
-			babel({
-				exclude: ['node_modules/**']
-			})
-		]
-	},
-
-	// CommonJS (for Node) and ES module (for bundlers) build.
-	// (We could have three entries in the configuration array
-	// instead of two, but it's quicker to generate multiple
-	// builds from a single configuration where possible, using
-	// an array for the `output` option, where we can specify
-	// `file` and `format` for each target)
-	{
-		input: 'src/main.js',
-		external: ['ms'],
-		output: [
-			{ file: pkg.main, format: 'cjs' },
-			{ file: pkg.module, format: 'es' }
-		],
-		plugins: [
-			babel({
-				exclude: ['node_modules/**']
-			})
-		]
-	}
+  {
+    input: 'lib/api.js',
+    output: [
+      { name: 'factomHarmonyConnectSdk', file: pkg.browser, format: 'umd' },
+      { name: 'factomHarmonyConnectSdk', file: pkg.main, format: 'cjs' },
+      { name: 'factomHarmonyConnectSdk', file: pkg.module, format: 'es' },
+    ],
+    plugins: [
+      json(),
+      resolve({
+        browser: true,
+        main: true,
+      }),
+      cjs(),
+      globals(),
+      babel({
+        exclude: 'node_modules/**',
+      }),
+    ],
+  }
 ];
