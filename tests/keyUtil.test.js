@@ -21,8 +21,8 @@ describe('KeyUtil TEST', () => {
       expect(KeyUtil.validateCheckSum('idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9')).toBe(true);
     });
   });
-  describe('Validate Keys', () => {
-    it('should return errors object when keys have at least 1 item(s) is invalid.', () => {
+  describe('Get Invalid Keys', () => {
+    it('should return errors array when keys have at least 1 item(s) is invalid.', () => {
       const errors = [
         {
           key: '123',
@@ -33,10 +33,10 @@ describe('KeyUtil TEST', () => {
           error: 'key is invalid',
         },
       ];
-      expect(KeyUtil.validateKeys(['123', '123'])).toEqual(errors);
+      expect(KeyUtil.getInvalidKeys(['123', '123'])).toEqual(errors);
     });
-    it('should return true when validated.', () => {
-      expect(KeyUtil.validateKeys(['idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv', 'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc'])).toBe(true);
+    it('should return empty array when validated.', () => {
+      expect(KeyUtil.getInvalidKeys(['idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv', 'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc'])).toEqual([]);
     });
   });
   describe('Get Key bytes from Key', () => {

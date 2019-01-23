@@ -187,7 +187,7 @@ describe('Identity Test', () => {
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       const response = await identity.getAllIdentityKeys('123456');
-      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/123456/keys', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
+      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/123456/keys?limit=15', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual(resp.data);
     });
   });
