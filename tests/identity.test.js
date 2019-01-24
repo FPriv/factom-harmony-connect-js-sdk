@@ -44,13 +44,6 @@ describe('Identity Test', () => {
         expect(error).toEqual(new Error('keys is required.'));
       }
     });
-    it('should return error message when keys is less than 3 items.', async () => {
-      try {
-        await identity.createAnIdentity(['123'], ['123']);
-      } catch (error) {
-        expect(error).toEqual(new Error('keys should have at least 3 items.'));
-      }
-    });
     it('should return error message when keys have at least 1 item(s) is invalid.', async () => {
       const errors = [
         {
