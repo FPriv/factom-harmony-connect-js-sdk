@@ -46,9 +46,9 @@ jobs:
           destination: test-reports
 
       - run:
-          name: built dist
+          name: build
           command: |
-            npm run build-dist
+            npm run build
 
       - store_artifacts:
           path: ./dist
