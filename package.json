@@ -4,10 +4,12 @@
   "description": "",
   "main": "dist/factomHarmonyConnectSdk.cjs.js",
   "module": "dist/factomHarmonyConnectSdk.esm.js",
-  "browser": "dist/factomHarmonyConnectSdk.umd.js",
+  "browser": "dist/factomHarmonyConnectSdk.iife.js",
   "scripts": {
     "test": "jest",
-    "build": "rollup -c"
+    "build": "npm run build:elliptic && npm run build:rollup",
+    "build:elliptic": "webpack --config webpack.elliptic.js",
+    "build:rollup": "rollup -c"
   },
   "author": "",
   "license": "ISC",
@@ -16,9 +18,11 @@
     "babel-core": "^6.20.0",
     "babel-loader": "^6.2.9",
     "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.20.0",
     "babel-preset-env": "^1.1.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "eslint": "^5.12.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
@@ -27,15 +31,24 @@
     "jest-cli": "^23.6.0",
     "path": "^0.12.7",
     "rollup": "^1.1.2",
+    "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
-    "rollup-plugin-node-resolve": "^4.0.0"
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "base-58": "0.0.1",
+    "elliptic": "^6.4.1",
     "is-url": "^1.2.4",
-    "proper-url-join": "^1.2.0"
+    "js-sha256": "^0.9.0",
+    "secure-random": "^1.1.1",
+    "url-join": "^4.0.0",
+    "url-join-query": "^1.0.3"
   }
 }

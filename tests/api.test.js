@@ -99,8 +99,8 @@ describe('APICall Test', () => {
           },
         };
         axios.mockImplementationOnce(() => Promise.resolve(resp));
-        const response = await apiCall.send('GET', '', data);
-        expect(axios).toHaveBeenCalledWith('https://apicast.io?chain_id=123456', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
+        const response = await apiCall.send('GET', 'chain', data);
+        expect(axios).toHaveBeenCalledWith('https://apicast.io/chain?chain_id=123456', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
         expect(response).toEqual({ api_version: 'v1' });
       });
       it('should return error when receiving response status > 400.', async () => {
