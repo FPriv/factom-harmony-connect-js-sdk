@@ -5,3 +5,5 @@ docs/
 .idea/
 coverage
 package-lock.json
+.vscode
+includes/

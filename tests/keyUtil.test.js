@@ -86,7 +86,8 @@ describe('KeyUtil TEST', () => {
       }
     });
     it('should return signature when signed.', () => {
-      KeyUtil.signContent('idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6', 'MTcxZTU4NTE0NTFjZTZmMmQ5NzMwYzE1MzdkYTQzNzVmZWI0NDI4NzBkODM1YzU0YTFiY2E4ZmZhN2UyYmRhN3siZGF0YSI6IkNvbnRhaW5zIHRoZSB0aW1lIHN0YW1wZWQgTGF0TG9uZyBjb29yZGluYXRlcyBvZiB0aGlzIGRyb25lLiJ9MTU0Nzc5NTk2Ny4xNTE4MTE');
+      expect(KeyUtil.signContent('idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6', 'Abc'))
+        .toMatch('Z4qvla16B9+gW/IFyng+5Q0njgwT2aRr5kmYMARRbT8+nivUiQO74O/y3MOH42R9cqTdkXkETLDitUO48DviBw==');
     });
   });
   describe('Validating Signature', () => {
