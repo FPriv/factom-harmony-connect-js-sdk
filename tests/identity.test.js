@@ -15,7 +15,7 @@ describe('Identity Test', () => {
         },
       });
     });
-    it('should return array of 3 private and public keys pair', () => {
+    it('should return array of 3 private and public key pairs', () => {
       identity.createIdentityKeyPair();
     });
   });
@@ -39,12 +39,13 @@ describe('Identity Test', () => {
     });
     it('should return error message when keys is missing', async () => {
       try {
-        await identity.createAnIdentity(['123']);
+        const data = { name: ['123'] };
+        await identity.createAnIdentity(data);
       } catch (error) {
-        expect(error).toEqual(new Error('keys is required.'));
+        expect(error).toEqual(new Error('keys are required.'));
       }
     });
-    it('should return error message when keys have at least 1 item(s) is invalid.', async () => {
+    it('should return error message when keys have at least 1 invalid item.', async () => {
       const errors = [
         {
           key: '123',
@@ -57,21 +58,47 @@ describe('Identity Test', () => {
       ];
 
       try {
-        await identity.createAnIdentity(['123'], ['123', '123', 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9']);
+        const data = {
+          name: ['123'],
+          keys: [
+            '123',
+            '123',
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          ],
+        };
+        await identity.createAnIdentity(data);
       } catch (error) {
         expect(error).toEqual(new Error(errors));
       }
     });
-    it('should return error message when keys have at least 1 item(s) is duplicated.', async () => {
+    it('should return error message when keys have at least 1 duplicated item.', async () => {
       try {
-        await identity.createAnIdentity(['123'], ['idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9']);
+        const data = {
+          name: ['123'],
+          keys: [
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          ],
+        };
+        await identity.createAnIdentity(data);
       } catch (error) {
         expect(error).toEqual(new Error('keys item is duplicated.'));
       }
     });
     it('should return error message when callback url is missing URL scheme.', async () => {
       try {
-        await await identity.createAnIdentity(['1'], ['idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', 'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv', 'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc'], 'callback.com', ['factom', 'replicated']);
+        const data = {
+          name: ['1'],
+          keys: [
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+            'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv',
+            'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc',
+          ],
+          callbackURL: 'callback.com',
+          callbackStages: ['factom', 'replicated'],
+        };
+        await await identity.createAnIdentity(data);
       } catch (error) {
         expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
       }
@@ -87,6 +114,17 @@ describe('Identity Test', () => {
       };
 
       const data = {
+        name: ['1'],
+        keys: [
+          'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv',
+          'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc',
+        ],
+        callbackURL: 'http://callback.com',
+        callbackStages: ['factom', 'replicated'],
+      };
+
+      const dataPostAPI = {
         callback_stages: [
           'factom',
           'replicated',
@@ -102,8 +140,8 @@ describe('Identity Test', () => {
         ],
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await identity.createAnIdentity(['1'], ['idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', 'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv', 'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc'], 'http://callback.com', ['factom', 'replicated']);
-      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities', { data: data, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
+      const response = await identity.createAnIdentity(data);
+      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual(resp.data);
     });
   });
@@ -138,7 +176,7 @@ describe('Identity Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await identity.getAnIdentity('123456');
+      const response = await identity.getAnIdentity({ chainId: '123456' });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/123456', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual(resp.data);
     });
@@ -179,8 +217,15 @@ describe('Identity Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await identity.getAllIdentityKeys('123456');
-      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/123456/keys?limit=15', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
+      const data = {
+        chainId: '123456',
+        activeAtHeight: 10000,
+        limit: 30,
+        offset: 10,
+      };
+
+      const response = await identity.getAllIdentityKeys(data);
+      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/123456/keys?limit=30&activeAtHeight=10000&offset=10', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual(resp.data);
     });
   });
@@ -204,75 +249,126 @@ describe('Identity Test', () => {
     });
     it('should return error message when old public key is missing', async () => {
       try {
-        await identity.createAnIdentityKeyReplacement('123456');
+        const data = {
+          chainId: '123456',
+        };
+        await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('old public key is required.'));
       }
     });
     it('should return error message when new public key is missing', async () => {
       try {
-        await identity.createAnIdentityKeyReplacement('123456', 'idpub2');
+        const data = {
+          chainId: '123456',
+          oldPublicKey: 'idpub2',
+        };
+        await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('new public key is required.'));
       }
     });
     it('should return error message when private key is missing', async () => {
       try {
-        await identity.createAnIdentityKeyReplacement('123456', 'idpub2', 'idpub2');
+        const data = {
+          chainId: '123456',
+          oldPublicKey: 'idpub2',
+          newPublicKey: 'idpub2',
+        };
+        await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('private key is required.'));
       }
     });
     it('should return error message when old public key bytes length is not equal 41', async () => {
       try {
-        await identity.createAnIdentityKeyReplacement('123456', 'idpub2', 'idpub2', 'idsec2');
+        const data = {
+          chainId: '123456',
+          oldPublicKey: 'idpub2',
+          newPublicKey: 'idpub2',
+          privateKey: 'idsec2',
+        };
+        await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('old public key is invalid.'));
       }
     });
     it('should return error message when old public key is invalid', async () => {
       try {
-        await identity.createAnIdentityKeyReplacement('123456', 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcx12', 'idpub2', 'idsec2');
+        const data = {
+          chainId: '123456',
+          oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcx12',
+          newPublicKey: 'idpub2',
+          privateKey: 'idsec2',
+        };
+        await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('old public key is invalid.'));
       }
     });
     it('should return error message when new public key bytes length is not equal 41', async () => {
       try {
-        await identity.createAnIdentityKeyReplacement('123456', 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', 'idpub2', 'idsec2');
+        const data = {
+          chainId: '123456',
+          oldPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          newPublicKey: 'idpub2',
+          privateKey: 'idsec2',
+        };
+        await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('new public key is invalid.'));
       }
     });
     it('should return error message when new public key is invalid', async () => {
       try {
-        await identity.createAnIdentityKeyReplacement('123456', 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zH12', 'idsec2');
+        const data = {
+          chainId: '123456',
+          oldPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          newPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zH12',
+          privateKey: 'idsec2',
+        };
+        await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('new public key is invalid.'));
       }
     });
     it('should return error message when private key bytes length is not equal 41', async () => {
       try {
-        await identity.createAnIdentityKeyReplacement('123456', 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', 'idsec2');
+        const data = {
+          chainId: '123456',
+          oldPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          newPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          privateKey: 'idsec2',
+        };
+        await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('private key is invalid.'));
       }
     });
     it('should return error message when private key is invalid', async () => {
       try {
-        await identity.createAnIdentityKeyReplacement('123456', 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHo12');
+        const data = {
+          chainId: '123456',
+          oldPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          newPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHo12',
+        };
+        await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('private key is invalid.'));
       }
     });
     it('should return error message when callback url is missing URL scheme.', async () => {
-      const chainId = '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7';
-      const oldKey = 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9';
-      const newKey = 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7';
-      const privateKey = 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6';
-
+      const data = {
+        chainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
+        oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
+        newPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
+        privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
+        callbackURL: 'callback.com',
+        callbackStages: ['factom', 'replicated'],
+      };
       try {
-        await identity.createAnIdentityKeyReplacement(chainId, oldKey, newKey, privateKey, 'callback.com', ['factom', 'replicated']);
+        await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
       }
@@ -286,13 +382,18 @@ describe('Identity Test', () => {
         },
       };
 
-      const chainId = '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7';
-      const oldKey = 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9';
-      const newKey = 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7';
-      const privateKey = 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6';
       const data = {
-        old_key: oldKey,
-        new_key: newKey,
+        chainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
+        oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
+        newPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
+        privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
+        callbackURL: 'http://callback.com',
+        callbackStages: ['factom', 'replicated'],
+      };
+
+      const dataPostAPI = {
+        old_key: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
+        new_key: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
         signature: 'Lob+cdrltvw0MvR17e9F0EnK4bXLaCFvDf4yUESPRhznp9lug9F77bZJR2K3UoBunJoE4CI7i39aXIlEZQN9DQ==',
         signer_key: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
         callback_stages: [
@@ -302,8 +403,8 @@ describe('Identity Test', () => {
         callback_url: 'http://callback.com',
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await identity.createAnIdentityKeyReplacement(chainId, oldKey, newKey, privateKey, 'http://callback.com', ['factom', 'replicated']);
-      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7/keys', { data: data, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
+      const response = await identity.createAnIdentityKeyReplacement(data);
+      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7/keys', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual(resp.data);
     });
   });
