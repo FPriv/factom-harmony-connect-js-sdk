@@ -15,8 +15,6 @@ export default [
     input: 'lib/factom-harmony-connect-js-sdk.js',
     output: [
       { name: 'FactomHarmonyConnectSDK', file: pkg.browser, format: 'iife' },
-      { name: 'FactomHarmonyConnectSDK', file: pkg.main, format: 'cjs' },
-      { name: 'FactomHarmonyConnectSDK', file: pkg.module, format: 'es' },
     ],
     plugins: [
       alias({
