@@ -45,4 +45,34 @@ export default [
       json(),
     ],
   },
+  {
+    input: 'lib/factom-harmony-connect-js-sdk.js',
+    output: [
+      { file: pkg.main, format: 'cjs' },
+      { file: pkg.module, format: 'es' },
+    ],
+    plugins: [
+      alias({
+        elliptic: path.resolve(__dirname, 'includes/elliptic.js'),
+      }),
+      resolve({
+        preferBuiltins: true,
+      }),
+      cjs({
+        include: ['node_modules/**', 'includes/**'],
+      }),
+      babel({
+        babelrc: false,
+        runtimeHelpers: true,
+        presets: [['env', { modules: false }]],
+        plugins: [
+          'transform-async-to-generator',
+          'transform-runtime',
+          'transform-object-rest-spread',
+          'external-helpers'],
+        exclude: 'node_modules/**',
+      }),
+      json(),
+    ],
+  }
 ];
