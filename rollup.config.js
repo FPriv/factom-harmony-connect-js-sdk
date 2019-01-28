@@ -6,6 +6,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import json from 'rollup-plugin-json';
 import builtins from 'rollup-plugin-node-builtins';
 import alias from 'rollup-plugin-alias';
+import autoExternal from 'rollup-plugin-auto-external';
 import path from 'path';
 import pkg from './package.json';
 
@@ -52,14 +53,10 @@ export default [
       { file: pkg.module, format: 'es' },
     ],
     plugins: [
-      alias({
-        elliptic: path.resolve(__dirname, 'includes/elliptic.js'),
-      }),
-      resolve({
-        preferBuiltins: true,
-      }),
+      autoExternal(),
+      resolve(),
       cjs({
-        include: ['node_modules/**', 'includes/**'],
+        include: ['node_modules/**'],
       }),
       babel({
         babelrc: false,
@@ -72,7 +69,6 @@ export default [
           'external-helpers'],
         exclude: 'node_modules/**',
       }),
-      json(),
     ],
   }
 ];
