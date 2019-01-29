@@ -1,12 +1,82 @@
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Brands sample</title>
-        <link rel="stylesheet" href="./assets/css/normalize.css">
-        <link rel="stylesheet" href="./assets/css/main.css">
-      
-    </head>
-    <body>
-      <h1>This is index</h1>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Factom SDK sample</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="./assets/css/main.css" />
+    <script src="./assets/js/main.js"></script>
+  </head>
+  <body>
+    <nav class="white" role="navigation">
+      <div class="nav-wrapper container">
+        <a class="brand-logo header-logo"></a>
+      </div>
+    </nav>
+
+    <div id="main-container" class="container">
+      <div id="loading">
+        <div class=" loading-wrap">
+          <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue-only">
+              <div class="circle-clipper left"><div class="circle"></div></div>
+              <div class="gap-patch"><div class="circle"></div></div>
+              <div class="circle-clipper right"><div class="circle"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="first-step">
+        <img src="./assets//image/notary.png">
+          <button id="simulateBtn" class="btn btn-primary" onclick="onSimulation()">
+              Run Notary Simulation
+            </button>
+      </div>
+     
+      <div id="result">
+        <p>
+          <a href="https://docs.harmony.factom.com/">Click here</a> to learn how
+          you to view the created data (chains and entries) using the Factom
+          Explorer
+        </p>
+        <div class="section first-section">
+          <div class="section-header"><h3>Initialization</h3></div>
+          <div class="section-body">
+            <h5 class="card-title">Generated Keys</h5>
+
+            <table class="responsive-table bordered" id="keypairs">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Private Key</th>
+                  <th scope="col">Public Key</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+
+            <h5 class="card-title">Created Identity (for notary company)</h5>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Identity’s Chain ID</p>
+              </div>
+              <div class="col s10"><p id="identityChainId"></p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
