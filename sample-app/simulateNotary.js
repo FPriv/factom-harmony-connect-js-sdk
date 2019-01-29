@@ -27,8 +27,13 @@ module.exports = async (request, response) => {
   });
 
   try {
-    // Create initial key pairs, sdk will create 3 key pairs by default
+    // Create initial key pairs, sdk will create 3 key pairs by default change the number of create key by passing {numberOfKeyPair: } to the params
+    // Create single key pair by using factomConnectSDK.keyUtil.createKeyPair()
     const originalKeyPairs = factomConnectSDK.identity.createIdentityKeyPair();
+    const publicKeyArr = [];
+    for (let index = 0; index < originalKeyPairs.length; index++) {
+      publicKeyArr.push(originalKeyPairs[index].publicKey);
+    }
 
     // Create identity with originalKeyPairs created above
     const createIdentityChainResponse = await factomConnectSDK.identity.createAnIdentity({
@@ -37,10 +42,8 @@ module.exports = async (request, response) => {
         (new Date()).toISOString(),
       ],
       keys: [
-        originalKeyPairs[0].publicKey,
-        originalKeyPairs[1].publicKey,
-        originalKeyPairs[2].publicKey,
-      ]
+        ...publicKeyArr,
+      ],
     });
 
     // Using a document from Customer as input for hash process
