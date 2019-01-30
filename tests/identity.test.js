@@ -3,15 +3,15 @@ import axios from 'axios';
 import Identity from '../lib/resources/identity';
 
 jest.mock('axios');
-describe('Identity Test', () => {
+describe('IDENTITY Test', () => {
   describe('Create an Identity Key Pair', () => {
     let identity;
     beforeAll(() => {
       identity = new Identity({
         baseURL: 'https://apicast.io',
         accessToken: {
-          app_id: '123456',
-          app_key: '123456789',
+          appId: '123456',
+          appKey: '123456789',
         },
       });
     });
@@ -25,8 +25,8 @@ describe('Identity Test', () => {
       identity = new Identity({
         baseURL: 'https://apicast.io',
         accessToken: {
-          app_id: '123456',
-          app_key: '123456789',
+          appId: '123456',
+          appKey: '123456789',
         },
       });
     });
@@ -34,7 +34,7 @@ describe('Identity Test', () => {
       try {
         await identity.createAnIdentity();
       } catch (error) {
-        expect(error).toEqual(new Error('name is required.'));
+        expect(error).toEqual(new Error('name is a required array.'));
       }
     });
     it('should return error message when keys is missing', async () => {
@@ -42,7 +42,61 @@ describe('Identity Test', () => {
         const data = { name: ['123'] };
         await identity.createAnIdentity(data);
       } catch (error) {
-        expect(error).toEqual(new Error('keys are required.'));
+        expect(error).toEqual(new Error('at least 1 key is required.'));
+      }
+    });
+    it('should return error message when total bytes of name and key are lager than 10240 bytes', async () => {
+      try {
+        const data = {
+          name: [
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+            'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
+          ],
+          keys: [
+            'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
+          ],
+        };
+        await identity.createAnIdentity(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('data overflow: use less/shorter names or less keys.'));
       }
     });
     it('should return error message when keys have at least 1 invalid item.', async () => {
@@ -95,12 +149,29 @@ describe('Identity Test', () => {
             'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv',
             'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc',
           ],
-          callbackURL: 'callback.com',
+          callbackUrl: 'callback.com',
           callbackStages: ['factom', 'replicated'],
         };
         await await identity.createAnIdentity(data);
       } catch (error) {
         expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
+      }
+    });
+    it('should return error message when callback stages is not array.', async () => {
+      try {
+        const data = {
+          name: ['1'],
+          keys: [
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+            'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv',
+            'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc',
+          ],
+          callbackUrl: 'http://callback.com',
+          callbackStages: 'factom',
+        };
+        await await identity.createAnIdentity(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('callback stages must be in array format.'));
       }
     });
     it('should create an Identity successfully.', async () => {
@@ -120,7 +191,7 @@ describe('Identity Test', () => {
           'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv',
           'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc',
         ],
-        callbackURL: 'http://callback.com',
+        callbackUrl: 'http://callback.com',
         callbackStages: ['factom', 'replicated'],
       };
 
@@ -151,8 +222,8 @@ describe('Identity Test', () => {
       identity = new Identity({
         baseURL: 'https://apicast.io',
         accessToken: {
-          app_id: '123456',
-          app_key: '123456789',
+          appId: '123456',
+          appKey: '123456789',
         },
       });
     });
@@ -187,8 +258,8 @@ describe('Identity Test', () => {
       identity = new Identity({
         baseURL: 'https://apicast.io',
         accessToken: {
-          app_id: '123456',
-          app_key: '123456789',
+          appId: '123456',
+          appKey: '123456789',
         },
       });
     });
@@ -197,6 +268,42 @@ describe('Identity Test', () => {
         await identity.getAllIdentityKeys();
       } catch (error) {
         expect(error).toEqual(new Error('chain id is required.'));
+      }
+    });
+    it('should return error message when active at height is not number', async () => {
+      try {
+        const data = {
+          chainId: '123456',
+          activeAtHeight: '1',
+        };
+        await identity.getAllIdentityKeys(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('active at height must be number.'));
+      }
+    });
+    it('should return error message when limit is not number', async () => {
+      try {
+        const data = {
+          chainId: '123456',
+          activeAtHeight: 1,
+          limit: '1',
+        };
+        await identity.getAllIdentityKeys(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('limit must be number.'));
+      }
+    });
+    it('should return error message when offset is not number', async () => {
+      try {
+        const data = {
+          chainId: '123456',
+          activeAtHeight: 1,
+          limit: 1,
+          offset: '1',
+        };
+        await identity.getAllIdentityKeys(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('offset must be number.'));
       }
     });
     it('should get all Identity Keys successfully.', async () => {
@@ -219,13 +326,10 @@ describe('Identity Test', () => {
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       const data = {
         chainId: '123456',
-        activeAtHeight: 10000,
-        limit: 30,
-        offset: 10,
       };
 
       const response = await identity.getAllIdentityKeys(data);
-      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/123456/keys?limit=30&activeAtHeight=10000&offset=10', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
+      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/123456/keys', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual(resp.data);
     });
   });
@@ -235,8 +339,8 @@ describe('Identity Test', () => {
       identity = new Identity({
         baseURL: 'https://apicast.io',
         accessToken: {
-          app_id: '123456',
-          app_key: '123456789',
+          appId: '123456',
+          appKey: '123456789',
         },
       });
     });
@@ -364,13 +468,28 @@ describe('Identity Test', () => {
         oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
         newPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
         privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
-        callbackURL: 'callback.com',
+        callbackUrl: 'callback.com',
         callbackStages: ['factom', 'replicated'],
       };
       try {
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
+      }
+    });
+    it('should return error message when callback stages is not array.', async () => {
+      const data = {
+        chainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
+        oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
+        newPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
+        privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
+        callbackUrl: 'http://callback.com',
+        callbackStages: 'factom',
+      };
+      try {
+        await identity.createAnIdentityKeyReplacement(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('callback stages must be in array format.'));
       }
     });
     it('should create an Identity Key Replacement with callback url successfully.', async () => {
@@ -387,7 +506,7 @@ describe('Identity Test', () => {
         oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
         newPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
         privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
-        callbackURL: 'http://callback.com',
+        callbackUrl: 'http://callback.com',
         callbackStages: ['factom', 'replicated'],
       };
 

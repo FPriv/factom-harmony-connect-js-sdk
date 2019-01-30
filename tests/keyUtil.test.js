@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import KeyUtil from '../lib/utils/keyUtil';
 
-describe('KeyUtil TEST', () => {
+describe('KEY UTIL Test', () => {
   describe('Create Key pair', () => {
     it('should return an object with private and public keys.', () => {
       KeyUtil.createKeyPair();

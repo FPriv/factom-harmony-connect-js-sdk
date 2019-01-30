@@ -1,17 +1,17 @@
 /* eslint-env jest */
 import axios from 'axios';
-import APICall from '../lib/api';
+import Info from '../lib/resources/info';
 
 jest.mock('axios');
-describe('Info TEST', () => {
+describe('INFO Test', () => {
   describe('Get Info', () => {
-    let apiCall;
+    let info;
     beforeAll(() => {
-      apiCall = new APICall({
+      info = new Info({
         baseURL: 'https://apicast.io',
         accessToken: {
-          app_id: '123456',
-          app_key: '123456789',
+          appId: '123456',
+          appKey: '123456789',
         },
       });
     });
@@ -23,7 +23,7 @@ describe('Info TEST', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await apiCall.send('GET');
+      const response = await info.getInfo();
       expect(axios).toHaveBeenCalledWith('https://apicast.io', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ api_version: 'v1' });
     });

@@ -11,8 +11,8 @@ describe('APICall Test', () => {
         new APICall({
           baseURL: 'apicast',
           accessToken: {
-            app_id: '123456',
-            app_key: '123456789',
+            appId: '123456',
+            appKey: '123456789',
           },
         });
       } catch (error) {
@@ -36,8 +36,8 @@ describe('APICall Test', () => {
       const api = new APICall({
         baseURL: 'https://apicast.io/',
         accessToken: {
-          app_id: '123456',
-          app_key: '123456789',
+          appId: '123456',
+          appKey: '123456789',
         },
       });
 
@@ -45,8 +45,8 @@ describe('APICall Test', () => {
         baseURL: 'https://apicast.io/',
         accessToken:
         {
-          app_id: '123456',
-          app_key: '123456789',
+          appId: '123456',
+          appKey: '123456789',
         },
       });
     });
@@ -58,8 +58,8 @@ describe('APICall Test', () => {
       apiCall = new APICall({
         baseURL: 'https://apicast.io/',
         accessToken: {
-          app_id: '123456',
-          app_key: '123456789',
+          appId: '123456',
+          appKey: '123456789',
         },
       });
     });
