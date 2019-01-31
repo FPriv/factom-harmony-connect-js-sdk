@@ -90,13 +90,13 @@ describe('IDENTITY Test', () => {
             'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
             'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
           ],
-          keys: [
-            'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
-          ],
+          keys: ['idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB'],
         };
         await identity.createAnIdentity(data);
       } catch (error) {
-        expect(error).toEqual(new Error('data overflow: use less/shorter names or less keys.'));
+        expect(error).toEqual(
+          new Error('data overflow: use less/shorter names or less keys.'),
+        );
       }
     });
     it('should return error message when keys have at least 1 invalid item.', async () => {
@@ -171,15 +171,19 @@ describe('IDENTITY Test', () => {
         };
         await await identity.createAnIdentity(data);
       } catch (error) {
-        expect(error).toEqual(new Error('callback stages must be in array format.'));
+        expect(error).toEqual(
+          new Error('callback stages must be in array format.'),
+        );
       }
     });
     it('should create an Identity successfully.', async () => {
       const resp = {
         status: 200,
         data: {
-          entry_hash: '20a1a2f74579128bc2c631ee608d51345df4d75d84c54c9aaf74f30dfef6d951',
-          chain_id: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
+          entry_hash:
+            '20a1a2f74579128bc2c631ee608d51345df4d75d84c54c9aaf74f30dfef6d951',
+          chain_id:
+            '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
           stage: 'replicated',
         },
       };
@@ -196,23 +200,26 @@ describe('IDENTITY Test', () => {
       };
 
       const dataPostAPI = {
-        callback_stages: [
-          'factom',
-          'replicated',
-        ],
+        callback_stages: ['factom', 'replicated'],
         callback_url: 'http://callback.com',
         keys: [
           'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
           'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv',
           'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc',
         ],
-        name: [
-          Buffer.from('1').toString('base64'),
-        ],
+        name: [Buffer.from('1').toString('base64')],
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       const response = await identity.createAnIdentity(data);
-      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
+      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities', {
+        data: dataPostAPI,
+        headers: {
+          'Content-Type': 'application/json',
+          app_id: '123456',
+          app_key: '123456789',
+        },
+        method: 'POST',
+      });
       expect(response).toEqual(resp.data);
     });
   });
@@ -241,14 +248,28 @@ describe('IDENTITY Test', () => {
           version: 1,
           stage: 'anchored',
           created_height: 118460,
-          chain_id: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
+          chain_id:
+            '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
           name: ['RU1QTE9ZRUU=', 'QUJDMTIz'],
         },
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await identity.getAnIdentity({ identityChainId: '123456' });
-      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/123456', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
+      const response = await identity.getAnIdentity({
+        identityChainId: '123456',
+      });
+      expect(axios).toHaveBeenCalledWith(
+        'https://apicast.io/identities/123456',
+        {
+          data: '',
+          headers: {
+            'Content-Type': 'application/json',
+            app_id: '123456',
+            app_key: '123456789',
+          },
+          method: 'GET',
+        },
+      );
       expect(response).toEqual(resp.data);
     });
   });
@@ -329,7 +350,18 @@ describe('IDENTITY Test', () => {
       };
 
       const response = await identity.getAllIdentityKeys(data);
-      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/123456/keys', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
+      expect(axios).toHaveBeenCalledWith(
+        'https://apicast.io/identities/123456/keys',
+        {
+          data: '',
+          headers: {
+            'Content-Type': 'application/json',
+            app_id: '123456',
+            app_key: '123456789',
+          },
+          method: 'GET',
+        },
+      );
       expect(response).toEqual(resp.data);
     });
   });
@@ -365,7 +397,7 @@ describe('IDENTITY Test', () => {
       try {
         const data = {
           identityChainId: '123456',
-          oldSignerPublicKey: 'idpub2',
+          oldPublicKey: 'idpub2',
         };
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
@@ -376,8 +408,8 @@ describe('IDENTITY Test', () => {
       try {
         const data = {
           identityChainId: '123456',
-          oldSignerPublicKey: 'idpub2',
-          newSignerPublicKey: 'idpub2',
+          oldPublicKey: 'idpub2',
+          newPublicKey: 'idpub2',
         };
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
@@ -388,8 +420,8 @@ describe('IDENTITY Test', () => {
       try {
         const data = {
           identityChainId: '123456',
-          oldSignerPublicKey: 'idpub2',
-          newSignerPublicKey: 'idpub2',
+          oldPublicKey: 'idpub2',
+          newPublicKey: 'idpub2',
           signerPrivateKey: 'idsec2',
         };
         await identity.createAnIdentityKeyReplacement(data);
@@ -401,8 +433,9 @@ describe('IDENTITY Test', () => {
       try {
         const data = {
           identityChainId: '123456',
-          oldSignerPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcx12',
-          newSignerPublicKey: 'idpub2',
+          oldPublicKey:
+            'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcx12',
+          newPublicKey: 'idpub2',
           signerPrivateKey: 'idsec2',
         };
         await identity.createAnIdentityKeyReplacement(data);
@@ -414,8 +447,9 @@ describe('IDENTITY Test', () => {
       try {
         const data = {
           identityChainId: '123456',
-          oldSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-          newSignerPublicKey: 'idpub2',
+          oldPublicKey:
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          newPublicKey: 'idpub2',
           signerPrivateKey: 'idsec2',
         };
         await identity.createAnIdentityKeyReplacement(data);
@@ -427,8 +461,10 @@ describe('IDENTITY Test', () => {
       try {
         const data = {
           identityChainId: '123456',
-          oldSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-          newSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zH12',
+          oldPublicKey:
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          newPublicKey:
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zH12',
           signerPrivateKey: 'idsec2',
         };
         await identity.createAnIdentityKeyReplacement(data);
@@ -440,8 +476,10 @@ describe('IDENTITY Test', () => {
       try {
         const data = {
           identityChainId: '123456',
-          oldSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-          newSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          oldPublicKey:
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          newPublicKey:
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
           signerPrivateKey: 'idsec2',
         };
         await identity.createAnIdentityKeyReplacement(data);
@@ -453,9 +491,12 @@ describe('IDENTITY Test', () => {
       try {
         const data = {
           identityChainId: '123456',
-          oldSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-          newSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-          signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHo12',
+          oldPublicKey:
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          newPublicKey:
+            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          signerPrivateKey:
+            'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHo12',
         };
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
@@ -464,10 +505,12 @@ describe('IDENTITY Test', () => {
     });
     it('should return error message when callback url is missing URL scheme.', async () => {
       const data = {
-        identityChainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
-        oldSignerPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
-        newSignerPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
-        signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
+        identityChainId:
+          '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
+        oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
+        newPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
+        signerPrivateKey:
+          'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
         callbackUrl: 'callback.com',
         callbackStages: ['factom', 'replicated'],
       };
@@ -479,33 +522,40 @@ describe('IDENTITY Test', () => {
     });
     it('should return error message when callback stages is not array.', async () => {
       const data = {
-        identityChainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
-        oldSignerPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
-        newSignerPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
-        signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
+        identityChainId:
+          '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
+        oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
+        newPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
+        signerPrivateKey:
+          'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
         callbackUrl: 'http://callback.com',
         callbackStages: 'factom',
       };
       try {
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
-        expect(error).toEqual(new Error('callback stages must be in array format.'));
+        expect(error).toEqual(
+          new Error('callback stages must be in array format.'),
+        );
       }
     });
     it('should create an Identity Key Replacement with callback url successfully.', async () => {
       const resp = {
         status: 200,
         data: {
-          entry_hash: '20a1a2f74579128bc2c631ee608d51345df4d75d84c54c9aaf74f30dfef6d951',
+          entry_hash:
+            '20a1a2f74579128bc2c631ee608d51345df4d75d84c54c9aaf74f30dfef6d951',
           stage: 'replicated',
         },
       };
 
       const data = {
-        identityChainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
-        oldSignerPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
-        newSignerPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
-        signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
+        identityChainId:
+          '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
+        oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
+        newPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
+        signerPrivateKey:
+          'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
         callbackUrl: 'http://callback.com',
         callbackStages: ['factom', 'replicated'],
       };
@@ -513,17 +563,26 @@ describe('IDENTITY Test', () => {
       const dataPostAPI = {
         old_key: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
         new_key: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
-        signature: 'Lob+cdrltvw0MvR17e9F0EnK4bXLaCFvDf4yUESPRhznp9lug9F77bZJR2K3UoBunJoE4CI7i39aXIlEZQN9DQ==',
+        signature:
+          'Lob+cdrltvw0MvR17e9F0EnK4bXLaCFvDf4yUESPRhznp9lug9F77bZJR2K3UoBunJoE4CI7i39aXIlEZQN9DQ==',
         signer_key: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-        callback_stages: [
-          'factom',
-          'replicated',
-        ],
+        callback_stages: ['factom', 'replicated'],
         callback_url: 'http://callback.com',
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       const response = await identity.createAnIdentityKeyReplacement(data);
-      expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7/keys', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
+      expect(axios).toHaveBeenCalledWith(
+        'https://apicast.io/identities/171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7/keys',
+        {
+          data: dataPostAPI,
+          headers: {
+            'Content-Type': 'application/json',
+            app_id: '123456',
+            app_key: '123456789',
+          },
+          method: 'POST',
+        },
+      );
       expect(response).toEqual(resp.data);
     });
   });

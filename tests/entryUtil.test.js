@@ -74,7 +74,7 @@ describe('ENTRY UTIL Test', () => {
           chain_id: '123456',
         },
       };
-      const response = await EntryUtil.validatingSignature({ entry: data });
+      const response = await EntryUtil.validateSignature({ entry: data });
       expect(response).toMatch('not_signed/invalid_entry_format');
     });
     it('should return a chain object with invalid chain format status when first external ids is not equal SignedEntry.', async () => {
@@ -95,7 +95,7 @@ describe('ENTRY UTIL Test', () => {
           chain_id: '123456',
         },
       };
-      const response = await EntryUtil.validatingSignature({ entry: data });
+      const response = await EntryUtil.validateSignature({ entry: data });
       expect(response).toMatch('not_signed/invalid_entry_format');
     });
     it('should return a chain object with invalid chain format status when second external ids is not equal 0x01.', async () => {
@@ -116,7 +116,7 @@ describe('ENTRY UTIL Test', () => {
           chain_id: '123456',
         },
       };
-      const response = await EntryUtil.validatingSignature({ entry: data });
+      const response = await EntryUtil.validateSignature({ entry: data });
       expect(response).toMatch('not_signed/invalid_entry_format');
     });
     it('should return a chain object with inactive key status.', async () => {
@@ -149,7 +149,7 @@ describe('ENTRY UTIL Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.validatingSignature({ entry: data, apiCall: apiCall });
+      const response = await EntryUtil.validateSignature({ entry: data, apiCall: apiCall });
       expect(response).toMatch('inactive_key');
     });
   });

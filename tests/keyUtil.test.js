@@ -93,34 +93,34 @@ describe('KEY UTIL Test', () => {
   describe('Validating Signature', () => {
     it('should return error message when public key is missing.', () => {
       try {
-        KeyUtil.validatingSignature();
+        KeyUtil.validateSignature();
       } catch (error) {
         expect(error).toEqual(new Error('public key is required.'));
       }
     });
     it('should return error message when public key is invalid.', () => {
       try {
-        KeyUtil.validatingSignature({ signerPublicKey: 'idpub2' });
+        KeyUtil.validateSignature({ signerPublicKey: 'idpub2' });
       } catch (error) {
         expect(error).toEqual(new Error('public key is invalid.'));
       }
     });
     it('should return error message when signature is missing.', () => {
       try {
-        KeyUtil.validatingSignature({ signerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9' });
+        KeyUtil.validateSignature({ signerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9' });
       } catch (error) {
         expect(error).toEqual(new Error('signature is required.'));
       }
     });
     it('should return error message when message is missing.', () => {
       try {
-        KeyUtil.validatingSignature({ signerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', signature: 'D+lzNLb88IKXQk2BglvP7o6yK/DNAsO1B9qXdqArvrotTqSCI4Y4d8J8bwbfAyCvJT9tLYj9Ll7grCnyDWVtCg==' });
+        KeyUtil.validateSignature({ signerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', signature: 'D+lzNLb88IKXQk2BglvP7o6yK/DNAsO1B9qXdqArvrotTqSCI4Y4d8J8bwbfAyCvJT9tLYj9Ll7grCnyDWVtCg==' });
       } catch (error) {
         expect(error).toEqual(new Error('message is required.'));
       }
     });
     it('should return value when validated.', () => {
-      expect(KeyUtil.validatingSignature({ signerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', signature: 'D+lzNLb88IKXQk2BglvP7o6yK/DNAsO1B9qXdqArvrotTqSCI4Y4d8J8bwbfAyCvJT9tLYj9Ll7grCnyDWVtCg==', message: 'MTcxZTU4NTE0NTFjZTZmMmQ5NzMwYzE1MzdkYTQzNzVmZWI0NDI4NzBkODM1YzU' })).toBe(false);
+      expect(KeyUtil.validateSignature({ signerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', signature: 'D+lzNLb88IKXQk2BglvP7o6yK/DNAsO1B9qXdqArvrotTqSCI4Y4d8J8bwbfAyCvJT9tLYj9Ll7grCnyDWVtCg==', message: 'MTcxZTU4NTE0NTFjZTZmMmQ5NzMwYzE1MzdkYTQzNzVmZWI0NDI4NzBkODM1YzU' })).toBe(false);
     });
   });
 });
