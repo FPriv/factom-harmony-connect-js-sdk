@@ -6,6 +6,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import json from 'rollup-plugin-json';
 import builtins from 'rollup-plugin-node-builtins';
 import alias from 'rollup-plugin-alias';
+import autoExternal from 'rollup-plugin-auto-external';
 import path from 'path';
 import pkg from './package.json';
 
@@ -14,8 +15,6 @@ export default [
     input: 'lib/factom-harmony-connect-js-sdk.js',
     output: [
       { name: 'FactomHarmonyConnectSDK', file: pkg.browser, format: 'iife' },
-      { name: 'FactomHarmonyConnectSDK', file: pkg.main, format: 'cjs' },
-      { name: 'FactomHarmonyConnectSDK', file: pkg.module, format: 'es' },
     ],
     plugins: [
       alias({
@@ -45,4 +44,29 @@ export default [
       json(),
     ],
   },
+  {
+    input: 'lib/factom-harmony-connect-js-sdk.js',
+    output: [
+      { file: pkg.main, format: 'cjs' },
+      { file: pkg.module, format: 'es' },
+    ],
+    plugins: [
+      autoExternal(),
+      resolve(),
+      cjs({
+        include: ['node_modules/**'],
+      }),
+      babel({
+        babelrc: false,
+        runtimeHelpers: true,
+        presets: [['env', { modules: false }]],
+        plugins: [
+          'transform-async-to-generator',
+          'transform-runtime',
+          'transform-object-rest-spread',
+          'external-helpers'],
+        exclude: 'node_modules/**',
+      }),
+    ],
+  }
 ];

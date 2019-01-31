@@ -6,7 +6,7 @@
     <script src="../dist/factomHarmonyConnectSdk.iife.js"></script>
     <script type="text/javascript">
         const FactomSDK = new FactomHarmonyConnectSDK({
-            baseURL: 'http://google.com',
+            baseURL: 'https://durable.sandbox.harmony.factom.com/v1',
             accessToken: {
                 appId: '123456',
                 appKey: '123456'
@@ -14,7 +14,7 @@
         });
 
         var data = {
-            name: ['1'],
+            name: ['FPT', 'Identity Test', 'Hieu', 'Mai'],
             keys: [
                 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
                 'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv',
@@ -22,11 +22,15 @@
             ],
             callbackUrl: 'http://callback.com',
             callbackStages: ['factom', 'replicated'],
+            ]
         };
         
         let newIdentity;
-        FactomSDK.identity.createAnIdentity(data).then(response => {
+        FactomSDK.identity.getAnIdentity({
+            chainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bdc9'
+        }).then(response => {
             newIdentity = response;
+            console.log(response);
         });
 
         console.log(FactomSDK.keyUtil.signContent({ signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6', message: 'Abc' }));
