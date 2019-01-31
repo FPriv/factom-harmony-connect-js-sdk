@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import KeyUtil from '../lib/utils/keyUtil';
 
-describe('KeyUtil TEST', () => {
+describe('KEY UTIL Test', () => {
   describe('Create Key pair', () => {
     it('should return an object with private and public keys.', () => {
       KeyUtil.createKeyPair();
@@ -60,7 +60,7 @@ describe('KeyUtil TEST', () => {
       }
     });
     it('should return public key.', () => {
-      KeyUtil.getPublicKeyFromPrivateKey({ privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6' });
+      KeyUtil.getPublicKeyFromPrivateKey({ signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6' });
     });
   });
   describe('Sign Content', () => {
@@ -73,20 +73,20 @@ describe('KeyUtil TEST', () => {
     });
     it('should return error message when private key is invalid.', () => {
       try {
-        KeyUtil.signContent({ privateKey: 'idsec2' });
+        KeyUtil.signContent({ signerPrivateKey: 'idsec2' });
       } catch (error) {
         expect(error).toEqual(new Error('private key is invalid.'));
       }
     });
     it('should return error message when message is missing.', () => {
       try {
-        KeyUtil.signContent({ privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6' });
+        KeyUtil.signContent({ signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6' });
       } catch (error) {
         expect(error).toEqual(new Error('message is required.'));
       }
     });
     it('should return signature when signed.', () => {
-      expect(KeyUtil.signContent({ privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6', message: 'Abc' }))
+      expect(KeyUtil.signContent({ signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6', message: 'Abc' }))
         .toMatch('Z4qvla16B9+gW/IFyng+5Q0njgwT2aRr5kmYMARRbT8+nivUiQO74O/y3MOH42R9cqTdkXkETLDitUO48DviBw==');
     });
   });
@@ -100,27 +100,27 @@ describe('KeyUtil TEST', () => {
     });
     it('should return error message when public key is invalid.', () => {
       try {
-        KeyUtil.validatingSignature({ publicKey: 'idpub2' });
+        KeyUtil.validatingSignature({ signerPublicKey: 'idpub2' });
       } catch (error) {
         expect(error).toEqual(new Error('public key is invalid.'));
       }
     });
     it('should return error message when signature is missing.', () => {
       try {
-        KeyUtil.validatingSignature({ publicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9' });
+        KeyUtil.validatingSignature({ signerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9' });
       } catch (error) {
         expect(error).toEqual(new Error('signature is required.'));
       }
     });
     it('should return error message when message is missing.', () => {
       try {
-        KeyUtil.validatingSignature({ publicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', signature: 'D+lzNLb88IKXQk2BglvP7o6yK/DNAsO1B9qXdqArvrotTqSCI4Y4d8J8bwbfAyCvJT9tLYj9Ll7grCnyDWVtCg==' });
+        KeyUtil.validatingSignature({ signerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', signature: 'D+lzNLb88IKXQk2BglvP7o6yK/DNAsO1B9qXdqArvrotTqSCI4Y4d8J8bwbfAyCvJT9tLYj9Ll7grCnyDWVtCg==' });
       } catch (error) {
         expect(error).toEqual(new Error('message is required.'));
       }
     });
     it('should return value when validated.', () => {
-      expect(KeyUtil.validatingSignature({ publicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', signature: 'D+lzNLb88IKXQk2BglvP7o6yK/DNAsO1B9qXdqArvrotTqSCI4Y4d8J8bwbfAyCvJT9tLYj9Ll7grCnyDWVtCg==', message: 'MTcxZTU4NTE0NTFjZTZmMmQ5NzMwYzE1MzdkYTQzNzVmZWI0NDI4NzBkODM1YzU' })).toBe(false);
+      expect(KeyUtil.validatingSignature({ signerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', signature: 'D+lzNLb88IKXQk2BglvP7o6yK/DNAsO1B9qXdqArvrotTqSCI4Y4d8J8bwbfAyCvJT9tLYj9Ll7grCnyDWVtCg==', message: 'MTcxZTU4NTE0NTFjZTZmMmQ5NzMwYzE1MzdkYTQzNzVmZWI0NDI4NzBkODM1YzU' })).toBe(false);
     });
   });
 });
