@@ -139,7 +139,7 @@ describe('ENTRIES Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await entries.firstEntryOfChain();
+        await entries.getFirstEntryOfChain();
       } catch (error) {
         expect(error).toEqual(new Error('chain id is required.'));
       }
@@ -152,7 +152,7 @@ describe('ENTRIES Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await entries.firstEntryOfChain({ chainId: '123456' });
+      const response = await entries.getFirstEntryOfChain({ chainId: '123456' });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/first', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });
@@ -170,7 +170,7 @@ describe('ENTRIES Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await entries.lastEntryOfChain();
+        await entries.getLastEntryOfChain();
       } catch (error) {
         expect(error).toEqual(new Error('chain id is required.'));
       }
@@ -183,7 +183,7 @@ describe('ENTRIES Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await entries.lastEntryOfChain({ chainId: '123456' });
+      const response = await entries.getLastEntryOfChain({ chainId: '123456' });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/last', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });

@@ -452,7 +452,7 @@ describe('CHAIN Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chain.firstEntry();
+      const response = await chain.getFirstEntry();
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/first', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });
@@ -491,7 +491,7 @@ describe('CHAIN Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chain.lastEntry();
+      const response = await chain.getLastEntry();
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/last', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });
