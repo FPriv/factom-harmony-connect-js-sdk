@@ -53,7 +53,17 @@ table {
   margin: 0 auto;
   display: table;
 }
-
 #first-step button {
   margin-top: 25px;
+}
+.row {
+  margin-bottom: 10
+}
+
+p {
+  margin: 0
+}
+
+.ml-10 {
+  margin-left: 10px;
 }

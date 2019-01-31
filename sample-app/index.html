@@ -39,12 +39,16 @@
         </div>
       </div>
       <div id="first-step">
-        <img src="./assets//image/notary.png">
-          <button id="simulateBtn" class="btn btn-primary" onclick="onSimulation()">
-              Run Notary Simulation
-            </button>
+        <img src="./assets//image/notary.png" />
+        <button
+          id="simulateBtn"
+          class="btn btn-primary"
+          onclick="onSimulation()"
+        >
+          Run Notary Simulation
+        </button>
       </div>
-     
+
       <div id="result">
         <p>
           <a href="https://docs.harmony.factom.com/">Click here</a> to learn how
@@ -73,6 +77,66 @@
                 <p class="font-weight-bold">Identity’s Chain ID</p>
               </div>
               <div class="col s10"><p id="identityChainId"></p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header"><h3>First Customer</h3></div>
+          <div class="section-body">
+            <h5 class="card-title">Create Chain (for customer)</h5>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Chain Id</p>
+              </div>
+              <div class="col s10"><p id="chainId"></p></div>
+            </div>
+            <div class="row">
+              <div class="col s2">
+                <p class="font-weight-bold">External Ids</p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Chain Type</p>
+              </div>
+              <div class="col s10"><p id="chainType"></p></div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Chain Schema Version</p>
+              </div>
+              <div class="col s10"><p id="chainSchemaVersion"></p></div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Signature Identity’s Chain ID</p>
+              </div>
+              <div class="col s10"><p id="chainSignatureIdentity"></p></div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Signature Public Key</p>
+              </div>
+              <div class="col s10 "><p id="chainSignaturePublicKey"></p></div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Signature</p>
+              </div>
+              <div class="col s10"><p id="chainSignature"></p></div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Timestamp</p>
+              </div>
+              <div class="col s10 "><p id="chainTimestamp"></p></div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Additional External IDs</p>
+              </div>
+              <div class="col s10"><p id="chainAdditionalExternalIDs"></p></div>
             </div>
           </div>
         </div>
