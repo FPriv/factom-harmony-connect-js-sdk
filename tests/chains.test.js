@@ -201,7 +201,7 @@ describe('CHAINS Test', () => {
     });
     it('should return error message when external ids is missing', async () => {
       try {
-        await chains.createAChain();
+        await chains.createChain();
       } catch (error) {
         expect(error).toEqual(new Error('external ids is a required array.'));
       }
@@ -212,7 +212,7 @@ describe('CHAINS Test', () => {
           externalIds: ['1'],
         };
 
-        await chains.createAChain(data);
+        await chains.createChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('content is required.'));
       }
@@ -225,7 +225,7 @@ describe('CHAINS Test', () => {
           callbackUrl: 'callback.com',
         };
 
-        await chains.createAChain(data);
+        await chains.createChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
       }
@@ -239,7 +239,7 @@ describe('CHAINS Test', () => {
           callbackStages: '123',
         };
 
-        await chains.createAChain(data);
+        await chains.createChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('callback stages must be in array format.'));
       }
@@ -272,7 +272,7 @@ describe('CHAINS Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.createAChain(data);
+      const response = await chains.createChain(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual(resp.data);
     });
@@ -291,7 +291,7 @@ describe('CHAINS Test', () => {
     });
     it('should return error message when private key is missing', async () => {
       try {
-        await chains.createAChain();
+        await chains.createChain();
       } catch (error) {
         expect(error).toEqual(new Error('private key is required.'));
       }
@@ -301,7 +301,7 @@ describe('CHAINS Test', () => {
         const data = {
           signerPrivateKey: 'idsec',
         };
-        await chains.createAChain(data);
+        await chains.createChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('private key is invalid.'));
       }
@@ -311,7 +311,7 @@ describe('CHAINS Test', () => {
         const data = {
           signerPrivateKey: 'idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ',
         };
-        await chains.createAChain(data);
+        await chains.createChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('signer chain id is required.'));
       }
@@ -322,7 +322,7 @@ describe('CHAINS Test', () => {
           signerPrivateKey: 'idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ',
           signerChainId: '123',
         };
-        await chains.createAChain(data);
+        await chains.createChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('content is required.'));
       }
@@ -334,7 +334,7 @@ describe('CHAINS Test', () => {
           content: '123',
         };
 
-        await chains.createAChain(data);
+        await chains.createChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('private key is required.'));
       }
@@ -347,7 +347,7 @@ describe('CHAINS Test', () => {
           signerPrivateKey: 'idsec',
         };
 
-        await chains.createAChain(data);
+        await chains.createChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('private key is invalid.'));
       }
@@ -360,7 +360,7 @@ describe('CHAINS Test', () => {
           signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
         };
 
-        await chains.createAChain(data);
+        await chains.createChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('signer chain id is required.'));
       }
@@ -375,7 +375,7 @@ describe('CHAINS Test', () => {
           callbackUrl: 'callback.com',
         };
 
-        await chains.createAChain(data);
+        await chains.createChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
       }
@@ -391,7 +391,7 @@ describe('CHAINS Test', () => {
           callbackStages: '123',
         };
 
-        await chains.createAChain(data);
+        await chains.createChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('callback stages must be in array format.'));
       }
@@ -407,7 +407,7 @@ describe('CHAINS Test', () => {
           callbackStages: ['factom'],
         };
 
-        await chains.createAChain(data);
+        await chains.createChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('external ids is a required array.'));
       }
@@ -429,7 +429,7 @@ describe('CHAINS Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.createAChain(data);
+      const response = await chains.createChain(data);
       expect(response).toEqual(resp.data);
     });
   });
