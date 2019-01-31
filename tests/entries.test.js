@@ -17,7 +17,7 @@ describe('ENTRIES Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await entries.getEntryInfo();
+        await entries.getgetEntryInfo();
       } catch (error) {
         expect(error).toEqual(new Error('chain id is required.'));
       }
@@ -30,7 +30,7 @@ describe('ENTRIES Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await entries.getEntryInfo({ chainId: '123456', entryHash: 'sha256', signatureValidation: false });
+      const response = await entries.getgetEntryInfo({ chainId: '123456', entryHash: 'sha256', signatureValidation: false });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/sha256', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });

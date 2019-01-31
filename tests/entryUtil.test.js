@@ -18,14 +18,14 @@ describe('ENTRY UTIL Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await EntryUtil.entryInfo();
+        await EntryUtil.getEntryInfo();
       } catch (error) {
         expect(error).toEqual(new Error('chain id is required.'));
       }
     });
     it('should return error message when entry hash is missing', async () => {
       try {
-        await EntryUtil.entryInfo({ chainId: '123456' });
+        await EntryUtil.getEntryInfo({ chainId: '123456' });
       } catch (error) {
         expect(error).toEqual(new Error('entry hash is required.'));
       }
@@ -38,7 +38,7 @@ describe('ENTRY UTIL Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.entryInfo({
+      const response = await EntryUtil.getEntryInfo({
         chainId: '123456',
         entryHash: 'sha256',
         signatureValidation: false,
