@@ -227,11 +227,11 @@ describe('IDENTITY Test', () => {
         },
       });
     });
-    it('should return error message when chain id is missing', async () => {
+    it('should return error message when identity chain id is missing', async () => {
       try {
         await identity.getAnIdentity();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('identity chain id is required.'));
       }
     });
     it('should get an Identity successfully.', async () => {
@@ -247,7 +247,7 @@ describe('IDENTITY Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await identity.getAnIdentity({ chainId: '123456' });
+      const response = await identity.getAnIdentity({ identityChainId: '123456' });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/identities/123456', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual(resp.data);
     });
@@ -263,17 +263,17 @@ describe('IDENTITY Test', () => {
         },
       });
     });
-    it('should return error message when chain id is missing', async () => {
+    it('should return error message when identity chain id is missing', async () => {
       try {
         await identity.getAllIdentityKeys();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('identity chain id is required.'));
       }
     });
     it('should return error message when active at height is not number', async () => {
       try {
         const data = {
-          chainId: '123456',
+          identityChainId: '123456',
           activeAtHeight: '1',
         };
         await identity.getAllIdentityKeys(data);
@@ -284,7 +284,7 @@ describe('IDENTITY Test', () => {
     it('should return error message when limit is not number', async () => {
       try {
         const data = {
-          chainId: '123456',
+          identityChainId: '123456',
           activeAtHeight: 1,
           limit: '1',
         };
@@ -296,7 +296,7 @@ describe('IDENTITY Test', () => {
     it('should return error message when offset is not number', async () => {
       try {
         const data = {
-          chainId: '123456',
+          identityChainId: '123456',
           activeAtHeight: 1,
           limit: 1,
           offset: '1',
@@ -325,7 +325,7 @@ describe('IDENTITY Test', () => {
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       const data = {
-        chainId: '123456',
+        identityChainId: '123456',
       };
 
       const response = await identity.getAllIdentityKeys(data);
@@ -344,17 +344,17 @@ describe('IDENTITY Test', () => {
         },
       });
     });
-    it('should return error message when chain id is missing', async () => {
+    it('should return error message when identity chain id is missing', async () => {
       try {
         await identity.createAnIdentityKeyReplacement();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('identity chain id is required.'));
       }
     });
     it('should return error message when old public key is missing', async () => {
       try {
         const data = {
-          chainId: '123456',
+          identityChainId: '123456',
         };
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
@@ -364,8 +364,8 @@ describe('IDENTITY Test', () => {
     it('should return error message when new public key is missing', async () => {
       try {
         const data = {
-          chainId: '123456',
-          oldPublicKey: 'idpub2',
+          identityChainId: '123456',
+          oldSignerPublicKey: 'idpub2',
         };
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
@@ -375,9 +375,9 @@ describe('IDENTITY Test', () => {
     it('should return error message when private key is missing', async () => {
       try {
         const data = {
-          chainId: '123456',
-          oldPublicKey: 'idpub2',
-          newPublicKey: 'idpub2',
+          identityChainId: '123456',
+          oldSignerPublicKey: 'idpub2',
+          newSignerPublicKey: 'idpub2',
         };
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
@@ -387,10 +387,10 @@ describe('IDENTITY Test', () => {
     it('should return error message when old public key bytes length is not equal 41', async () => {
       try {
         const data = {
-          chainId: '123456',
-          oldPublicKey: 'idpub2',
-          newPublicKey: 'idpub2',
-          privateKey: 'idsec2',
+          identityChainId: '123456',
+          oldSignerPublicKey: 'idpub2',
+          newSignerPublicKey: 'idpub2',
+          signerPrivateKey: 'idsec2',
         };
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
@@ -400,10 +400,10 @@ describe('IDENTITY Test', () => {
     it('should return error message when old public key is invalid', async () => {
       try {
         const data = {
-          chainId: '123456',
-          oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcx12',
-          newPublicKey: 'idpub2',
-          privateKey: 'idsec2',
+          identityChainId: '123456',
+          oldSignerPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcx12',
+          newSignerPublicKey: 'idpub2',
+          signerPrivateKey: 'idsec2',
         };
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
@@ -413,10 +413,10 @@ describe('IDENTITY Test', () => {
     it('should return error message when new public key bytes length is not equal 41', async () => {
       try {
         const data = {
-          chainId: '123456',
-          oldPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-          newPublicKey: 'idpub2',
-          privateKey: 'idsec2',
+          identityChainId: '123456',
+          oldSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          newSignerPublicKey: 'idpub2',
+          signerPrivateKey: 'idsec2',
         };
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
@@ -426,10 +426,10 @@ describe('IDENTITY Test', () => {
     it('should return error message when new public key is invalid', async () => {
       try {
         const data = {
-          chainId: '123456',
-          oldPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-          newPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zH12',
-          privateKey: 'idsec2',
+          identityChainId: '123456',
+          oldSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          newSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zH12',
+          signerPrivateKey: 'idsec2',
         };
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
@@ -439,10 +439,10 @@ describe('IDENTITY Test', () => {
     it('should return error message when private key bytes length is not equal 41', async () => {
       try {
         const data = {
-          chainId: '123456',
-          oldPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-          newPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-          privateKey: 'idsec2',
+          identityChainId: '123456',
+          oldSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          newSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          signerPrivateKey: 'idsec2',
         };
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
@@ -452,10 +452,10 @@ describe('IDENTITY Test', () => {
     it('should return error message when private key is invalid', async () => {
       try {
         const data = {
-          chainId: '123456',
-          oldPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-          newPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-          privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHo12',
+          identityChainId: '123456',
+          oldSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          newSignerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHo12',
         };
         await identity.createAnIdentityKeyReplacement(data);
       } catch (error) {
@@ -464,10 +464,10 @@ describe('IDENTITY Test', () => {
     });
     it('should return error message when callback url is missing URL scheme.', async () => {
       const data = {
-        chainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
-        oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
-        newPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
-        privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
+        identityChainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
+        oldSignerPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
+        newSignerPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
+        signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
         callbackUrl: 'callback.com',
         callbackStages: ['factom', 'replicated'],
       };
@@ -479,10 +479,10 @@ describe('IDENTITY Test', () => {
     });
     it('should return error message when callback stages is not array.', async () => {
       const data = {
-        chainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
-        oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
-        newPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
-        privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
+        identityChainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
+        oldSignerPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
+        newSignerPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
+        signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
         callbackUrl: 'http://callback.com',
         callbackStages: 'factom',
       };
@@ -502,10 +502,10 @@ describe('IDENTITY Test', () => {
       };
 
       const data = {
-        chainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
-        oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
-        newPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
-        privateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
+        identityChainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
+        oldSignerPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9',
+        newSignerPublicKey: 'idpub3NegGMKn2CDcx3A9JkpoMm2jE9KxchxqHTmXPvJnmUJGizfrb7',
+        signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6',
         callbackUrl: 'http://callback.com',
         callbackStages: ['factom', 'replicated'],
       };

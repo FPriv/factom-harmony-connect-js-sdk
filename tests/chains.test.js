@@ -30,7 +30,7 @@ describe('CHAINS Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.getChainInfo({ chainId: '123456' });
+      const response = await chains.getChainInfo({ chainId: '123456', signatureValidation: false });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });
@@ -159,7 +159,7 @@ describe('CHAINS Test', () => {
         const data = {
           externalIds: ['1'],
           content: '123',
-          privateKey: 'idsec',
+          signerPrivateKey: 'idsec',
         };
 
         await chains.createASignedChain(data);
@@ -172,7 +172,7 @@ describe('CHAINS Test', () => {
         const data = {
           externalIds: ['1'],
           content: '123',
-          privateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
+          signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
         };
 
         await chains.createASignedChain(data);
@@ -185,7 +185,7 @@ describe('CHAINS Test', () => {
         const data = {
           externalIds: ['1'],
           content: '123',
-          privateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
+          signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
           signerChainId: '12345',
           callbackUrl: 'callback.com',
         };
@@ -200,7 +200,7 @@ describe('CHAINS Test', () => {
         const data = {
           externalIds: ['1'],
           content: '123',
-          privateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
+          signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
           signerChainId: '12345',
           callbackUrl: 'http://callback.com',
           callbackStages: '123',
@@ -216,7 +216,7 @@ describe('CHAINS Test', () => {
         const data = {
           externalIds: '1',
           content: '123',
-          privateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
+          signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
           signerChainId: '12345',
           callbackUrl: 'http://callback.com',
           callbackStages: ['factom'],
@@ -237,7 +237,7 @@ describe('CHAINS Test', () => {
 
       const data = {
         content: '123',
-        privateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
+        signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
         signerChainId: '12345',
         callbackUrl: 'http://callback.com',
         callbackStages: ['factom', 'replicated'],

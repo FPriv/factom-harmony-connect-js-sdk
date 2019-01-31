@@ -16,6 +16,7 @@ describe('CHAIN Test', () => {
     it('should return a chain object', async () => {
       const data = {
         chainId: '123456',
+        signatureValidation: false,
         options: {
           baseURL: 'https://apicast.io/',
           accessToken: {
@@ -55,6 +56,7 @@ describe('CHAIN Test', () => {
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       chain = await new Chain({
         chainId: '123456',
+        signatureValidation: false,
         options: {
           baseURL: 'https://apicast.io/',
           accessToken: {
@@ -80,7 +82,7 @@ describe('CHAIN Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chain.entryInfo({ entryHash: 'sha256' });
+      const response = await chain.entryInfo({ entryHash: 'sha256', signatureValidation: false });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/sha256', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });
@@ -101,6 +103,7 @@ describe('CHAIN Test', () => {
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       chain = await new Chain({
         chainId: '123456',
+        signatureValidation: false,
         options: {
           baseURL: 'https://apicast.io/',
           accessToken: {
@@ -167,6 +170,7 @@ describe('CHAIN Test', () => {
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       chain = await new Chain({
         chainId: '123456',
+        signatureValidation: false,
         options: {
           baseURL: 'https://apicast.io/',
           accessToken: {
@@ -188,7 +192,7 @@ describe('CHAIN Test', () => {
       const data = {
         externalIds: ['1'],
         content: '123',
-        privateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
+        signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
         signerChainId: '12345',
         callbackUrl: 'http://callback.com',
         callbackStages: ['factom', 'replicated'],
@@ -221,6 +225,7 @@ describe('CHAIN Test', () => {
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       chain = await new Chain({
         chainId: '123456',
+        signatureValidation: false,
         options: {
           baseURL: 'https://apicast.io/',
           accessToken: {
@@ -265,6 +270,7 @@ describe('CHAIN Test', () => {
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       chain = await new Chain({
         chainId: '123456',
+        signatureValidation: false,
         options: {
           baseURL: 'https://apicast.io/',
           accessToken: {
@@ -303,6 +309,7 @@ describe('CHAIN Test', () => {
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       chain = await new Chain({
         chainId: '123456',
+        signatureValidation: false,
         options: {
           baseURL: 'https://apicast.io/',
           accessToken: {
@@ -341,6 +348,7 @@ describe('CHAIN Test', () => {
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       chain = await new Chain({
         chainId: '123456',
+        signatureValidation: false,
         options: {
           baseURL: 'https://apicast.io/',
           accessToken: {
