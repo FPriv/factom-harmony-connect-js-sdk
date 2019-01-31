@@ -341,7 +341,7 @@ describe('CHAIN Test', () => {
     });
     it('should return error message when external ids is missing', async () => {
       try {
-        await chain.createAnEntry();
+        await chain.createEntry();
       } catch (error) {
         expect(error).toEqual(new Error('external ids is a required array.'));
       }
@@ -374,7 +374,7 @@ describe('CHAIN Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chain.createAnEntry(data);
+      const response = await chain.createEntry(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual({ entry_hash: '123456' });
     });

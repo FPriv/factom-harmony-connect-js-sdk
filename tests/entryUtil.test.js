@@ -166,7 +166,7 @@ describe('ENTRY UTIL Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await EntryUtil.createAnEntry();
+        await EntryUtil.createEntry();
       } catch (error) {
         expect(error).toEqual(new Error('chain id is required.'));
       }
@@ -178,7 +178,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: false,
         };
 
-        await EntryUtil.createAnEntry(data);
+        await EntryUtil.createEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('external ids is a required array.'));
       }
@@ -191,7 +191,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: false,
         };
 
-        await EntryUtil.createAnEntry(data);
+        await EntryUtil.createEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('content is required.'));
       }
@@ -206,7 +206,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: false,
         };
 
-        await EntryUtil.createAnEntry(data);
+        await EntryUtil.createEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
       }
@@ -222,7 +222,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: false,
         };
 
-        await EntryUtil.createAnEntry(data);
+        await EntryUtil.createEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('callback stages must be in array format.'));
       }
@@ -258,7 +258,7 @@ describe('ENTRY UTIL Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.createAnEntry(data);
+      const response = await EntryUtil.createEntry(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual({ entry_hash: '123456' });
     });
@@ -280,7 +280,7 @@ describe('ENTRY UTIL Test', () => {
           chainId: '123456',
           automaticSigning: true,
         };
-        await EntryUtil.createAnEntry(data);
+        await EntryUtil.createEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('private key is required.'));
       }
@@ -292,7 +292,7 @@ describe('ENTRY UTIL Test', () => {
           signerPrivateKey: 'idsec',
           automaticSigning: true,
         };
-        await EntryUtil.createAnEntry(data);
+        await EntryUtil.createEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('private key is invalid.'));
       }
@@ -304,7 +304,7 @@ describe('ENTRY UTIL Test', () => {
           signerPrivateKey: 'idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ',
           automaticSigning: true,
         };
-        await EntryUtil.createAnEntry(data);
+        await EntryUtil.createEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('signer chain id is required.'));
       }
@@ -318,7 +318,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: true,
         };
 
-        await EntryUtil.createAnEntry(data);
+        await EntryUtil.createEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('content is required.'));
       }
@@ -335,7 +335,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: true,
         };
 
-        await EntryUtil.createAnEntry(data);
+        await EntryUtil.createEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
       }
@@ -353,7 +353,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: true,
         };
 
-        await EntryUtil.createAnEntry(data);
+        await EntryUtil.createEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('callback stages must be in array format.'));
       }
@@ -370,7 +370,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: true,
         };
 
-        await EntryUtil.createAnEntry(data);
+        await EntryUtil.createEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('external ids is a required array.'));
       }
@@ -395,7 +395,7 @@ describe('ENTRY UTIL Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.createAnEntry(data);
+      const response = await EntryUtil.createEntry(data);
       expect(response).toEqual({ entry_hash: '123456' });
     });
   });

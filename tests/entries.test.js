@@ -49,7 +49,7 @@ describe('ENTRIES Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await entries.createAnEntry();
+        await entries.createEntry();
       } catch (error) {
         expect(error).toEqual(new Error('chain id is required.'));
       }
@@ -83,7 +83,7 @@ describe('ENTRIES Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await entries.createAnEntry(data);
+      const response = await entries.createEntry(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual({ entry_hash: '123456' });
     });
