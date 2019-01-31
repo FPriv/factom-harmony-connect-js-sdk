@@ -22,20 +22,67 @@ describe('CHAINS Test', () => {
         expect(error).toEqual(new Error('chain id is required.'));
       }
     });
-    it('should return a chain object.', async () => {
+    it('should return a chain object without validate signature.', async () => {
       const resp = {
         status: 200,
         data: {
-          chain_id: '123456',
+          data: {
+            stage: 'factom',
+            external_ids: [
+              'YXNkZmRhcw==',
+              'YXNmZHM=',
+              'ZmFzZGZzZmRm',
+              'c3N4',
+            ],
+            entries: {
+              href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
+            },
+            chain_id: '123456',
+          },
         },
       };
+
+      const dataCompare = {
+        chain_id: '123456',
+        entries: {
+          href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
+        },
+        external_ids: ['asdfdas', '0x6173666473', 'fasdfsfdf', 'ssx'],
+        stage: 'factom',
+      };
+
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       const response = await chains.getChainInfo({ chainId: '123456', signatureValidation: false });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
-      expect(response).toEqual({ chain_id: '123456' });
+      expect(response.data).toEqual(dataCompare);
+    });
+    it('should return a chain object with validate signature is a function.', async () => {
+      const resp = {
+        status: 200,
+        data: {
+          data: {
+            stage: 'factom',
+            external_ids: [
+              'YXNkZmRhcw==',
+              'YXNmZHM=',
+              'ZmFzZGZzZmRm',
+              'c3N4',
+            ],
+            entries: {
+              href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
+            },
+            chain_id: '123456',
+          },
+        },
+      };
+
+      axios.mockImplementationOnce(() => Promise.resolve(resp));
+      const response = await chains.getChainInfo({ chainId: '123456789', signatureValidation: () => 'not_signed/invalid_chain_format' });
+      expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456789', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
+      expect(response.status).toMatch('not_signed/invalid_chain_format');
     });
   });
-  describe('Create a Chain', () => {
+  describe('Validating Signature', () => {
     let chains;
     beforeAll(() => {
       chains = new Chains({
@@ -44,6 +91,112 @@ describe('CHAINS Test', () => {
           appId: '123456',
           appKey: '123456789',
         },
+      });
+    });
+    it('should return a chain object with invalid chain format status when length of external ids less than 6.', async () => {
+      const data = {
+        data: {
+          stage: 'factom',
+          external_ids: [
+            'YXNkZmRhcw==',
+            'YXNmZHM=',
+            'ZmFzZGZzZmRm',
+          ],
+          entries: {
+            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
+          },
+          chain_id: '123456',
+        },
+      };
+      const response = await chains.validatingSignature({ chain: data });
+      expect(response).toMatch('not_signed/invalid_chain_format');
+    });
+    it('should return a chain object with invalid chain format status when first external ids is not equal SignedChain.', async () => {
+      const data = {
+        data: {
+          stage: 'factom',
+          external_ids: [
+            'YXNkZmRhcw==',
+            'YXNmZHM=',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+          ],
+          entries: {
+            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
+          },
+          chain_id: '123456',
+        },
+      };
+      const response = await chains.validatingSignature({ chain: data });
+      expect(response).toMatch('not_signed/invalid_chain_format');
+    });
+    it('should return a chain object with invalid chain format status when second external ids is not equal 0x01.', async () => {
+      const data = {
+        data: {
+          stage: 'factom',
+          external_ids: [
+            'SignedChain',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+          ],
+          entries: {
+            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
+          },
+          chain_id: '123456',
+        },
+      };
+      const response = await chains.validatingSignature({ chain: data });
+      expect(response).toMatch('not_signed/invalid_chain_format');
+    });
+    it('should return a chain object with inactive key status.', async () => {
+      const resp = {
+        status: 200,
+        data: {
+          data: [{
+            key: 'idpub',
+          }],
+        },
+      };
+      const data = {
+        data: {
+          stage: 'factom',
+          external_ids: [
+            'SignedChain',
+            '0x01',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+          ],
+          entries: {
+            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
+          },
+          chain_id: '123456',
+          dblock: {
+            height: 10000,
+          },
+        },
+      };
+      axios.mockImplementationOnce(() => Promise.resolve(resp));
+      const response = await chains.validatingSignature({ chain: data });
+      expect(response).toMatch('inactive_key');
+    });
+  });
+  describe('Create a Chain without siging', () => {
+    let chains;
+    beforeAll(() => {
+      chains = new Chains({
+        baseURL: 'https://apicast.io',
+        accessToken: {
+          appId: '123456',
+          appKey: '123456789',
+        },
+        automaticSigning: false,
       });
     });
     it('should return error message when external ids is missing', async () => {
@@ -124,7 +277,7 @@ describe('CHAINS Test', () => {
       expect(response).toEqual(resp.data);
     });
   });
-  describe('Create a Signed Chain', () => {
+  describe('Create a Chain with signing', () => {
     let chains;
     beforeAll(() => {
       chains = new Chains({
@@ -133,11 +286,43 @@ describe('CHAINS Test', () => {
           appId: '123456',
           appKey: '123456789',
         },
+        automaticSigning: true,
       });
+    });
+    it('should return error message when private key is missing', async () => {
+      try {
+        await chains.createAChain();
+      } catch (error) {
+        expect(error).toEqual(new Error('private key is required.'));
+      }
+    });
+    it('should return error message when private key is invalid', async () => {
+      try {
+        const data = {
+          signerPrivateKey: 'idsec',
+        };
+        await chains.createAChain(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('private key is invalid.'));
+      }
+    });
+    it('should return error message when signer chain id is missing', async () => {
+      try {
+        const data = {
+          signerPrivateKey: 'idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ',
+        };
+        await chains.createAChain(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('signer chain id is required.'));
+      }
     });
     it('should return error message when content is missing', async () => {
       try {
-        await chains.createASignedChain();
+        const data = {
+          signerPrivateKey: 'idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ',
+          signerChainId: '123',
+        };
+        await chains.createAChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('content is required.'));
       }
@@ -149,7 +334,7 @@ describe('CHAINS Test', () => {
           content: '123',
         };
 
-        await chains.createASignedChain(data);
+        await chains.createAChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('private key is required.'));
       }
@@ -162,7 +347,7 @@ describe('CHAINS Test', () => {
           signerPrivateKey: 'idsec',
         };
 
-        await chains.createASignedChain(data);
+        await chains.createAChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('private key is invalid.'));
       }
@@ -175,7 +360,7 @@ describe('CHAINS Test', () => {
           signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
         };
 
-        await chains.createASignedChain(data);
+        await chains.createAChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('signer chain id is required.'));
       }
@@ -190,7 +375,7 @@ describe('CHAINS Test', () => {
           callbackUrl: 'callback.com',
         };
 
-        await chains.createASignedChain(data);
+        await chains.createAChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
       }
@@ -206,7 +391,7 @@ describe('CHAINS Test', () => {
           callbackStages: '123',
         };
 
-        await chains.createASignedChain(data);
+        await chains.createAChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('callback stages must be in array format.'));
       }
@@ -222,7 +407,7 @@ describe('CHAINS Test', () => {
           callbackStages: ['factom'],
         };
 
-        await chains.createASignedChain(data);
+        await chains.createAChain(data);
       } catch (error) {
         expect(error).toEqual(new Error('external ids is a required array.'));
       }
@@ -244,7 +429,7 @@ describe('CHAINS Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.createASignedChain(data);
+      const response = await chains.createAChain(data);
       expect(response).toEqual(resp.data);
     });
   });

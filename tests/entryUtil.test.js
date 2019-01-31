@@ -48,7 +48,112 @@ describe('ENTRY UTIL Test', () => {
       expect(response).toEqual({ chain_id: '123456' });
     });
   });
-  describe('Create An Entry', () => {
+  describe('Validating Signature', () => {
+    let apiCall;
+    beforeAll(() => {
+      apiCall = new ApiCall({
+        baseURL: 'https://apicast.io',
+        accessToken: {
+          appId: '123456',
+          appKey: '123456789',
+        },
+      });
+    });
+    it('should return a chain object with invalid chain format status when length of external ids less than 6.', async () => {
+      const data = {
+        data: {
+          stage: 'factom',
+          external_ids: [
+            'YXNkZmRhcw==',
+            'YXNmZHM=',
+            'ZmFzZGZzZmRm',
+          ],
+          entries: {
+            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
+          },
+          chain_id: '123456',
+        },
+      };
+      const response = await EntryUtil.validatingSignature({ entry: data });
+      expect(response).toMatch('not_signed/invalid_entry_format');
+    });
+    it('should return a chain object with invalid chain format status when first external ids is not equal SignedEntry.', async () => {
+      const data = {
+        data: {
+          stage: 'factom',
+          external_ids: [
+            'YXNkZmRhcw==',
+            'YXNmZHM=',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+          ],
+          entries: {
+            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
+          },
+          chain_id: '123456',
+        },
+      };
+      const response = await EntryUtil.validatingSignature({ entry: data });
+      expect(response).toMatch('not_signed/invalid_entry_format');
+    });
+    it('should return a chain object with invalid chain format status when second external ids is not equal 0x01.', async () => {
+      const data = {
+        data: {
+          stage: 'factom',
+          external_ids: [
+            'SignedEntry',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+          ],
+          entries: {
+            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
+          },
+          chain_id: '123456',
+        },
+      };
+      const response = await EntryUtil.validatingSignature({ entry: data });
+      expect(response).toMatch('not_signed/invalid_entry_format');
+    });
+    it('should return a chain object with inactive key status.', async () => {
+      const resp = {
+        status: 200,
+        data: {
+          data: [{
+            key: 'idpub',
+          }],
+        },
+      };
+      const data = {
+        data: {
+          stage: 'factom',
+          external_ids: [
+            'SignedEntry',
+            '0x01',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+          ],
+          entries: {
+            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
+          },
+          chain_id: '123456',
+          dblock: {
+            height: 10000,
+          },
+        },
+      };
+      axios.mockImplementationOnce(() => Promise.resolve(resp));
+      const response = await EntryUtil.validatingSignature({ entry: data, apiCall: apiCall });
+      expect(response).toMatch('inactive_key');
+    });
+  });
+  describe('Create An Entry without signing', () => {
     let apiCall;
     beforeAll(() => {
       apiCall = new ApiCall({
@@ -70,6 +175,7 @@ describe('ENTRY UTIL Test', () => {
       try {
         const data = {
           chainId: '123456',
+          automaticSigning: false,
         };
 
         await EntryUtil.createAnEntry(data);
@@ -82,6 +188,7 @@ describe('ENTRY UTIL Test', () => {
         const data = {
           chainId: '123456',
           externalIds: ['1'],
+          automaticSigning: false,
         };
 
         await EntryUtil.createAnEntry(data);
@@ -96,6 +203,7 @@ describe('ENTRY UTIL Test', () => {
           externalIds: ['1'],
           content: '123',
           callbackUrl: 'callback.com',
+          automaticSigning: false,
         };
 
         await EntryUtil.createAnEntry(data);
@@ -111,6 +219,7 @@ describe('ENTRY UTIL Test', () => {
           content: '123',
           callbackUrl: 'http://callback.com',
           callbackStages: '123',
+          automaticSigning: false,
         };
 
         await EntryUtil.createAnEntry(data);
@@ -126,6 +235,7 @@ describe('ENTRY UTIL Test', () => {
         callbackUrl: 'http://callback.com',
         callbackStages: ['factom', 'replicated'],
         apiCall: apiCall,
+        automaticSigning: false,
       };
 
       const resp = {
@@ -153,7 +263,7 @@ describe('ENTRY UTIL Test', () => {
       expect(response).toEqual({ entry_hash: '123456' });
     });
   });
-  describe('Create An Signed Entry', () => {
+  describe('Create An Entry with siging', () => {
     let apiCall;
     beforeAll(() => {
       apiCall = new ApiCall({
@@ -164,34 +274,13 @@ describe('ENTRY UTIL Test', () => {
         },
       });
     });
-    it('should return error message when chain id is missing', async () => {
-      try {
-        await EntryUtil.createAnSignedEntry();
-      } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
-      }
-    });
-    it('should return error message when content is missing', async () => {
-      try {
-        const data = {
-          chainId: '123456',
-          externalIds: ['1'],
-        };
-
-        await EntryUtil.createAnSignedEntry(data);
-      } catch (error) {
-        expect(error).toEqual(new Error('content is required.'));
-      }
-    });
     it('should return error message when private key is missing', async () => {
       try {
         const data = {
           chainId: '123456',
-          externalIds: ['1'],
-          content: '123',
+          automaticSigning: true,
         };
-
-        await EntryUtil.createAnSignedEntry(data);
+        await EntryUtil.createAnEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('private key is required.'));
       }
@@ -200,12 +289,10 @@ describe('ENTRY UTIL Test', () => {
       try {
         const data = {
           chainId: '123456',
-          externalIds: ['1'],
-          content: '123',
           signerPrivateKey: 'idsec',
+          automaticSigning: true,
         };
-
-        await EntryUtil.createAnSignedEntry(data);
+        await EntryUtil.createAnEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('private key is invalid.'));
       }
@@ -214,14 +301,26 @@ describe('ENTRY UTIL Test', () => {
       try {
         const data = {
           chainId: '123456',
-          externalIds: ['1'],
-          content: '123',
-          signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
+          signerPrivateKey: 'idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ',
+          automaticSigning: true,
         };
-
-        await EntryUtil.createAnSignedEntry(data);
+        await EntryUtil.createAnEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('signer chain id is required.'));
+      }
+    });
+    it('should return error message when content is missing', async () => {
+      try {
+        const data = {
+          chainId: '123456',
+          signerPrivateKey: 'idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ',
+          signerChainId: '12345',
+          automaticSigning: true,
+        };
+
+        await EntryUtil.createAnEntry(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('content is required.'));
       }
     });
     it('should return error message when callback url is invalid', async () => {
@@ -233,9 +332,10 @@ describe('ENTRY UTIL Test', () => {
           signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
           signerChainId: '12345',
           callbackUrl: 'callback.com',
+          automaticSigning: true,
         };
 
-        await EntryUtil.createAnSignedEntry(data);
+        await EntryUtil.createAnEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
       }
@@ -250,9 +350,10 @@ describe('ENTRY UTIL Test', () => {
           signerChainId: '12345',
           callbackUrl: 'http://callback.com',
           callbackStages: 'factom',
+          automaticSigning: true,
         };
 
-        await EntryUtil.createAnSignedEntry(data);
+        await EntryUtil.createAnEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('callback stages must be in array format.'));
       }
@@ -266,9 +367,10 @@ describe('ENTRY UTIL Test', () => {
           signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
           signerChainId: '12345',
           callbackUrl: 'http://callback.com',
+          automaticSigning: true,
         };
 
-        await EntryUtil.createAnSignedEntry(data);
+        await EntryUtil.createAnEntry(data);
       } catch (error) {
         expect(error).toEqual(new Error('external ids is a required array.'));
       }
@@ -282,6 +384,7 @@ describe('ENTRY UTIL Test', () => {
         callbackUrl: 'http://callback.com',
         callbackStages: ['factom', 'replicated'],
         apiCall: apiCall,
+        automaticSigning: true,
       };
 
       const resp = {
@@ -292,7 +395,7 @@ describe('ENTRY UTIL Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.createAnSignedEntry(data);
+      const response = await EntryUtil.createAnEntry(data);
       expect(response).toEqual({ entry_hash: '123456' });
     });
   });

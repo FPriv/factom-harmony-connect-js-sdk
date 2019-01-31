@@ -35,7 +35,7 @@ describe('ENTRIES Test', () => {
       expect(response).toEqual({ chain_id: '123456' });
     });
   });
-  describe('Create An Entry', () => {
+  describe('Create An Entry without signing', () => {
     let entries;
     beforeAll(() => {
       entries = new Entries({
@@ -44,6 +44,7 @@ describe('ENTRIES Test', () => {
           appId: '123456',
           appKey: '123456789',
         },
+        automaticSigning: false,
       });
     });
     it('should return error message when chain id is missing', async () => {
@@ -84,47 +85,6 @@ describe('ENTRIES Test', () => {
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       const response = await entries.createAnEntry(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
-      expect(response).toEqual({ entry_hash: '123456' });
-    });
-  });
-  describe('Create An Signed Entry', () => {
-    let entries;
-    beforeAll(() => {
-      entries = new Entries({
-        baseURL: 'https://apicast.io',
-        accessToken: {
-          appId: '123456',
-          appKey: '123456789',
-        },
-      });
-    });
-    it('should return error message when chain id is missing', async () => {
-      try {
-        await entries.createAnSignedEntry();
-      } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
-      }
-    });
-    it('should create an signed entry successfully', async () => {
-      const data = {
-        chainId: '123456',
-        externalIds: ['1'],
-        content: '123',
-        signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
-        signerChainId: '12345',
-        callbackUrl: 'http://callback.com',
-        callbackStages: ['factom', 'replicated'],
-      };
-
-      const resp = {
-        status: 200,
-        data: {
-          entry_hash: '123456',
-        },
-      };
-
-      axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await entries.createAnSignedEntry(data);
       expect(response).toEqual({ entry_hash: '123456' });
     });
   });
