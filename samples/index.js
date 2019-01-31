@@ -17,7 +17,7 @@ const Factom = new FactomConnectSDK({
 
 async function getIdentity() {
   try {
-    const identity = await Factom.identity.getAnIdentity({
+    const identity = await Factom.identity.getIdentity({
       chainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bdc9'
     });
     console.log(identity);
