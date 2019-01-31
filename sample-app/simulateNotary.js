@@ -1,8 +1,25 @@
+/* eslint-disable  */
 // Will be changed to require ('FactomSDK') after publish
 const FactomConnectSDK = require('../dist/factomHarmonyConnectSdk.cjs');
 const sha256 = require('js-sha256'); // Using any external library for hash data
 const globalTunnel = require('global-tunnel-ng');
 const fs = require('fs');
+const axios = require('axios')
+
+//This part will be remove after Connect API updated
+axios.interceptors.response.use((response) => {
+  // Do something with response data
+  response.data = {
+    ...response.data,
+      dblock: {
+      height: 121115,
+      keymr: "0fc6fc4c48b45b0d82638717d2b7de327ec5f2eea485c0c5e41999f6f0f5349e",
+      href: "/v1/dblocks/0fc6fc4c48b45b0d82638717d2b7de327ec5f2eea485c0c5e41999f6f0f5349e"
+    }
+  }
+  console.log(response)
+  return response ;
+});
 
 //FPT Dev-Env
 globalTunnel.initialize({
