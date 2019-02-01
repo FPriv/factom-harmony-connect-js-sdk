@@ -1,7 +1,9 @@
 /* eslint-disable */
 
 function onSimulation() {
-  $("#loading").show();
+  $('#simulateBtn').html('Simulating...');
+  $('#simulateBtn').addClass('spinning');
+  $('#simulateBtn').attr('disabled','disabled');
   $.get('/simulate', function (data) {
     console.log(data);
 
@@ -116,7 +118,7 @@ function onSimulation() {
               </div>`,
       }).appendTo('#newPublicKeys');
     });
-    
+
     data.replacementEntryResponses.forEach((item, index) => {
       $('<div/>', {
         html: `<div class="row mt-3">
@@ -138,8 +140,8 @@ function onSimulation() {
                 </div>
                 <div class="col s10">
                   <p>${item.key}</p>
-                  <p>Activated Height: ${item.activated_height}</p>
-                  <p>Retired Height: ${item.retired_height}</p>
+                  <p><b>Activated Height:</b> ${item.activated_height}</p>
+                  <p><b>Retired Height:</b> ${item.retired_height}</p>
                 </div>
               </div>`,
       }).appendTo('#retrievePublicKeys');

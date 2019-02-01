@@ -39,11 +39,11 @@
     </div>
     <div id="first-step">
       <img src="./assets//image/notary.png" />
-      <button id="simulateBtn" class="btn btn-primary" onclick="onSimulation()">
+      <button id="simulateBtn" class="twoToneButton" onclick="onSimulation()">
         Run Notary Simulation
       </button>
     </div>
-
+ 
     <div id="result">
       <p>
         <a href="https://docs.harmony.factom.com/">Click here</a> to learn how
@@ -55,11 +55,11 @@
           <h3>Initialization</h3>
         </div>
         <div class="section-body">
-          <h5 class="card-title">Generated Keys</h5>
+          <h5 class="card-title">Generate Keys</h5>
           <div id="generatePublicKeys">
           </div>
 
-          <h5 class="card-title">Created Identity (for notary company)</h5>
+          <h5 class="card-title">Create Identity (for notary company)</h5>
           <div class="row mt-3">
             <div class="col s2">
               <p class="font-weight-bold">Identity’s Chain ID</p>
@@ -80,7 +80,7 @@
             <h5 class="card-title">Create Chain (for customer)</h5>
             <div class="row mt-3">
               <div class="col s2">
-                <p class="font-weight-bold">Chain Id</p>
+                <p class="font-weight-bold">Chain ID</p>
               </div>
               <div class="col s10">
                 <p id="chainId"></p>
@@ -259,12 +259,13 @@
             </div>
             <div class="row mt-3">
               <div class="col s2">
-                <p>Found 1 result(s)</p>
+                <p>
+                    <b> Found 1 result(s)</b></p>
               </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-3 ">
               <div class="col s2">
-                <p class="font-weight-bold">Chain ID</p>
+                <p class="font-weight-bold ml-10">Chain ID</p>
               </div>
               <div class="col s10">
                 <p id="sc_ChainId"></p>
@@ -344,15 +345,15 @@
             </div>
             <div class="row mt-3">
               <div class="col s2">
-                <p class="font-weight-bold">Signature Validation</p>
+                <p class="font-weight-bold mt-v3">Signature Validation</p>
               </div>
               <div class="col s10">
-                <p id="rc_chainSignatureValidation"></p>
+                <p id="rc_chainSignatureValidation" class="mt-v3"></p>
               </div>
             </div>
           </div>
           <div>
-            <h5 class="card-title">Search for Entry (customer)</h5>
+            <h5 class="card-title">Search for Entry (document)</h5>
             <div class="row mt-3">
               <div class="col s2">
                 <p class="font-weight-bold">Searched by External IDs</p>
@@ -363,12 +364,12 @@
             </div>
             <div class="row mt-3">
               <div class="col s2">
-                <p>Found 1 result(s)</p>
+                <p><b> Found 1 result(s)</b></p>
               </div>
             </div>
             <div class="row mt-3">
               <div class="col s2">
-                <p class="font-weight-bold">Entry Hash</p>
+                <p class="font-weight-bold ml-10">Entry Hash</p>
               </div>
               <div class="col s10">
                 <p id="sc_EntryHash"></p>
@@ -376,7 +377,7 @@
             </div>
           </div>
           <div>
-            <h5 class="card-title">Retrieve Entry (customer)</h5>
+            <h5 class="card-title">Retrieve Entry (document)</h5>
             <div class="row mt-3">
               <div class="col s2">
                 <p class="font-weight-bold">Entry Hash</p>
@@ -448,10 +449,10 @@
             </div>
             <div class="row mt-3">
               <div class="col s2">
-                <p class="font-weight-bold">Signature Validation</p>
+                <p class="font-weight-bold mt-v3">Signature Validation</p>
               </div>
               <div class="col s10">
-                <p id="rc_SignatureValidation"></p>
+                <p id="rc_entrySignatureValidation" class="mt-v3"></p>
               </div>
             </div>
             <div class="row mt-3">
