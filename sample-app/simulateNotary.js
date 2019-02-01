@@ -25,10 +25,10 @@ axios.interceptors.response.use(response => {
 });
 
 //FPT Dev-Env
-// globalTunnel.initialize({
-//   host: '10.133.93.63',
-//   port: 8080,
-// });
+globalTunnel.initialize({
+  host: '10.133.93.63',
+  port: 8080,
+});
 
 // Handle node response
 const responseData = (response, data) => {
@@ -146,7 +146,34 @@ module.exports = async (request, response) => {
     const entryWValidation =  await chainWValidation.getEntryInfo({
       entryHash: searchEntryResults.data['0'].entry_hash
     })
+    const entryContentJSON = JSON.parse(entryWValidation.entry.data.content)
 
+    const documentBufferAfter = fs.readFileSync("./NotaryDoc.pdf");
+    // You can use any hash library on this step
+    const documentHashAfter = sha256(documentBufferAfter);
+    const documentAfter = {
+      hash: documentHashAfter
+    };
+    let replaceKeyPairs = factomConnectSDK.identity.createIdentityKeyPair();
+    
+    //Replace new key you can sign this request with above or same level private key
+    const replacementEntryResponses = [];
+    for (let index = 0; index < replaceKeyPairs.length; index++) {
+      const newKeyPair = replaceKeyPairs[index];
+      const originalKeyPair = originalKeyPairs[index];
+      const replacementEntryResponse= await factomConnectSDK.identity.createIdentityKeyReplacement({
+        identityChainId: identityChainId,
+        oldPublicKey: originalKeyPair.publicKey,
+        newPublicKey: newKeyPair.publicKey,
+        signerPrivateKey: originalKeyPair.privateKey,
+      })
+      replacementEntryResponses.push(replacementEntryResponse)
+    }
+
+    const identityKeys = await factomConnectSDK.identity.getAllIdentityKeys({
+      identityChainId: identityChainId,
+    })
+    
     responseData(response, {
       originalKeyPairs: originalKeyPairs,
       identityChainId: identityChainId,
@@ -170,8 +197,13 @@ module.exports = async (request, response) => {
         entryHash: entryWValidation.entry.data.entry_hash,
         external_ids: entryWValidation.entry.data.external_ids,
         content: entryWValidation.entry.data.content,
-        status: entryWValidation.status
-      }
+        status: entryWValidation.status,
+        entryContentJSON: entryContentJSON,
+      },
+      documentAfter: documentAfter,
+      replaceKeyPairs: replaceKeyPairs,
+      replacementEntryResponses: replacementEntryResponses,
+      identityKeys: identityKeys,
     });
   } catch (error) {
     console.log(error);
