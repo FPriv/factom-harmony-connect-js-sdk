@@ -159,14 +159,16 @@ module.exports = async (request, response) => {
     });
 
     /**
-     * Retrieve Blockchain Data aren't always necessary because it is common practice to store the chain_id and entry_hash within their own database. 
+     * Retrieve Blockchain Data aren't always necessary because it is common practice to store the chain_id and entry_hash within your own database. 
     */
-    //Get Entry with signature validation,, by default all get chain/entry request will be automatically validating the signature
     const entryWValidation =  await chainWValidation.getEntryInfo({
       entryHash: searchEntryResults.data['0'].entry_hash
     })
     const entryContentJSON = JSON.parse(entryWValidation.entry.data.content)
 
+    /**
+     * This is the document that was stored in your system and you are now retrieving to verify that it has not been tampered with.
+     */
     const documentBufferAfter = fs.readFileSync("./Factom_Whitepaper_v1.2.pdf");
     // You can use any hash library on this step
     const documentHashAfter = sha256(documentBufferAfter);
