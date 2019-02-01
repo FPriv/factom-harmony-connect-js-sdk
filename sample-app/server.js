@@ -49,20 +49,20 @@ function HTMLHandler(request, response) {
   });
 }
 
-// function handleFileDownload(request, response) {
-//   const file = fs.createReadStream('./NotaryDoc.pdf');
-//   const stat = fs.statSync('./NotaryDoc.pdf');
-//   response.setHeader('Content-Length', stat.size);
-//   response.setHeader('Content-Type', 'application/pdf');
-//   response.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
-//   file.pipe(response);
-// }
+function handleFileDownload(request, response) {
+  const file = fs.createReadStream('./Factom_Whitepaper_v1.2.pdf');
+  const stat = fs.statSync('./Factom_Whitepaper_v1.2.pdf');
+  response.setHeader('Content-Length', stat.size);
+  response.setHeader('Content-Type', 'application/pdf');
+  response.setHeader('Content-Disposition', 'attachment; filename=Factom_Whitepaper_v1.2.pdf');
+  file.pipe(response);
+}
 
 http.createServer((req, res) => {
   // create an object for all redirection options
   const router = {
     'GET/simulate': simulateNotary,
-    //'GET/document': handleFileDownload,
+    'GET/document': handleFileDownload,
     default: HTMLHandler,
   };
   // parse the url by using WHATWG URL API

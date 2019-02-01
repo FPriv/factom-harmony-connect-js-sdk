@@ -155,8 +155,9 @@ module.exports = async (request, response) => {
 
     //Search chain
     //Currently we only have 1 identityChainId to work with so pass in chainCreatedTime to make sure search function only return one result
+    const chainSearchInput = [identityChainId, "cust123", chainCreatedTime];
     const chainSearchResult = await factomConnectSDK.chains.searchChains({
-      externalIds: [identityChainId, "cust123", chainCreatedTime]
+      externalIds: chainSearchInput
     });
 
     //Get Chain with signature validation, by default all get chain/entry request will be automatically validating the signature
@@ -166,6 +167,7 @@ module.exports = async (request, response) => {
 
     //Search entry
     //Currently we only have 1 identityChainId to work with so pass in entryCreatedTime to make sure search function only return one result
+    const entrySearchInput = ["DocumentEntry", "doc987", entryCreatedTime];
     const searchEntryResults = await chainWValidation.searchEntries({
       externalIds: ["DocumentEntry", "doc987", entryCreatedTime]
     });
@@ -222,12 +224,14 @@ module.exports = async (request, response) => {
         externalIds: getEntryResponse.data.external_ids,
         entryHash: getEntryResponse.data.entry_hash
       },
+      chainSearchInput: chainSearchInput,
       chainSearchResult: chainSearchResult.data,
       chainWValidation: {
         chainId: chainWValidation.data.chain_id,
         externalIds: chainWValidation.data.external_ids,
         status: chainWValidation.status
       },
+      entrySearchInput: entrySearchInput,
       searchEntryResults: searchEntryResults,
       entryWValidation: {
         entryHash: entryWValidation.entry.data.entry_hash,
