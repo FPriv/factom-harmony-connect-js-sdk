@@ -334,8 +334,8 @@ describe('CHAIN Test', () => {
             appId: '123456',
             appKey: '123456789',
           },
+          automaticSigning: false,
         },
-        automaticSigning: false,
       });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
     });

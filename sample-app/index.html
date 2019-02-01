@@ -1,0 +1,550 @@
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Factom SDK sample</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./assets/css/main.css" />
+  <script src="./assets/js/main.js"></script>
+</head>
+
+<body>
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a class="brand-logo header-logo"></a>
+    </div>
+  </nav>
+
+  <div id="main-container" class="container">
+    <div id="loading">
+      <div class=" loading-wrap">
+        <div class="preloader-wrapper big active">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="first-step">
+      <img src="./assets//image/notary.png" />
+      <button id="simulateBtn" class="twoToneButton" onclick="onSimulation()">
+        Run Notary Simulation
+      </button>
+    </div>
+ 
+    <div id="result">
+      <p>
+        <a href="https://docs.harmony.factom.com/">Click here</a> to learn how
+        you to view the created data (chains and entries) using the Factom
+        Explorer
+      </p>
+      <div class="section first-section">
+        <div class="section-header">
+          <h3>Initialization</h3>
+        </div>
+        <div class="section-body">
+          <h5 class="card-title">Generate Keys</h5>
+          <div id="generatePublicKeys">
+          </div>
+
+          <h5 class="card-title">Create Identity (for notary company)</h5>
+          <div class="row mt-3">
+            <div class="col s2">
+              <p class="font-weight-bold">Identity’s Chain ID</p>
+            </div>
+            <div class="col s10">
+              <p id="identityChainId"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h3>First Customer</h3>
+        </div>
+        <div class="section-body">
+          <div>
+            <h5 class="card-title">Create Chain (for customer)</h5>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Chain ID</p>
+              </div>
+              <div class="col s10">
+                <p id="chainId"></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s2">
+                <p class="font-weight-bold">External ID(s)</p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Chain Type</p>
+              </div>
+              <div class="col s10">
+                <p id="chainType"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Chain Schema Version</p>
+              </div>
+              <div class="col s10">
+                <p id="chainSchemaVersion"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Signature Identity’s Chain ID</p>
+              </div>
+              <div class="col s10">
+                <p id="chainSignatureIdentity"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Signature Public Key</p>
+              </div>
+              <div class="col s10 ">
+                <p id="chainSignaturePublicKey"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Signature</p>
+              </div>
+              <div class="col s10">
+                <p id="chainSignature"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Timestamp</p>
+              </div>
+              <div class="col s10 ">
+                <p id="chainTimestamp"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Additional External IDs</p>
+              </div>
+              <div class="col s10">
+                <p id="chainAdditionalExternalIDs"></p>
+              </div>
+            </div>
+            <div>
+              <h5 class="card-title">Hash Document</h5>
+              <div class="row mt-3">
+                <div class="col s2">
+                  <p class="font-weight-bold">Document for notarization</p>
+                </div>
+                <div class="col s10">
+                  <a id="docDownload">Download Document</a>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col s2">
+                  <p class="font-weight-bold">Document Hash (sha256)</p>
+                </div>
+                <div class="col s10">
+                  <p id="docSha256"></p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h5 class="card-title">Create Entry (for document)</h5>
+              <div class="row mt-3">
+                <div class="col s2">
+                  <p class="font-weight-bold">Entry Hash</p>
+                </div>
+                <div class="col s10">
+                  <p id="entryHash"></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s2">
+                  <p class="font-weight-bold">External ID(s)</p>
+                </div>
+              </div>
+              <div class="row ml-10">
+                <div class="col s2">
+                  <p class="font-weight-bold">Entry Type</p>
+                </div>
+                <div class="col s10">
+                  <p id="entryType"></p>
+                </div>
+              </div>
+              <div class="row ml-10">
+                <div class="col s2">
+                  <p class="font-weight-bold">Entry Schema Version</p>
+                </div>
+                <div class="col s10">
+                  <p id="entrySchemaVersion"></p>
+                </div>
+              </div>
+              <div class="row ml-10">
+                <div class="col s2">
+                  <p class="font-weight-bold">Signature Identity’s Chain ID</p>
+                </div>
+                <div class="col s10">
+                  <p id="entrySignatureIdentity"></p>
+                </div>
+              </div>
+              <div class="row ml-10">
+                <div class="col s2">
+                  <p class="font-weight-bold">Signature Public Key</p>
+                </div>
+                <div class="col s10 ">
+                  <p id="entrySignaturePublicKey"></p>
+                </div>
+              </div>
+              <div class="row ml-10">
+                <div class="col s2">
+                  <p class="font-weight-bold">Signature</p>
+                </div>
+                <div class="col s10">
+                  <p id="entrySignature"></p>
+                </div>
+              </div>
+              <div class="row ml-10">
+                <div class="col s2">
+                  <p class="font-weight-bold">Timestamp</p>
+                </div>
+                <div class="col s10 ">
+                  <p id="entryTimestamp"></p>
+                </div>
+              </div>
+              <div class="row ml-10">
+                <div class="col s2">
+                  <p class="font-weight-bold">Additional External IDs</p>
+                </div>
+                <div class="col s10">
+                  <p id="entryAdditionalExternalIDs"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h3>Blockchain Data Retrieval</h3>
+        </div>
+        <div class="section-body">
+          <div>
+            <h5 class="card-title">Search for Chain (customer)</h5>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Searched by External IDs</p>
+              </div>
+              <div class="col s10">
+                <p id="sc_chainSearchBy"></p>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p>
+                    <b> Found 1 result(s)</b></p>
+              </div>
+            </div>
+            <div class="row mt-3 ">
+              <div class="col s2">
+                <p class="font-weight-bold ml-10">Chain ID</p>
+              </div>
+              <div class="col s10">
+                <p id="sc_ChainId"></p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h5 class="card-title">Retrieve Chain (customer)</h5>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Chain ID</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_ChainId"></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s2">
+                <p class="font-weight-bold">External ID(s)</p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Chain Type</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_chainType"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Chain Schema Version</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_chainSchemaVersion"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Signature Identity’s Chain ID</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_chainSignatureIdentity"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Signature Public Key</p>
+              </div>
+              <div class="col s10 ">
+                <p id="rc_chainSignaturePublicKey"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Signature</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_chainSignature"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Timestamp</p>
+              </div>
+              <div class="col s10 ">
+                <p id="rc_chainTimestamp"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Additional External IDs</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_chainAdditionalExternalIDs"></p>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold mt-v3">Signature Validation</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_chainSignatureValidation" class="mt-v3"></p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h5 class="card-title">Search for Entry (document)</h5>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Searched by External IDs</p>
+              </div>
+              <div class="col s10">
+                <p id="sc_entrySearchBy"></p>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p><b> Found 1 result(s)</b></p>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold ml-10">Entry Hash</p>
+              </div>
+              <div class="col s10">
+                <p id="sc_EntryHash"></p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h5 class="card-title">Retrieve Entry (document)</h5>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Entry Hash</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_EntryHash"></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s2">
+                <p class="font-weight-bold">External ID(s)</p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Entry Type</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_entryType"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Entry Schema Version</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_entrySchemaVersion"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Signature Identity’s Chain ID</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_entrySignatureIdentity"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Signature Public Key</p>
+              </div>
+              <div class="col s10 ">
+                <p id="rc_entrySignaturePublicKey"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Signature</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_entrySignature"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Timestamp</p>
+              </div>
+              <div class="col s10 ">
+                <p id="rc_entryTimestamp"></p>
+              </div>
+            </div>
+            <div class="row ml-10">
+              <div class="col s2">
+                <p class="font-weight-bold">Additional External IDs</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_entryAdditionalExternalIDs"></p>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold mt-v3">Signature Validation</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_entrySignatureValidation" class="mt-v3"></p>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Entry Content</p>
+              </div>
+              <div class="col s10">
+                <p id="rc_entryContent"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h3>Validate Stored Document</h3>
+        </div>
+        <div class="section-body">
+          <div>
+            <h5 class="card-title">Hash Stored Document</h5>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Stored Document</p>
+              </div>
+              <div class="col s10">
+                <a id="vs_Document">Download Document</a>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Stored Document Hash (sha256)</p>
+              </div>
+              <div class="col s10">
+                <p id="vs_DocumentHash"></p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h5 class="card-title">Verify the Hash</h5>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Document Hash from Blockchain</p>
+              </div>
+              <div class="col s10">
+                <p id="vf_BlockchainDocument"></p>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Stored Document Hash (sha256)</p>
+              </div>
+              <div class="col s10">
+                <p id="vf_DocumentHash"></p>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Hash Match Validation</p>
+              </div>
+              <div class="col s10">
+                <p id="vf_HashValidation"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h3>Proactive Security</h3>
+        </div>
+        <div class="section-body">
+          <div>
+            <h5 class="card-title">Generate New Keys</h5>
+            <div id="newPublicKeys">
+            </div>
+          </div>
+          <div>
+            <h5 class="card-title">Replace Keys</h5>
+            <div id="replaceKeys">
+            </div>
+          </div>
+          <div>
+            <h5 class="card-title">Retrieve Identity's Public Keys</h5>
+            <div id="retrievePublicKeys">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
