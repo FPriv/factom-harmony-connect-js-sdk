@@ -47,7 +47,7 @@ module.exports = async (request, response) => {
   });
 
   try {
-    // Create initial key pairs, sdk will create 3 key pairs by default change the number of create key by passing {numberOfKeyPair: } to the params
+    // Create initial key pairs, sdk will create 3 key pairs by default change the number of key pair by passing {numberOfKeyPair: } to the params
     // Create single key pair by using factomConnectSDK.keyUtil.createKeyPair()
     let originalKeyPairs = factomConnectSDK.identity.createIdentityKeyPair();
     //For now Identity API is not completed so hardcode 3 key pairs from API document
@@ -92,16 +92,31 @@ module.exports = async (request, response) => {
         "This chain represents a notary service’s customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients"
     });
 
-    //Get chain info to show extenal Ids have been pass to the API since we don't need to validate the signature here pass in signatureValidation: false
+    /** 
+    * Get chain info to show external Ids have been pass to the API
+    * External Ids processed by SDK when create new chain/entry will automatically include
+    * [
+    *  "SignedChain",
+    *  "0x01",
+    *  "Your Identity Chain ID",
+    *  "Signature Public Key"
+    *  "Signature"
+    *  "Time stamp"
+    *  "Other external Ids"
+    * ]
+    * Since we don't need to validate the signature later, in this step pass in signatureValidation: false
+    */
     const chain = await factomConnectSDK.chain({
       chainId: createChainResponse.chain_id,
       signatureValidation: false
     });
-
     const chainCreatedTime = chain.data.external_ids[5];
-    // This is the document from the customer, it should be stored in a secure location such as an Amazon S3 bucket for later retrieval.
-    // The blockchain is your means for ensuring it has not been tampered with.
-    const documentBuffer = fs.readFileSync("./NotaryDoc.pdf");
+    /**   
+    * This is the document from the customer, it should be stored in a secure location such as an Amazon S3 bucket for later retrieval.
+    * The blockchain is your means for ensuring it has not been tampered with.
+    */
+  
+    const documentBuffer = fs.readFileSync("./Factom_Whitepaper_v1.2.pdf");
     // You can use any hash library on this step
     const documentHash = sha256(documentBuffer);
     const document = {
@@ -109,46 +124,50 @@ module.exports = async (request, response) => {
       hash: documentHash
     };
 
-    //Create Entry
+     //Create an entry, by default the chain will be signed so you need to pass in the private key and the identity chain id
     const createEntryResponse = await chain.createEntry({
       signerPrivateKey: keyToSign.privateKey,
       signerChainId: identityChainId,
       externalIds: ["NotarySimulation", "DocumentEntry", "doc987"],
       content: JSON.stringify({
-        documen_hash: documentHash,
+        document_hash: documentHash,
         hash_type: "sha256"
       })
     });
-    //Get entry info to show extenal Ids have been pass to the API ince we don't need to validate the signature here pass in signatureValidation: false
+    //Get entry info to show external Ids have been pass to the API, since we don't need to validate the signature here pass in signatureValidation: false
     const getEntryResponse = await chain.getEntryInfo({
       entryHash: createEntryResponse.entry_hash,
       signatureValidation: false
     });
-
     const entryCreatedTime = getEntryResponse.data.external_ids[5];
 
     //Search chain
+    //Currently we only have 1 identityChainId to work with so pass in chainCreatedTime to make sure search function only return one results
     const chainSearchResult = await factomConnectSDK.chains.searchChains({
       externalIds: [identityChainId, "cust123", chainCreatedTime]
     });
 
-    //Get Chain with singnature validation
+    //Get Chain with signature validation, by default all get chain/entry request will be automatically validating the signature
     const chainWValidation = await factomConnectSDK.chain({
       chainId: chainSearchResult.data['0'].chain_id
     });
 
     //Search entry
+    //Currently we only have 1 identityChainId to work with so pass in chainCreatedTime to make sure search function only return one results
     const searchEntryResults = await chainWValidation.searchEntries({
       externalIds: ["DocumentEntry", "doc987", entryCreatedTime]
     });
 
-    //Get Entry with singnature validation
+    /**
+     * Retrieve Blockchain Data aren't always necessary because it is common practice to store the chain_id and entry_hash within their own database. 
+    */
+    //Get Entry with signature validation,, by default all get chain/entry request will be automatically validating the signature
     const entryWValidation =  await chainWValidation.getEntryInfo({
       entryHash: searchEntryResults.data['0'].entry_hash
     })
     const entryContentJSON = JSON.parse(entryWValidation.entry.data.content)
 
-    const documentBufferAfter = fs.readFileSync("./NotaryDoc.pdf");
+    const documentBufferAfter = fs.readFileSync("./Factom_Whitepaper_v1.2.pdf");
     // You can use any hash library on this step
     const documentHashAfter = sha256(documentBufferAfter);
     const documentAfter = {
