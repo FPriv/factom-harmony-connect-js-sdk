@@ -6,35 +6,17 @@
     <script src="../dist/factomHarmonyConnectSdk.iife.js"></script>
     <script type="text/javascript">
         const FactomSDK = new FactomHarmonyConnectSDK({
-            baseURL: 'https://durable.sandbox.harmony.factom.com/v1',
+            baseURL: 'https://connect-shared-sandbox-2445582615332.production.gw.apicast.io/v1',
             accessToken: {
-                appId: '123456',
-                appKey: '123456'
+                appId: '96f48f1f',
+                appKey: '48e7d94d29d1952e75f8ea46323ced4d'
             },
+            automaticSigning: false,
         });
 
-        var data = {
-            name: ['FPT', 'Identity Test', 'Hieu', 'Mai'],
-            keys: [
-                'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
-                'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv',
-                'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc',
-            ],
-            callbackUrl: 'http://callback.com',
-            callbackStages: ['factom', 'replicated'],
-            ]
-        };
-        
-        let newIdentity;
-        FactomSDK.identity.getIdentity({
-            chainId: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bdc9'
-        }).then(response => {
-            newIdentity = response;
-            console.log(response);
-        });
-
-        console.log(FactomSDK.keyUtil.signContent({ signerPrivateKey: 'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHoy6', message: 'Abc' }));
-        console.log(FactomSDK.keyUtil.validateSignature({ signerPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9', signature: 'D+lzNLb88IKXQk2BglvP7o6yK/DNAsO1B9qXdqArvrotTqSCI4Y4d8J8bwbfAyCvJT9tLYj9Ll7grCnyDWVtCg==', message: 'MTcxZTU4NTE0NTFjZTZmMmQ5NzMwYzE1MzdkYTQzNzVmZWI0NDI4NzBkODM1YzU' }));
+        // let chain;
+        FactomSDK.chain({chainId: 'ec43cbaf4a1e049c1d98054e8d1d26396c8441354b9ccf29520eccd1844c7611'}).then(response => console.log(response));
+        //FactomSDK.chains.getChainInfo({chainId: 'ec43cbaf4a1e049c1d98054e8d1d26396c8441354b9ccf29520eccd1844c7611'}).then(response => console.log(response));
 
     </script>
 </head>
