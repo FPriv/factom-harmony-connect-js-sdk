@@ -31,54 +31,54 @@ const responseData = (response, data) => {
 module.exports = async (request, response) => {
   // Init factom sdk with your app_id and app_key
   const factomConnectSDK = new FactomConnectSDK({
-    baseURL: "https://durable.sandbox.harmony.factom.com/v1",
+    baseURL: "https://durable.sandbox.harmony.factom.com:443/v1",
     accessToken: {
-      appId: "aabe7d81",
-      appKey: "502a5c77f8f600b9ec32e94fbe008f11"
+      appId: "2e8918b0",
+      appKey: "b82982f14cf3ca034b43df8a207c4e27"
     }
   });
 
   try {
-    // Create initial key pairs, sdk will create 3 key pairs by default, you can change the number of key pair by passing {numberOfKeyPair: } to the params
-    // Create single key pair by using factomConnectSDK.keyUtil.createKeyPair()
-    let originalKeyPairs = factomConnectSDK.identity.createIdentityKeyPair();
-    //For now Identity API is not completed so hardcode 3 key pairs from API document
-    originalKeyPairs = [
-      {
-        privateKey: "idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ",
-        publicKey: "idpub2Cktw6EgcBVMHMXmfcCyTHndcFvG7fJKyBpy3sTYcdTmdTuKya"
-      },
-      {
-        privateKey: "idsec2bH9PmKVsqsGHqBCydjvK6BESQNQY7rqErq1EAV84Tx3NWRiyb",
-        publicKey: "idpub2JegfdBQBnqbXGKMMD89v8N81e4DpvERHWTJp6zvWaoAVi8Jnj"
-      },
-      {
-        privateKey: "idsec35TeMDfgZMfTzinqEqHxt4BFLSAbwQBwsZeXmFG3otjfkDBF8u",
-        publicKey: "idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9"
-      }
-    ];
-    const publicKeyArr = [];
-    for (let index = 0; index < originalKeyPairs.length; index++) {
-      publicKeyArr.push(originalKeyPairs[index].publicKey);
-    }
+    // // Create initial key pairs, sdk will create 3 key pairs by default, you can change the number of key pair by passing {numberOfKeyPair: } to the params
+    // // Create single key pair by using factomConnectSDK.keyUtil.createKeyPair()
+    // let originalKeyPairs = factomConnectSDK.identity.createIdentityKeyPair();
+    // //For now Identity API is not completed so hardcode 3 key pairs from API document
+    // originalKeyPairs = [
+    //   {
+    //     privateKey: "idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ",
+    //     publicKey: "idpub2Cktw6EgcBVMHMXmfcCyTHndcFvG7fJKyBpy3sTYcdTmdTuKya"
+    //   },
+    //   {
+    //     privateKey: "idsec2bH9PmKVsqsGHqBCydjvK6BESQNQY7rqErq1EAV84Tx3NWRiyb",
+    //     publicKey: "idpub2JegfdBQBnqbXGKMMD89v8N81e4DpvERHWTJp6zvWaoAVi8Jnj"
+    //   },
+    //   {
+    //     privateKey: "idsec35TeMDfgZMfTzinqEqHxt4BFLSAbwQBwsZeXmFG3otjfkDBF8u",
+    //     publicKey: "idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9"
+    //   }
+    // ];
+    // const publicKeyArr = [];
+    // for (let index = 0; index < originalKeyPairs.length; index++) {
+    //   publicKeyArr.push(originalKeyPairs[index].publicKey);
+    // }
 
-    // Create identity with originalKeyPairs created above
-    const createIdentityChainResponse = await factomConnectSDK.identity.createIdentity(
-      {
-        name: ["NotarySimulation", new Date().toISOString()],
-        keys: [...publicKeyArr]
-      }
-    );
+    // // Create identity with originalKeyPairs created above
+    // const createIdentityChainResponse = await factomConnectSDK.identity.createIdentity(
+    //   {
+    //     name: ["NotarySimulation", new Date().toISOString()],
+    //     keys: [...publicKeyArr]
+    //   }
+    // );
 
     //We'll use this later for sign chain/entry
-    const identityChainId = createIdentityChainResponse.chain_id;
+    // const identityChainId = createIdentityChainResponse.chain_id;
 
-    //In this sample we will use the identity’s lowest priority key to sign
-    const keyToSign = originalKeyPairs[2];
-    //Create a chain, by default the chain will be signed so you need to pass in the private key and the identity chain id
+    // //In this sample we will use the identity’s lowest priority key to sign
+    // const keyToSign = originalKeyPairs[2];
+    // //Create a chain, by default the chain will be signed so you need to pass in the private key and the identity chain id
     const createChainResponse = await factomConnectSDK.chains.createChain({
-      signerPrivateKey: keyToSign.privateKey,
-      signerChainId: identityChainId,
+      // signerPrivateKey: keyToSign.privateKey,
+      // signerChainId: identityChainId,
       externalIds: ["NotarySimulation", "CustomerChain", "cust123"],
       content:
         "This chain represents a notary service’s customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients"
@@ -185,29 +185,29 @@ module.exports = async (request, response) => {
       link: "/document",
     };
     // Proactive Security
-    let replaceKeyPairs = factomConnectSDK.identity.createIdentityKeyPair();
+    // let replaceKeyPairs = factomConnectSDK.identity.createIdentityKeyPair();
 
-    //To replace new key, you need to sign this request with above or same level private key. In this case we are using same level private key.
-    const replacementEntryResponses = [];
-    for (let index = 0; index < replaceKeyPairs.length; index++) {
-      const newKeyPair = replaceKeyPairs[index];
-      const originalKeyPair = originalKeyPairs[index];
-      const replacementEntryResponse= await factomConnectSDK.identity.createIdentityKeyReplacement({
-        identityChainId: identityChainId,
-        oldPublicKey: originalKeyPair.publicKey,
-        newPublicKey: newKeyPair.publicKey,
-        signerPrivateKey: originalKeyPair.privateKey,
-      })
-      replacementEntryResponses.push(replacementEntryResponse)
-    }
+    // //To replace new key, you need to sign this request with above or same level private key. In this case we are using same level private key.
+    // const replacementEntryResponses = [];
+    // for (let index = 0; index < replaceKeyPairs.length; index++) {
+    //   const newKeyPair = replaceKeyPairs[index];
+    //   const originalKeyPair = originalKeyPairs[index];
+    //   const replacementEntryResponse= await factomConnectSDK.identity.createIdentityKeyReplacement({
+    //     identityChainId: identityChainId,
+    //     oldPublicKey: originalKeyPair.publicKey,
+    //     newPublicKey: newKeyPair.publicKey,
+    //     signerPrivateKey: originalKeyPair.privateKey,
+    //   })
+    //   replacementEntryResponses.push(replacementEntryResponse)
+    // }
 
-    const identityKeys = await factomConnectSDK.identity.getAllIdentityKeys({
-      identityChainId: identityChainId,
-    })
+    // const identityKeys = await factomConnectSDK.identity.getAllIdentityKeys({
+    //   identityChainId: identityChainId,
+    // })
 
     responseData(response, {
-      originalKeyPairs: originalKeyPairs,
-      identityChainId: identityChainId,
+      // originalKeyPairs: originalKeyPairs,
+      // identityChainId: identityChainId,
       document: document,
       createdChainInfo: {
         externalIds: chain.data.external_ids,
@@ -234,9 +234,9 @@ module.exports = async (request, response) => {
         entryContentJSON: entryContentJSON,
       },
       documentAfter: documentAfter,
-      replaceKeyPairs: replaceKeyPairs,
-      replacementEntryResponses: replacementEntryResponses,
-      identityKeys: identityKeys,
+      // replaceKeyPairs: replaceKeyPairs,
+      // replacementEntryResponses: replacementEntryResponses,
+      // identityKeys: identityKeys,
     });
   } catch (error) {
     console.log(error);

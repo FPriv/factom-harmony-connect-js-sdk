@@ -1,5 +1,11 @@
 /* eslint-disable */
 
+function runTest() {
+  $.get('/testMethods', function (testData) {
+      console.log('testMethods testData', testData);
+  });
+}
+
 function onSimulation() {
   $('#simulateBtn').html('Simulating...');
   $('#simulateBtn').addClass('spinning');
@@ -151,7 +157,13 @@ function onSimulation() {
     $("#loading").hide();
     $('#first-step').hide();
     $('#result').show();
-  });
+  })
+  .done(function(response) {
+    console.log('done response', response);
+  })
+  .fail(function (response) {
+    console.log('fail response', response);
+  })
 }
 
 getStatus = (status) => {
