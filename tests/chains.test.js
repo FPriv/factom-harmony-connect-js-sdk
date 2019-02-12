@@ -47,7 +47,7 @@ describe('CHAINS Test', () => {
         entries: {
           href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
         },
-        external_ids: ['asdfdas', '0x6173666473', 'fasdfsfdf', 'ssx'],
+        external_ids: ['asdfdas', '0x6173666473', 'fasdfsfdf', 'ssx', '1'],
         stage: 'factom',
       };
 

@@ -144,6 +144,20 @@ module.exports = async (request, response) => {
       entryHash: createEntryResponse.entry_hash,
       signatureValidation: false
     });
+
+    const getEntriesOfChainResponse = await factomConnectSDK.entries.getEntriesOfChain({
+      entryHash: createEntryResponse.entry_hash,
+      chainId: createChainResponse.chain_id,
+      signatureValidation: false
+    });
+
+
+    const getLastEntryOfChainResponse = await factomConnectSDK.entries.getLastEntryOfChain({
+      entryHash: createEntryResponse.entry_hash,
+      chainId: createChainResponse.chain_id,
+      signatureValidation: false
+    });
+
     const entryCreatedTime = getEntryResponse.data.external_ids[5];
 
     //Search chain
@@ -206,6 +220,7 @@ module.exports = async (request, response) => {
     })
 
     responseData(response, {
+      getLastEntryOfChainResponse: getLastEntryOfChainResponse,
       createEntryResponse: createEntryResponse,
       originalKeyPairs: originalKeyPairs,
       identityChainId: identityChainId,

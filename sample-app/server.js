@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const URL = require('url').URL;
 const simulateNotary = require('./simulateNotary');
+const simulateNotaryAgain = require('./simulateNotaryAgain');
 const testMethods = require('./testMethods');
 
 const mimeTypes = {
@@ -63,6 +64,7 @@ http.createServer((req, res) => {
   // create an object for all redirection options
   const router = {
     'GET/simulate': simulateNotary,
+    'GET/simulateNotaryAgain': simulateNotaryAgain,
     'GET/testMethods': testMethods,
     'GET/document': handleFileDownload,
     default: HTMLHandler,

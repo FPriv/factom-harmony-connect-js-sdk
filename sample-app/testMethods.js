@@ -31,14 +31,16 @@ const responseData = (response, data) => {
 module.exports = async (request, response) => {
   // Init factom sdk with your app_id and app_key
   const factomConnectSDK = new FactomConnectSDK({
-    baseURL: "https://durable.sandbox.harmony.factom.com:443/v1",
+    baseURL: "https://api-2445582615332.production.gw.apicast.io/v1",
     accessToken: {
-      appId: "2e8918b0",
-      appKey: "b82982f14cf3ca034b43df8a207c4e27"
-    }
+      appId: "64bb7326",
+      appKey: "df09c517466930d80d8ea68debec94ad"
+    },
+    automaticSigning: false
   });
 
   try {
+    // return;
     // // Create initial key pairs, sdk will create 3 key pairs by default, you can change the number of key pair by passing {numberOfKeyPair: } to the params
     // // Create single key pair by using factomConnectSDK.keyUtil.createKeyPair()
     // let originalKeyPairs = factomConnectSDK.identity.createIdentityKeyPair();
@@ -76,164 +78,105 @@ module.exports = async (request, response) => {
     // //In this sample we will use the identity’s lowest priority key to sign
     // const keyToSign = originalKeyPairs[2];
     // //Create a chain, by default the chain will be signed so you need to pass in the private key and the identity chain id
+    // const createChainResponse = await factomConnectSDK.chains.createChain({
+    //   // signerPrivateKey: keyToSign.privateKey,
+    //   // signerChainId: identityChainId,
+    //   externalIds: ["NotarySimulation", "CustomerChain", "cust123"],
+    //   content:
+    //     "This chain represents a notary service’s customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients"
+    // });
+
+
+    originalKeyPairs = [
+      {
+        privateKey: "idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ",
+        publicKey: "idpub2Cktw6EgcBVMHMXmfcCyTHndcFvG7fJKyBpy3sTYcdTmdTuKya"
+      }
+    ];
+
+    // const getInfoResponse = await factomConnectSDK.info.getInfo();
     const createChainResponse = await factomConnectSDK.chains.createChain({
-      // signerPrivateKey: keyToSign.privateKey,
-      // signerChainId: identityChainId,
-      externalIds: ["NotarySimulation", "CustomerChain", "cust123"],
-      content:
-        "This chain represents a notary service’s customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients"
-    });
+        externalIds: ['doronAGAIN', '44', 'texas', '111'],
+        content: 'I am an awesome guy'
+      });
+    // const getAllChainsResponse = await factomConnectSDK.chains.getAllChains();
 
-    /**
-    * Get chain info to show external Ids have been passed to the API.
-    * External Ids processed by SDK automatically when creating new chain/entry. External Ids will include:
-    * [
-    *  "Chain Type",
-    *  "Chain Schema Version",
-    *  "Your Identity Chain ID",
-    *  "Signature Public Key"
-    *  "Signature"
-    *  "Time stamp"
-    *  "Additional external Ids"
-    * ]
-    * In order to display the External Ids array then we need to get chain. However, we don't need to validate the signature so in this step pass in signatureValidation: false
-    */
-    const chain = await factomConnectSDK.chain({
-      chainId: createChainResponse.chain_id,
-      signatureValidation: false
-    });
-    const chainCreatedTime = chain.data.external_ids[5];
-    /**
-    * This is the document from the customer, it should be stored in a secure location such as an Amazon S3 bucket for later retrieval.
-    * The blockchain is your means for ensuring it has not been tampered with.
-    */
+    // const chainSearchInput = ["111"];
+    // const chainSearchResult = await factomConnectSDK.chains.searchChains({
+    //   externalIds: chainSearchInput
+    // });
 
-    const documentBuffer = fs.readFileSync("./Factom_Whitepaper_v1.2.pdf");
-    // You can use any hash library on this step
-    const documentHash = sha256(documentBuffer);
-    const document = {
-      link: "/document",
-      hash: documentHash
-    };
+    // const entryData =  await factomConnectSDK.entries.getEntryInfo({
+      //   entryHash: '82e1e1d1c96d5a1af1d941de91f763e764c58ca4a86f3648bd1c4ed0102f8ace',
+      //   chainId: '71c013c0fd9dc287735518b63ac283d51798b44391985f2ab21f542b288c5211'
+      // });
 
-     //Create an entry, by default the chain will be signed so you need to pass in the private key and the identity chain id
-    const createEntryResponse = await chain.createEntry({
-      signerPrivateKey: keyToSign.privateKey,
-      signerChainId: identityChainId,
-      externalIds: ["NotarySimulation", "DocumentEntry", "doc987"],
-      content: JSON.stringify({
-        document_hash: documentHash,
-        hash_type: "sha256"
-      })
-    });
-    /**
-    * Get entry info to show external Ids have been passed to the API.
-    * External Ids processed by SDK automatically when creating new entry. External Ids will include:
-    * [
-    *  "Entry Type",
-    *  "Entry Schema Version",
-    *  "Your Identity Chain ID",
-    *  "Signature Public Key"
-    *  "Signature"
-    *  "Time stamp"
-    *  "Additional external Ids"
-    * ]
-    * In order to display the External Ids array then we need to get entry. However, we don't need to validate the signature so in this step pass in signatureValidation: false
-    */
-    const getEntryResponse = await chain.getEntryInfo({
-      entryHash: createEntryResponse.entry_hash,
-      signatureValidation: false
-    });
-    const entryCreatedTime = getEntryResponse.data.external_ids[5];
+      const chain = await factomConnectSDK.chain({
+        chainId: createChainResponse.chain_id,
+        signatureValidation: false
+      });
 
-    //Search chain
-    //Currently we only have 1 identityChainId to work with so pass in chainCreatedTime to make sure search function only return one result
-    const chainSearchInput = [identityChainId, "cust123", chainCreatedTime];
-    const chainSearchResult = await factomConnectSDK.chains.searchChains({
-      externalIds: chainSearchInput
-    });
+        const createEntryResponse = await factomConnectSDK.entries.createEntry({
+          externalIds: ["NotarySimulation", "DocumentEntry", "doc987", "111", "44"],
+          content: JSON.stringify({
+            name: 'Doron',
+            car: 'Lamborghini'
+          }),
+          chainId: '71c013c0fd9dc287735518b63ac283d51798b44391985f2ab21f542b288c5211'
+        });
 
-    //Get Chain with signature validation, by default all get chain/entry request will be automatically validating the signature
-    const chainWValidation = await factomConnectSDK.chain({
-      chainId: chainSearchResult.data['0'].chain_id
-    });
+        // const chain = await chain.getChainInfo({
+        //   chainId: '71c013c0fd9dc287735518b63ac283d51798b44391985f2ab21f542b288c5211'
+        // });
+        // const lastEntryInfo = await chainInfo.getlastEntry();
+        // const firstEntryInfo = await chainInfo.getFirstEntry();
+        // const entriesList = await chainInfo.getEntries();
 
-    //Search entry
-    //Currently we only have 1 identityChainId to work with so pass in entryCreatedTime to make sure search function only return one result
-    const entrySearchInput = ["DocumentEntry", "doc987", entryCreatedTime];
-    const searchEntryResults = await chainWValidation.searchEntries({
-      externalIds: ["DocumentEntry", "doc987", entryCreatedTime]
-    });
+        const getEntrgetEntriesResponse = await chain.getEntries({
+          entryHash: createEntryResponse.entry_hash
+        });
 
-    /**
-     * Retrieve Blockchain Data aren't always necessary because it is common practice to store the chain_id and entry_hash within your own database.
-     * Get Entry with signature validation, by default all get chain/entry request will be automatically validating the signature
-     */
-    const entryWValidation =  await chainWValidation.getEntryInfo({
-      entryHash: searchEntryResults.data['0'].entry_hash
-    })
-    const entryContentJSON = JSON.parse(entryWValidation.entry.data.content)
 
-    /**
-     * This is the document that was stored in your system and you are now retrieving to verify that it has not been tampered with.
-     */
-    const documentBufferAfter = fs.readFileSync("./Factom_Whitepaper_v1.2.pdf");
-    // You can use any hash library on this step
-    const documentHashAfter = sha256(documentBufferAfter);
-    const documentAfter = {
-      hash: documentHashAfter,
-      link: "/document",
-    };
-    // Proactive Security
-    // let replaceKeyPairs = factomConnectSDK.identity.createIdentityKeyPair();
+        const getEntryResponse = await chain.getEntryInfo({
+          entryHash: createEntryResponse.entry_hash,
+        });
 
-    // //To replace new key, you need to sign this request with above or same level private key. In this case we are using same level private key.
-    // const replacementEntryResponses = [];
-    // for (let index = 0; index < replaceKeyPairs.length; index++) {
-    //   const newKeyPair = replaceKeyPairs[index];
-    //   const originalKeyPair = originalKeyPairs[index];
-    //   const replacementEntryResponse= await factomConnectSDK.identity.createIdentityKeyReplacement({
-    //     identityChainId: identityChainId,
-    //     oldPublicKey: originalKeyPair.publicKey,
-    //     newPublicKey: newKeyPair.publicKey,
-    //     signerPrivateKey: originalKeyPair.privateKey,
-    //   })
-    //   replacementEntryResponses.push(replacementEntryResponse)
-    // }
-
-    // const identityKeys = await factomConnectSDK.identity.getAllIdentityKeys({
-    //   identityChainId: identityChainId,
-    // })
-
-    responseData(response, {
+        responseData(response, {
+      // originalKeyPairs: originalKeyPairs,
+      // chain: chain,
+      getEntryResponse: getEntryResponse
+      // createEntryResponse: createEntryResponse
+      // createChainResponse: createChainResponse,
+      // chainSearchResult: chainSearchResult,
+      // getAllChainsResponse: getAllChainsResponse,
+      // entryData: entryData
       // originalKeyPairs: originalKeyPairs,
       // identityChainId: identityChainId,
-      document: document,
-      createdChainInfo: {
-        externalIds: chain.data.external_ids,
-        chainId: chain.data.chain_id
-      },
-      createdEntryInfo: {
-        externalIds: getEntryResponse.data.external_ids,
-        entryHash: getEntryResponse.data.entry_hash
-      },
-      chainSearchInput: chainSearchInput,
-      chainSearchResult: chainSearchResult.data,
-      chainWValidation: {
-        chainId: chainWValidation.data.chain_id,
-        externalIds: chainWValidation.data.external_ids,
-        status: chainWValidation.status
-      },
-      entrySearchInput: entrySearchInput,
-      searchEntryResults: searchEntryResults,
-      entryWValidation: {
-        entryHash: entryWValidation.entry.data.entry_hash,
-        external_ids: entryWValidation.entry.data.external_ids,
-        content: entryWValidation.entry.data.content,
-        status: entryWValidation.status,
-        entryContentJSON: entryContentJSON,
-      },
-      documentAfter: documentAfter,
+      // document: document,
+      // createdChainInfo: {
+      //   externalIds: chain.data.external_ids,
+      //   chainId: chain.data.chain_id
+      // }
+      // createdEntryInfo: {
+      //   externalIds: getEntryResponse.data.external_ids,
+      //   entryHash: getEntryResponse.data.entry_hash
+      // },
+      // chainSearchResult: chainSearchResult.data,
+      // chainWValidation: {
+      //   chainId: chainWValidation.data.chain_id,
+      //   externalIds: chainWValidation.data.external_ids,
+      //   status: chainWValidation.status
+      // },
+      // entrySearchInput: entrySearchInput,
+      // searchEntryResults: searchEntryResults,
+      // entryWValidation: {
+      //   entryHash: entryWValidation.entry.data.entry_hash,
+      //   external_ids: entryWValidation.entry.data.external_ids,
+      //   content: entryWValidation.entry.data.content,
+      //   status: entryWValidation.status,
+      //   entryContentJSON: entryContentJSON,
+      // },
+      // documentAfter: documentAfter,
       // replaceKeyPairs: replaceKeyPairs,
       // replacementEntryResponses: replacementEntryResponses,
       // identityKeys: identityKeys,
