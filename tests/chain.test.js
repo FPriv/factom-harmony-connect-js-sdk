@@ -134,7 +134,7 @@ describe('CHAIN Test', () => {
       try {
         await chain.getEntryInfo();
       } catch (error) {
-        expect(error).toEqual(new Error('entry hash is required.'));
+        expect(error).toEqual(new Error('entryHash is required.'));
       }
     });
     it('should return entry info successfully', async () => {

@@ -27,7 +27,7 @@ describe('ENTRY UTIL Test', () => {
       try {
         await EntryUtil.getEntryInfo({ chainId: '123456' });
       } catch (error) {
-        expect(error).toEqual(new Error('entry hash is required.'));
+        expect(error).toEqual(new Error('entryHash is required.'));
       }
     });
     it('should return entry info successfully', async () => {
@@ -481,7 +481,7 @@ describe('ENTRY UTIL Test', () => {
         };
         await EntryUtil.getEntries(data);
       } catch (error) {
-        expect(error).toEqual(new Error('limit must be an integer'));
+        expect(error).toEqual(new Error('limit must be an integer.'));
       }
     });
     it('should return error message when offset is not an integer', async () => {
@@ -493,7 +493,7 @@ describe('ENTRY UTIL Test', () => {
         };
         await EntryUtil.getEntries(data);
       } catch (error) {
-        expect(error).toEqual(new Error('offset must be an integer'));
+        expect(error).toEqual(new Error('offset must be an integer.'));
       }
     });
     it('should return error message when stages is not array', async () => {
@@ -631,7 +631,7 @@ describe('ENTRY UTIL Test', () => {
 
         await EntryUtil.searchEntries(data);
       } catch (error) {
-        expect(error).toEqual(new Error('limit must be an integer'));
+        expect(error).toEqual(new Error('limit must be an integer.'));
       }
     });
     it('should return error message when offset is not an integer', async () => {
@@ -645,7 +645,7 @@ describe('ENTRY UTIL Test', () => {
 
         await EntryUtil.searchEntries(data);
       } catch (error) {
-        expect(error).toEqual(new Error('offset must be an integer'));
+        expect(error).toEqual(new Error('offset must be an integer.'));
       }
     });
     it('should return entries info successfully', async () => {

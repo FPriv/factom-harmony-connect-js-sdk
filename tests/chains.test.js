@@ -502,7 +502,7 @@ describe('CHAINS Test', () => {
 
         await chains.getAllChains(data);
       } catch (error) {
-        expect(error).toEqual(new Error('limit must be an integer'));
+        expect(error).toEqual(new Error('limit must be an integer.'));
       }
     });
     it('should return error message when offset is not an integer', async () => {
@@ -515,7 +515,7 @@ describe('CHAINS Test', () => {
 
         await chains.getAllChains(data);
       } catch (error) {
-        expect(error).toEqual(new Error('offset must be an integer'));
+        expect(error).toEqual(new Error('offset must be an integer.'));
       }
     });
     it('should return error message when stages is not array', async () => {
@@ -571,7 +571,7 @@ describe('CHAINS Test', () => {
 
         await chains.searchChains(data);
       } catch (error) {
-        expect(error).toEqual(new Error('limit must be an integer'));
+        expect(error).toEqual(new Error('limit must be an integer.'));
       }
     });
     it('should return error message when offset is not an integer', async () => {
@@ -584,7 +584,7 @@ describe('CHAINS Test', () => {
 
         await chains.searchChains(data);
       } catch (error) {
-        expect(error).toEqual(new Error('offset must be an integer'));
+        expect(error).toEqual(new Error('offset must be an integer.'));
       }
     });
     it('should return all chain object.', async () => {

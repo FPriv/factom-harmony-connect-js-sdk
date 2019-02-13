@@ -110,7 +110,7 @@ describe('IDENTITY Test', () => {
         await identity.createIdentity(data);
       } catch (error) {
         expect(error).toEqual(
-          new Error('calculated bytes of name and keys is 16815. It must be less than 10240, use less/shorter name or less keys'),
+          new Error('calculated bytes of name and keys is 16815. It must be less than 10240, use less/shorter name or less keys.'),
         );
       }
     });
@@ -332,7 +332,7 @@ describe('IDENTITY Test', () => {
         };
         await identity.getAllIdentityKeys(data);
       } catch (error) {
-        expect(error).toEqual(new Error('limit must be an integer'));
+        expect(error).toEqual(new Error('limit must be an integer.'));
       }
     });
     it('should return error message when offset is not an integer', async () => {
@@ -345,7 +345,7 @@ describe('IDENTITY Test', () => {
         };
         await identity.getAllIdentityKeys(data);
       } catch (error) {
-        expect(error).toEqual(new Error('offset must be an integer'));
+        expect(error).toEqual(new Error('offset must be an integer.'));
       }
     });
     it('should get all Identity Keys successfully.', async () => {
