@@ -4,7 +4,6 @@ const FactomConnectSDK = require("../dist/factomHarmonyConnectSdk.cjs");
 const sha256 = require("js-sha256"); // Using any external library for hash data
 const globalTunnel = require("global-tunnel-ng");
 const fs = require("fs");
-const axios = require("axios");
 
 globalTunnel.initialize({
   host: '10.133.93.63',
@@ -73,9 +72,9 @@ module.exports = async (request, response) => {
         "This chain represents a notary service’s customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients"
     });
 
-    /** 
+    /**
     * Get chain info to show external Ids have been passed to the API.
-    * External Ids processed by SDK automatically when creating new chain/entry. External Ids will include: 
+    * External Ids processed by SDK automatically when creating new chain/entry. External Ids will include:
     * [
     *  "Chain Type",
     *  "Chain Schema Version",
@@ -92,11 +91,11 @@ module.exports = async (request, response) => {
       signatureValidation: false
     });
     const chainCreatedTime = chain.data.external_ids[5];
-    /**   
+    /**
     * This is the document from the customer, it should be stored in a secure location such as an Amazon S3 bucket for later retrieval.
     * The blockchain is your means for ensuring it has not been tampered with.
     */
-  
+
     const documentBuffer = fs.readFileSync("./Factom_Whitepaper_v1.2.pdf");
     // You can use any hash library on this step
     const documentHash = sha256(documentBuffer);
@@ -115,9 +114,9 @@ module.exports = async (request, response) => {
         hash_type: "sha256"
       })
     });
-    /** 
+    /**
     * Get entry info to show external Ids have been passed to the API.
-    * External Ids processed by SDK automatically when creating new entry. External Ids will include: 
+    * External Ids processed by SDK automatically when creating new entry. External Ids will include:
     * [
     *  "Entry Type",
     *  "Entry Schema Version",
@@ -155,7 +154,7 @@ module.exports = async (request, response) => {
     });
 
     /**
-     * Retrieve Blockchain Data aren't always necessary because it is common practice to store the chain_id and entry_hash within your own database. 
+     * Retrieve Blockchain Data aren't always necessary because it is common practice to store the chain_id and entry_hash within your own database.
      * Get Entry with signature validation, by default all get chain/entry request will be automatically validating the signature
      */
     const entryWValidation =  await chainWValidation.getEntryInfo({
@@ -173,10 +172,10 @@ module.exports = async (request, response) => {
       hash: documentHashAfter,
       link: "/document",
     };
-    // Proactive Security 
+    // Proactive Security
     let replaceKeyPairs = factomConnectSDK.identity.createIdentityKeyPair();
-    
-    //To replace new key, you need to sign this request with above or same level private key. In this case we are using same level private key. 
+
+    //To replace new key, you need to sign this request with above or same level private key. In this case we are using same level private key.
     const replacementEntryResponses = [];
     for (let index = 0; index < replaceKeyPairs.length; index++) {
       const newKeyPair = replaceKeyPairs[index];
@@ -193,7 +192,7 @@ module.exports = async (request, response) => {
     const identityKeys = await factomConnectSDK.identity.getAllIdentityKeys({
       identityChainId: identityChainId,
     })
-    
+
     responseData(response, {
       originalKeyPairs: originalKeyPairs,
       identityChainId: identityChainId,

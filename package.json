@@ -27,6 +27,7 @@
     "eslint": "^5.12.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
+    "global-tunnel-ng": "^2.7.1",
     "istanbul": "^0.4.5",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
