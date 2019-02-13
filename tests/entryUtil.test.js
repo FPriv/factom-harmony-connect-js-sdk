@@ -20,14 +20,14 @@ describe('ENTRY UTIL Test', () => {
       try {
         await EntryUtil.getEntryInfo();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return error message when entry hash is missing', async () => {
       try {
         await EntryUtil.getEntryInfo({ chainId: '123456' });
       } catch (error) {
-        expect(error).toEqual(new Error('entry hash is required.'));
+        expect(error).toEqual(new Error('entryHash is required.'));
       }
     });
     it('should return entry info successfully', async () => {
@@ -168,7 +168,7 @@ describe('ENTRY UTIL Test', () => {
       try {
         await EntryUtil.createEntry();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return error message when external ids is missing', async () => {
@@ -180,7 +180,63 @@ describe('ENTRY UTIL Test', () => {
 
         await EntryUtil.createEntry(data);
       } catch (error) {
-        expect(error).toEqual(new Error('external ids is a required array.'));
+        expect(error).toEqual(new Error('at least 1 externalId is required.'));
+      }
+    });
+    it('should return error message when external ids is not array', async () => {
+      try {
+        const data = {
+          chainId: '123456',
+          externalIds: '1',
+          automaticSigning: false,
+        };
+
+        await EntryUtil.createEntry(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('externalIds must be an array.'));
+      }
+    });
+    it('should return error message when signer chain id is missing', async () => {
+      try {
+        const data = {
+          chainId: '123456',
+          externalIds: ['1'],
+          signerPrivateKey: 'idsec',
+          automaticSigning: false,
+        };
+
+        await EntryUtil.createEntry(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('signerChainId is required when passing a signerPrivateKey.'));
+      }
+    });
+    it('should return error message when signer private key is invalid', async () => {
+      try {
+        const data = {
+          chainId: '123456',
+          externalIds: ['1'],
+          signerPrivateKey: 'idsec',
+          signerChainId: '123456',
+          automaticSigning: false,
+        };
+
+        await EntryUtil.createEntry(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
+      }
+    });
+    it('should return error message when signer private key is missing', async () => {
+      try {
+        const data = {
+          chainId: '123456',
+          externalIds: ['1'],
+          signerChainId: '123456',
+          automaticSigning: false,
+        };
+
+        await EntryUtil.createEntry(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('signerPrivateKey is required when passing a signerChainId.'));
       }
     });
     it('should return error message when content is missing', async () => {
@@ -208,7 +264,7 @@ describe('ENTRY UTIL Test', () => {
 
         await EntryUtil.createEntry(data);
       } catch (error) {
-        expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
+        expect(error).toEqual(new Error('callbackUrl is an invalid url format.'));
       }
     });
     it('should return error message when callback stages is not array', async () => {
@@ -224,7 +280,7 @@ describe('ENTRY UTIL Test', () => {
 
         await EntryUtil.createEntry(data);
       } catch (error) {
-        expect(error).toEqual(new Error('callback stages must be in array format.'));
+        expect(error).toEqual(new Error('callbackStages must be an array.'));
       }
     });
     it('should create an entry successfully', async () => {
@@ -282,7 +338,7 @@ describe('ENTRY UTIL Test', () => {
         };
         await EntryUtil.createEntry(data);
       } catch (error) {
-        expect(error).toEqual(new Error('private key is required.'));
+        expect(error).toEqual(new Error('signerPrivateKey is required.'));
       }
     });
     it('should return error message when private key is invalid', async () => {
@@ -294,7 +350,7 @@ describe('ENTRY UTIL Test', () => {
         };
         await EntryUtil.createEntry(data);
       } catch (error) {
-        expect(error).toEqual(new Error('private key is invalid.'));
+        expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
     });
     it('should return error message when signer chain id is missing', async () => {
@@ -306,7 +362,7 @@ describe('ENTRY UTIL Test', () => {
         };
         await EntryUtil.createEntry(data);
       } catch (error) {
-        expect(error).toEqual(new Error('signer chain id is required.'));
+        expect(error).toEqual(new Error('signerChainId is required.'));
       }
     });
     it('should return error message when content is missing', async () => {
@@ -337,7 +393,7 @@ describe('ENTRY UTIL Test', () => {
 
         await EntryUtil.createEntry(data);
       } catch (error) {
-        expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
+        expect(error).toEqual(new Error('callbackUrl is an invalid url format.'));
       }
     });
     it('should return error message when callback stages is not array', async () => {
@@ -355,7 +411,7 @@ describe('ENTRY UTIL Test', () => {
 
         await EntryUtil.createEntry(data);
       } catch (error) {
-        expect(error).toEqual(new Error('callback stages must be in array format.'));
+        expect(error).toEqual(new Error('callbackStages must be an array.'));
       }
     });
     it('should return error message when external ids is not array', async () => {
@@ -372,7 +428,7 @@ describe('ENTRY UTIL Test', () => {
 
         await EntryUtil.createEntry(data);
       } catch (error) {
-        expect(error).toEqual(new Error('external ids is a required array.'));
+        expect(error).toEqual(new Error('externalIds must be an array.'));
       }
     });
     it('should create an signed entry successfully', async () => {
@@ -414,10 +470,10 @@ describe('ENTRY UTIL Test', () => {
       try {
         await EntryUtil.getEntries();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
-    it('should return error message when limit is not number', async () => {
+    it('should return error message when limit is not an integer', async () => {
       try {
         const data = {
           chainId: '123456',
@@ -425,10 +481,10 @@ describe('ENTRY UTIL Test', () => {
         };
         await EntryUtil.getEntries(data);
       } catch (error) {
-        expect(error).toEqual(new Error('limit must be number.'));
+        expect(error).toEqual(new Error('limit must be an integer.'));
       }
     });
-    it('should return error message when offset is not number', async () => {
+    it('should return error message when offset is not an integer', async () => {
       try {
         const data = {
           chainId: '123456',
@@ -437,14 +493,14 @@ describe('ENTRY UTIL Test', () => {
         };
         await EntryUtil.getEntries(data);
       } catch (error) {
-        expect(error).toEqual(new Error('offset must be number.'));
+        expect(error).toEqual(new Error('offset must be an integer.'));
       }
     });
     it('should return error message when stages is not array', async () => {
       try {
         await EntryUtil.getEntries({ chainId: '123456', stages: '123' });
       } catch (error) {
-        expect(error).toEqual(new Error('stages must be in array format.'));
+        expect(error).toEqual(new Error('stages must be an array.'));
       }
     });
     it('should return entries info successfully', async () => {
@@ -482,7 +538,7 @@ describe('ENTRY UTIL Test', () => {
       try {
         await EntryUtil.getFirstEntry();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return entries info successfully', async () => {
@@ -518,7 +574,7 @@ describe('ENTRY UTIL Test', () => {
       try {
         await EntryUtil.getLastEntry();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return entries info successfully', async () => {
@@ -554,17 +610,17 @@ describe('ENTRY UTIL Test', () => {
       try {
         await EntryUtil.searchEntries();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return error message when external ids is missing', async () => {
       try {
         await EntryUtil.searchEntries({ chainId: '123456' });
       } catch (error) {
-        expect(error).toEqual(new Error('external ids is a required array.'));
+        expect(error).toEqual(new Error('at least 1 externalId is required.'));
       }
     });
-    it('should return error message when limit is not number', async () => {
+    it('should return error message when limit is not an integer', async () => {
       try {
         const data = {
           chainId: '123456',
@@ -575,10 +631,10 @@ describe('ENTRY UTIL Test', () => {
 
         await EntryUtil.searchEntries(data);
       } catch (error) {
-        expect(error).toEqual(new Error('limit must be number.'));
+        expect(error).toEqual(new Error('limit must be an integer.'));
       }
     });
-    it('should return error message when offset is not number', async () => {
+    it('should return error message when offset is not an integer', async () => {
       try {
         const data = {
           chainId: '123456',
@@ -589,7 +645,7 @@ describe('ENTRY UTIL Test', () => {
 
         await EntryUtil.searchEntries(data);
       } catch (error) {
-        expect(error).toEqual(new Error('offset must be number.'));
+        expect(error).toEqual(new Error('offset must be an integer.'));
       }
     });
     it('should return entries info successfully', async () => {

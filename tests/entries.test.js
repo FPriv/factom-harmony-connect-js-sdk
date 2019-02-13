@@ -19,7 +19,7 @@ describe('ENTRIES Test', () => {
       try {
         await entries.getEntryInfo();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return entry info successfully', async () => {
@@ -51,7 +51,7 @@ describe('ENTRIES Test', () => {
       try {
         await entries.createEntry();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should create an entry successfully', async () => {
@@ -103,7 +103,7 @@ describe('ENTRIES Test', () => {
       try {
         await entries.getEntriesOfChain();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return entries info successfully', async () => {
@@ -141,7 +141,7 @@ describe('ENTRIES Test', () => {
       try {
         await entries.getFirstEntryOfChain();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return first entry successfully', async () => {
@@ -172,7 +172,7 @@ describe('ENTRIES Test', () => {
       try {
         await entries.getLastEntryOfChain();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return last entry successfully', async () => {
@@ -203,7 +203,7 @@ describe('ENTRIES Test', () => {
       try {
         await entries.searchEntriesOfChain();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return entries successfully', async () => {

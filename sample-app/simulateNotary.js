@@ -2,24 +2,13 @@
 // Will be changed to require ('FactomSDK') after publish
 const FactomConnectSDK = require("../dist/factomHarmonyConnectSdk.cjs");
 const sha256 = require("js-sha256"); // Using any external library for hash data
+const globalTunnel = require("global-tunnel-ng");
 const fs = require("fs");
 const axios = require("axios");
 
-//This part will be remove after Connect API updated
-axios.interceptors.response.use(response => {
-  if (response.config.url.includes("chains")) {
-    response.data.data = {
-      ...response.data.data,
-      dblock: {
-        height: 121115,
-        keymr:
-          "0fc6fc4c48b45b0d82638717d2b7de327ec5f2eea485c0c5e41999f6f0f5349e",
-        href:
-          "/v1/dblocks/0fc6fc4c48b45b0d82638717d2b7de327ec5f2eea485c0c5e41999f6f0f5349e"
-      }
-    };
-  }
-  return response;
+globalTunnel.initialize({
+  host: '10.133.93.63',
+  port: 8080
 });
 
 // Handle node response
@@ -29,7 +18,7 @@ const responseData = (response, data) => {
 };
 
 module.exports = async (request, response) => {
-  // Init factom sdk with your app_id and app_key
+  // Init factom sdk with your app_id and app_key, which can be found or generated at https://account.factom.com
   const factomConnectSDK = new FactomConnectSDK({
     baseURL: "https://durable.sandbox.harmony.factom.com/v1",
     accessToken: {
