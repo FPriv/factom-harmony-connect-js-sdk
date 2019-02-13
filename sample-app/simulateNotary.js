@@ -2,13 +2,7 @@
 // Will be changed to require ('FactomSDK') after publish
 const FactomConnectSDK = require("../dist/factomHarmonyConnectSdk.cjs");
 const sha256 = require("js-sha256"); // Using any external library for hash data
-const globalTunnel = require("global-tunnel-ng");
 const fs = require("fs");
-
-globalTunnel.initialize({
-  host: '10.133.93.63',
-  port: 8080
-});
 
 // Handle node response
 const responseData = (response, data) => {
