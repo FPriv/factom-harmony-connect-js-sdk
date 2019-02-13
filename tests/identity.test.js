@@ -34,7 +34,14 @@ describe('IDENTITY Test', () => {
       try {
         await identity.createIdentity();
       } catch (error) {
-        expect(error).toEqual(new Error('name is a required array.'));
+        expect(error).toEqual(new Error('name is required.'));
+      }
+    });
+    it('should return error message when name is not array', async () => {
+      try {
+        await identity.createIdentity({ name: '123' });
+      } catch (error) {
+        expect(error).toEqual(new Error('name must be an array.'));
       }
     });
     it('should return error message when keys is missing', async () => {
@@ -43,6 +50,14 @@ describe('IDENTITY Test', () => {
         await identity.createIdentity(data);
       } catch (error) {
         expect(error).toEqual(new Error('at least 1 key is required.'));
+      }
+    });
+    it('should return error message when keys is not array', async () => {
+      try {
+        const data = { name: ['123'], keys: 'idpub' };
+        await identity.createIdentity(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('keys must be an array.'));
       }
     });
     it('should return error message when total bytes of name and key are lager than 10240 bytes', async () => {
@@ -95,7 +110,7 @@ describe('IDENTITY Test', () => {
         await identity.createIdentity(data);
       } catch (error) {
         expect(error).toEqual(
-          new Error('data overflow: use less/shorter names or less keys.'),
+          new Error('calculated bytes of name and keys is 16815. It must be less than 10240, use less/shorter name or less keys'),
         );
       }
     });
@@ -126,6 +141,12 @@ describe('IDENTITY Test', () => {
       }
     });
     it('should return error message when keys have at least 1 duplicated item.', async () => {
+      const errors = [
+        {
+          key: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          error: 'key is duplicated, keys must be unique.',
+        },
+      ];
       try {
         const data = {
           name: ['123'],
@@ -137,7 +158,7 @@ describe('IDENTITY Test', () => {
         };
         await identity.createIdentity(data);
       } catch (error) {
-        expect(error).toEqual(new Error('keys item is duplicated.'));
+        expect(error).toEqual(new Error(errors));
       }
     });
     it('should return error message when callback url is missing URL scheme.', async () => {
@@ -154,7 +175,7 @@ describe('IDENTITY Test', () => {
         };
         await await identity.createIdentity(data);
       } catch (error) {
-        expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
+        expect(error).toEqual(new Error('callbackUrl is an invalid url format.'));
       }
     });
     it('should return error message when callback stages is not array.', async () => {
@@ -172,7 +193,7 @@ describe('IDENTITY Test', () => {
         await await identity.createIdentity(data);
       } catch (error) {
         expect(error).toEqual(
-          new Error('callback stages must be in array format.'),
+          new Error('callbackStages must be an array.'),
         );
       }
     });
@@ -238,7 +259,7 @@ describe('IDENTITY Test', () => {
       try {
         await identity.getIdentity();
       } catch (error) {
-        expect(error).toEqual(new Error('identity chain id is required.'));
+        expect(error).toEqual(new Error('identityChainId is required.'));
       }
     });
     it('should get an Identity successfully.', async () => {
@@ -288,10 +309,10 @@ describe('IDENTITY Test', () => {
       try {
         await identity.getAllIdentityKeys();
       } catch (error) {
-        expect(error).toEqual(new Error('identity chain id is required.'));
+        expect(error).toEqual(new Error('identityChainId is required.'));
       }
     });
-    it('should return error message when active at height is not number', async () => {
+    it('should return error message when active at height is not an integer', async () => {
       try {
         const data = {
           identityChainId: '123456',
@@ -299,10 +320,10 @@ describe('IDENTITY Test', () => {
         };
         await identity.getAllIdentityKeys(data);
       } catch (error) {
-        expect(error).toEqual(new Error('active at height must be number.'));
+        expect(error).toEqual(new Error('activeAtHeight must be an integer.'));
       }
     });
-    it('should return error message when limit is not number', async () => {
+    it('should return error message when limit is not an integer', async () => {
       try {
         const data = {
           identityChainId: '123456',
@@ -311,10 +332,10 @@ describe('IDENTITY Test', () => {
         };
         await identity.getAllIdentityKeys(data);
       } catch (error) {
-        expect(error).toEqual(new Error('limit must be number.'));
+        expect(error).toEqual(new Error('limit must be an integer'));
       }
     });
-    it('should return error message when offset is not number', async () => {
+    it('should return error message when offset is not an integer', async () => {
       try {
         const data = {
           identityChainId: '123456',
@@ -324,7 +345,7 @@ describe('IDENTITY Test', () => {
         };
         await identity.getAllIdentityKeys(data);
       } catch (error) {
-        expect(error).toEqual(new Error('offset must be number.'));
+        expect(error).toEqual(new Error('offset must be an integer'));
       }
     });
     it('should get all Identity Keys successfully.', async () => {
@@ -380,7 +401,7 @@ describe('IDENTITY Test', () => {
       try {
         await identity.createIdentityKeyReplacement();
       } catch (error) {
-        expect(error).toEqual(new Error('identity chain id is required.'));
+        expect(error).toEqual(new Error('identityChainId is required.'));
       }
     });
     it('should return error message when old public key is missing', async () => {
@@ -390,7 +411,7 @@ describe('IDENTITY Test', () => {
         };
         await identity.createIdentityKeyReplacement(data);
       } catch (error) {
-        expect(error).toEqual(new Error('old public key is required.'));
+        expect(error).toEqual(new Error('oldPublicKey is required.'));
       }
     });
     it('should return error message when new public key is missing', async () => {
@@ -401,7 +422,7 @@ describe('IDENTITY Test', () => {
         };
         await identity.createIdentityKeyReplacement(data);
       } catch (error) {
-        expect(error).toEqual(new Error('new public key is required.'));
+        expect(error).toEqual(new Error('newPublicKey is required.'));
       }
     });
     it('should return error message when private key is missing', async () => {
@@ -413,7 +434,7 @@ describe('IDENTITY Test', () => {
         };
         await identity.createIdentityKeyReplacement(data);
       } catch (error) {
-        expect(error).toEqual(new Error('private key is required.'));
+        expect(error).toEqual(new Error('signerPrivateKey is required.'));
       }
     });
     it('should return error message when old public key bytes length is not equal 41', async () => {
@@ -426,35 +447,33 @@ describe('IDENTITY Test', () => {
         };
         await identity.createIdentityKeyReplacement(data);
       } catch (error) {
-        expect(error).toEqual(new Error('old public key is invalid.'));
+        expect(error).toEqual(new Error('oldPublicKey is an invalid public key.'));
       }
     });
     it('should return error message when old public key is invalid', async () => {
       try {
         const data = {
           identityChainId: '123456',
-          oldPublicKey:
-            'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcx12',
+          oldPublicKey: 'idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcx12',
           newPublicKey: 'idpub2',
           signerPrivateKey: 'idsec2',
         };
         await identity.createIdentityKeyReplacement(data);
       } catch (error) {
-        expect(error).toEqual(new Error('old public key is invalid.'));
+        expect(error).toEqual(new Error('oldPublicKey is an invalid public key.'));
       }
     });
     it('should return error message when new public key bytes length is not equal 41', async () => {
       try {
         const data = {
           identityChainId: '123456',
-          oldPublicKey:
-            'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
+          oldPublicKey: 'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
           newPublicKey: 'idpub2',
           signerPrivateKey: 'idsec2',
         };
         await identity.createIdentityKeyReplacement(data);
       } catch (error) {
-        expect(error).toEqual(new Error('new public key is invalid.'));
+        expect(error).toEqual(new Error('newPublicKey is an invalid public key.'));
       }
     });
     it('should return error message when new public key is invalid', async () => {
@@ -469,7 +488,7 @@ describe('IDENTITY Test', () => {
         };
         await identity.createIdentityKeyReplacement(data);
       } catch (error) {
-        expect(error).toEqual(new Error('new public key is invalid.'));
+        expect(error).toEqual(new Error('newPublicKey is an invalid public key.'));
       }
     });
     it('should return error message when private key bytes length is not equal 41', async () => {
@@ -484,7 +503,7 @@ describe('IDENTITY Test', () => {
         };
         await identity.createIdentityKeyReplacement(data);
       } catch (error) {
-        expect(error).toEqual(new Error('private key is invalid.'));
+        expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
     });
     it('should return error message when private key is invalid', async () => {
@@ -500,7 +519,7 @@ describe('IDENTITY Test', () => {
         };
         await identity.createIdentityKeyReplacement(data);
       } catch (error) {
-        expect(error).toEqual(new Error('private key is invalid.'));
+        expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
     });
     it('should return error message when callback url is missing URL scheme.', async () => {
@@ -517,7 +536,7 @@ describe('IDENTITY Test', () => {
       try {
         await identity.createIdentityKeyReplacement(data);
       } catch (error) {
-        expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
+        expect(error).toEqual(new Error('callbackUrl is an invalid url format.'));
       }
     });
     it('should return error message when callback stages is not array.', async () => {
@@ -535,7 +554,7 @@ describe('IDENTITY Test', () => {
         await identity.createIdentityKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(
-          new Error('callback stages must be in array format.'),
+          new Error('callbackStages must be an array.'),
         );
       }
     });

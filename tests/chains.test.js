@@ -19,7 +19,7 @@ describe('CHAINS Test', () => {
       try {
         await chains.getChainInfo();
       } catch (error) {
-        expect(error).toEqual(new Error('chain id is required.'));
+        expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return a chain object without validate signature.', async () => {
@@ -47,7 +47,7 @@ describe('CHAINS Test', () => {
         entries: {
           href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
         },
-        external_ids: ['asdfdas', '0x6173666473', 'fasdfsfdf', 'ssx'],
+        external_ids: ['asdfdas', 'asfds', 'fasdfsfdf', 'ssx'],
         stage: 'factom',
       };
 
@@ -203,7 +203,55 @@ describe('CHAINS Test', () => {
       try {
         await chains.createChain();
       } catch (error) {
-        expect(error).toEqual(new Error('external ids is a required array.'));
+        expect(error).toEqual(new Error('at least 1 externalId is required.'));
+      }
+    });
+    it('should return error message when external ids is not array', async () => {
+      try {
+        const data = {
+          externalIds: '1',
+        };
+
+        await chains.createChain(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('externalIds must be an array.'));
+      }
+    });
+    it('should return error message when signer chain id is missing', async () => {
+      try {
+        const data = {
+          externalIds: ['1'],
+          signerPrivateKey: 'idsec',
+        };
+
+        await chains.createChain(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('signerChainId is required when passing a signerPrivateKey.'));
+      }
+    });
+    it('should return error message when signer private key is invalid', async () => {
+      try {
+        const data = {
+          externalIds: ['1'],
+          signerPrivateKey: 'idsec',
+          signerChainId: '123456',
+        };
+
+        await chains.createChain(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
+      }
+    });
+    it('should return error message when signer private key is missing', async () => {
+      try {
+        const data = {
+          externalIds: ['1'],
+          signerChainId: '123456',
+        };
+
+        await chains.createChain(data);
+      } catch (error) {
+        expect(error).toEqual(new Error('signerPrivateKey is required when passing a signerChainId.'));
       }
     });
     it('should return error message when content is missing', async () => {
@@ -227,7 +275,7 @@ describe('CHAINS Test', () => {
 
         await chains.createChain(data);
       } catch (error) {
-        expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
+        expect(error).toEqual(new Error('callbackUrl is an invalid url format.'));
       }
     });
     it('should return error message when callback stages is not array', async () => {
@@ -241,7 +289,7 @@ describe('CHAINS Test', () => {
 
         await chains.createChain(data);
       } catch (error) {
-        expect(error).toEqual(new Error('callback stages must be in array format.'));
+        expect(error).toEqual(new Error('callbackStages must be an array.'));
       }
     });
     it('should create a chain successfully.', async () => {
@@ -293,7 +341,7 @@ describe('CHAINS Test', () => {
       try {
         await chains.createChain();
       } catch (error) {
-        expect(error).toEqual(new Error('private key is required.'));
+        expect(error).toEqual(new Error('signerPrivateKey is required.'));
       }
     });
     it('should return error message when private key is invalid', async () => {
@@ -303,7 +351,7 @@ describe('CHAINS Test', () => {
         };
         await chains.createChain(data);
       } catch (error) {
-        expect(error).toEqual(new Error('private key is invalid.'));
+        expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
     });
     it('should return error message when signer chain id is missing', async () => {
@@ -313,7 +361,7 @@ describe('CHAINS Test', () => {
         };
         await chains.createChain(data);
       } catch (error) {
-        expect(error).toEqual(new Error('signer chain id is required.'));
+        expect(error).toEqual(new Error('signerChainId is required.'));
       }
     });
     it('should return error message when content is missing', async () => {
@@ -336,7 +384,7 @@ describe('CHAINS Test', () => {
 
         await chains.createChain(data);
       } catch (error) {
-        expect(error).toEqual(new Error('private key is required.'));
+        expect(error).toEqual(new Error('signerPrivateKey is required.'));
       }
     });
     it('should return error message when private key is invalid', async () => {
@@ -349,7 +397,7 @@ describe('CHAINS Test', () => {
 
         await chains.createChain(data);
       } catch (error) {
-        expect(error).toEqual(new Error('private key is invalid.'));
+        expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
     });
     it('should return error message when signer chain id is missing', async () => {
@@ -362,7 +410,7 @@ describe('CHAINS Test', () => {
 
         await chains.createChain(data);
       } catch (error) {
-        expect(error).toEqual(new Error('signer chain id is required.'));
+        expect(error).toEqual(new Error('signerChainId is required.'));
       }
     });
     it('should return error message when callback url is invalid', async () => {
@@ -377,7 +425,7 @@ describe('CHAINS Test', () => {
 
         await chains.createChain(data);
       } catch (error) {
-        expect(error).toEqual(new Error('invalid url: missing URL scheme.'));
+        expect(error).toEqual(new Error('callbackUrl is an invalid url format.'));
       }
     });
     it('should return error message when callback stages is not array', async () => {
@@ -393,7 +441,7 @@ describe('CHAINS Test', () => {
 
         await chains.createChain(data);
       } catch (error) {
-        expect(error).toEqual(new Error('callback stages must be in array format.'));
+        expect(error).toEqual(new Error('callbackStages must be an array.'));
       }
     });
     it('should return error message when external ids is not array', async () => {
@@ -409,7 +457,7 @@ describe('CHAINS Test', () => {
 
         await chains.createChain(data);
       } catch (error) {
-        expect(error).toEqual(new Error('external ids is a required array.'));
+        expect(error).toEqual(new Error('externalIds must be an array.'));
       }
     });
     it('should create a chain successfully.', async () => {
@@ -444,7 +492,7 @@ describe('CHAINS Test', () => {
         },
       });
     });
-    it('should return error message when limit is not number', async () => {
+    it('should return error message when limit is not an integer', async () => {
       try {
         const data = {
           limit: 'a',
@@ -454,10 +502,10 @@ describe('CHAINS Test', () => {
 
         await chains.getAllChains(data);
       } catch (error) {
-        expect(error).toEqual(new Error('limit must be number.'));
+        expect(error).toEqual(new Error('limit must be an integer'));
       }
     });
-    it('should return error message when offset is not number', async () => {
+    it('should return error message when offset is not an integer', async () => {
       try {
         const data = {
           limit: 15,
@@ -467,7 +515,7 @@ describe('CHAINS Test', () => {
 
         await chains.getAllChains(data);
       } catch (error) {
-        expect(error).toEqual(new Error('offset must be number.'));
+        expect(error).toEqual(new Error('offset must be an integer'));
       }
     });
     it('should return error message when stages is not array', async () => {
@@ -480,7 +528,7 @@ describe('CHAINS Test', () => {
 
         await chains.getAllChains(data);
       } catch (error) {
-        expect(error).toEqual(new Error('stages must be in array format.'));
+        expect(error).toEqual(new Error('stages must be an array.'));
       }
     });
     it('should return all chain object.', async () => {
@@ -511,10 +559,10 @@ describe('CHAINS Test', () => {
       try {
         await chains.searchChains();
       } catch (error) {
-        expect(error).toEqual(new Error('external ids is a required array.'));
+        expect(error).toEqual(new Error('at least 1 externalId is required.'));
       }
     });
-    it('should return error message when limit is not number', async () => {
+    it('should return error message when limit is not an integer', async () => {
       try {
         const data = {
           externalIds: ['123'],
@@ -523,10 +571,10 @@ describe('CHAINS Test', () => {
 
         await chains.searchChains(data);
       } catch (error) {
-        expect(error).toEqual(new Error('limit must be number.'));
+        expect(error).toEqual(new Error('limit must be an integer'));
       }
     });
-    it('should return error message when offset is not number', async () => {
+    it('should return error message when offset is not an integer', async () => {
       try {
         const data = {
           externalIds: ['123'],
@@ -536,7 +584,7 @@ describe('CHAINS Test', () => {
 
         await chains.searchChains(data);
       } catch (error) {
-        expect(error).toEqual(new Error('offset must be number.'));
+        expect(error).toEqual(new Error('offset must be an integer'));
       }
     });
     it('should return all chain object.', async () => {

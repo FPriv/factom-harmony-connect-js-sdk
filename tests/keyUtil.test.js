@@ -39,6 +39,20 @@ describe('KEY UTIL Test', () => {
       expect(KeyUtil.getInvalidKeys({ signerKeys: ['idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv', 'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc'] })).toEqual([]);
     });
   });
+  describe('Get Duplicate Keys', () => {
+    it('should return duplicate array when keys have at least 1 duplicate item.', () => {
+      const errors = [
+        {
+          key: '123',
+          error: 'key is duplicated, keys must be unique.',
+        },
+      ];
+      expect(KeyUtil.getDuplicateKeys({ signerKeys: ['123', '123'] })).toEqual(errors);
+    });
+    it('should return empty array', () => {
+      expect(KeyUtil.getDuplicateKeys()).toEqual([]);
+    });
+  });
   describe('Get Key bytes from Key', () => {
     it('should return error message when signer key is invalid.', () => {
       try {
@@ -56,7 +70,7 @@ describe('KEY UTIL Test', () => {
       try {
         KeyUtil.getPublicKeyFromPrivateKey();
       } catch (error) {
-        expect(error).toEqual(new Error('private key is invalid.'));
+        expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
     });
     it('should return public key.', () => {
@@ -68,14 +82,14 @@ describe('KEY UTIL Test', () => {
       try {
         KeyUtil.signContent();
       } catch (error) {
-        expect(error).toEqual(new Error('private key is required.'));
+        expect(error).toEqual(new Error('signerPrivateKey is required.'));
       }
     });
     it('should return error message when private key is invalid.', () => {
       try {
         KeyUtil.signContent({ signerPrivateKey: 'idsec2' });
       } catch (error) {
-        expect(error).toEqual(new Error('private key is invalid.'));
+        expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
     });
     it('should return error message when message is missing.', () => {
@@ -95,14 +109,14 @@ describe('KEY UTIL Test', () => {
       try {
         KeyUtil.validateSignature();
       } catch (error) {
-        expect(error).toEqual(new Error('public key is required.'));
+        expect(error).toEqual(new Error('signerPublicKey is required.'));
       }
     });
     it('should return error message when public key is invalid.', () => {
       try {
         KeyUtil.validateSignature({ signerPublicKey: 'idpub2' });
       } catch (error) {
-        expect(error).toEqual(new Error('public key is invalid.'));
+        expect(error).toEqual(new Error('signerPublicKey is invalid.'));
       }
     });
     it('should return error message when signature is missing.', () => {

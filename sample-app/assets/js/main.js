@@ -1,9 +1,11 @@
 /* eslint-disable */
 
 function onSimulation() {
-  $('#simulateBtn').html('Simulating...');
-  $('#simulateBtn').addClass('spinning');
-  $('#simulateBtn').attr('disabled','disabled');
+  $('#simulateBtn')
+    .html('Simulating...')
+    .addClass('spinning')
+    .attr('disabled','disabled');
+    
   $.get('/simulate', function (data) {
     console.log(data);
 
