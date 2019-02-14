@@ -20,6 +20,7 @@ To help developers better understand how the SDK works in practice, there is a s
 
 ### Steps to Run Sample Application
 
-1) `cd sample-app`
-2) `node server.js`
-3) Open http://localhost:8080 in your browser
+1) If you haven't done so already, run `npm install` followed by `npm run build`.
+2) `cd sample-app`
+3) `node server.js`
+4) Open http://localhost:8080 in your browser
