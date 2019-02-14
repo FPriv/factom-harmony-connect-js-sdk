@@ -6,10 +6,6 @@ To install the dependencies needed to work on the SDK, simply run
 
 `npm install`
 
-While doing development work, you can keep the task runner working by running
-
-`npm run dev-app`
-
 Once you're done, to generate a final build, simply run
 
 `npm run build`
