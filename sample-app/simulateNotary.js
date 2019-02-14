@@ -13,10 +13,10 @@ const responseData = (response, data) => {
 module.exports = async (request, response) => {
   // Init factom sdk with your app_id and app_key, which can be found or generated at https://account.factom.com
   const factomConnectSDK = new FactomConnectSDK({
-    baseURL: "https://durable.sandbox.harmony.factom.com/v1",
+    baseURL: "YOUR API URL",
     accessToken: {
-      appId: "aabe7d81",
-      appKey: "502a5c77f8f600b9ec32e94fbe008f11"
+      appId: "YOUR APP ID",
+      appKey: "YOUR APP KEY"
     }
   });
 
