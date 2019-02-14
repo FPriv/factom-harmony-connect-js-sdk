@@ -9,8 +9,7 @@
     "test": "jest",
     "build": "npm run build:elliptic && npm run build:rollup",
     "build:elliptic": "webpack --config webpack.elliptic.js",
-    "build:rollup": "rollup -c",
-    "dev-app": "nodemon ./sample-app/server.js"
+    "build:rollup": "rollup -c"
   },
   "author": "",
   "license": "ISC",
