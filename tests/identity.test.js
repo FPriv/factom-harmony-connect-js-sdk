@@ -110,7 +110,7 @@ describe('IDENTITY Test', () => {
         await identity.createIdentity(data);
       } catch (error) {
         expect(error).toEqual(
-          new Error('calculated bytes of name and keys is 16815. It must be less than 10240, use less/shorter name or less keys.'),
+          new Error('calculated bytes of name and keys is 12655. It must be less than 10240, use less/shorter name or less keys.'),
         );
       }
     });
