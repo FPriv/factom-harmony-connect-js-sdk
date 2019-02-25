@@ -13,11 +13,20 @@ const responseData = (response, data) => {
 module.exports = async (request, response) => {
   // Init factom sdk with your app_id and app_key, which can be found or generated at https://account.factom.com
   const factomConnectSDK = new FactomConnectSDK({
-    baseURL: "YOUR API URL",
+    baseURL: "https://durable.sandbox.harmony.factom.com/v1",
     accessToken: {
-      appId: "YOUR APP ID",
-      appKey: "YOUR APP KEY"
+      appId: "2e8918b0",
+      appKey: "b82982f14cf3ca034b43df8a207c4e27"
     }
+  });
+
+  const factomConnectSDKAgain = new FactomConnectSDK({
+    baseURL: "https://durable.sandbox.harmony.factom.com/v1",
+    accessToken: {
+      appId: "2e8918b0",
+      appKey: "b82982f14cf3ca034b43df8a207c4e27"
+    },
+    automaticSigning: false
   });
 
   try {
@@ -66,6 +75,15 @@ module.exports = async (request, response) => {
         "This chain represents a notary service’s customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients"
     });
 
+    const createTestChainResponse = await factomConnectSDKAgain.chains.createChain({
+      signerPrivateKey: keyToSign.privateKey,
+      signerChainId: identityChainId,
+      content:
+        "This chain represents a notary service’s customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients",
+        externalIds: ["yo", "wow"]
+    });
+
+
     /**
     * Get chain info to show external Ids have been passed to the API.
     * External Ids processed by SDK automatically when creating new chain/entry. External Ids will include:
@@ -84,6 +102,12 @@ module.exports = async (request, response) => {
       chainId: createChainResponse.chain_id,
       signatureValidation: false
     });
+
+    const chainTest = await factomConnectSDKAgain.chain({
+      chainId: createTestChainResponse.chain_id,
+      signatureValidation: false
+    });
+
     const chainCreatedTime = chain.data.external_ids[5];
     /**
     * This is the document from the customer, it should be stored in a secure location such as an Amazon S3 bucket for later retrieval.
@@ -107,6 +131,16 @@ module.exports = async (request, response) => {
         document_hash: documentHash,
         hash_type: "sha256"
       })
+    });
+
+    const createTestEntryResponse = await chainTest.createEntry({
+      signerPrivateKey: keyToSign.privateKey,
+      signerChainId: identityChainId,
+      content: JSON.stringify({
+        document_hash: documentHash,
+        hash_type: "sha256"
+      }),
+      externalIds: ["NotarySimulation", "DocumentEntry", "doc987"]
     });
     /**
     * Get entry info to show external Ids have been passed to the API.
@@ -188,6 +222,7 @@ module.exports = async (request, response) => {
     })
 
     responseData(response, {
+      createTestEntryResponse: createTestEntryResponse,      createTestChainResponse: createTestChainResponse,
       originalKeyPairs: originalKeyPairs,
       identityChainId: identityChainId,
       document: document,
