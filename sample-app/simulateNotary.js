@@ -24,21 +24,7 @@ module.exports = async (request, response) => {
     // Create initial key pairs, sdk will create 3 key pairs by default, you can change the number of key pair by passing {numberOfKeyPair: } to the params
     // Create single key pair by using factomConnectSDK.keyUtil.createKeyPair()
     let originalKeyPairs = factomConnectSDK.identity.createIdentityKeyPair();
-    //For now Identity API is not completed so hardcode 3 key pairs from API document
-    originalKeyPairs = [
-      {
-        privateKey: "idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ",
-        publicKey: "idpub2Cktw6EgcBVMHMXmfcCyTHndcFvG7fJKyBpy3sTYcdTmdTuKya"
-      },
-      {
-        privateKey: "idsec2bH9PmKVsqsGHqBCydjvK6BESQNQY7rqErq1EAV84Tx3NWRiyb",
-        publicKey: "idpub2JegfdBQBnqbXGKMMD89v8N81e4DpvERHWTJp6zvWaoAVi8Jnj"
-      },
-      {
-        privateKey: "idsec35TeMDfgZMfTzinqEqHxt4BFLSAbwQBwsZeXmFG3otjfkDBF8u",
-        publicKey: "idpub2SrEYac7YQd6xQJKHt7hMWTgzBLDeyPYsK9jwJyQx5bfZvcxE9"
-      }
-    ];
+    
     const publicKeyArr = [];
     for (let index = 0; index < originalKeyPairs.length; index++) {
       publicKeyArr.push(originalKeyPairs[index].publicKey);
