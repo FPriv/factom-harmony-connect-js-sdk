@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import axios from 'axios';
-import Identity from '../lib/resources/identity';
+import Identity from '../lib/resources/Identity';
 
 jest.mock('axios');
 describe('IDENTITY Test', () => {
