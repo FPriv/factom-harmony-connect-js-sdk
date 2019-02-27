@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import axios from 'axios';
-import Entries from '../lib/resources/entries';
+import Entries from '../lib/resources/Entries';
 
 jest.mock('axios');
 describe('ENTRIES Test', () => {

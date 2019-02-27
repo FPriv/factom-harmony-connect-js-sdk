@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import axios from 'axios';
-import Chain from '../lib/resources/chain';
+import Chain from '../lib/resources/Chain';
 
 jest.mock('axios');
 describe('CHAIN Test', () => {

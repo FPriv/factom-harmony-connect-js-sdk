@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import axios from 'axios';
-import Info from '../lib/resources/info';
+import Info from '../lib/resources/Info';
 
 jest.mock('axios');
 describe('INFO Test', () => {
