@@ -8,7 +8,7 @@ describe('INFO Test', () => {
     let info;
     beforeAll(() => {
       info = new Info({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -23,7 +23,7 @@ describe('INFO Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await info.getInfo();
+      const response = await info.get();
       expect(axios).toHaveBeenCalledWith('https://apicast.io', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ api_version: 'v1' });
     });

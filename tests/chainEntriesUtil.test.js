@@ -1,62 +1,36 @@
 /* eslint-env jest */
 import axios from 'axios';
-import Entries from '../lib/resources/Entries';
+import ApiCall from '../lib/api';
+import ChainEntriesUtil from '../lib/utils/chain/chainEntriesUtil';
 
 jest.mock('axios');
-describe('ENTRIES Test', () => {
-  describe('Get Entry Info', () => {
-    let entries;
-    beforeAll(() => {
-      entries = new Entries({
-        baseUrl: 'https://apicast.io',
-        accessToken: {
-          appId: '123456',
-          appKey: '123456789',
-        },
-      });
-    });
-    it('should return error message when chain id is missing', async () => {
-      try {
-        await entries.getEntry();
-      } catch (error) {
-        expect(error).toEqual(new Error('chainId is required.'));
-      }
-    });
-    it('should return entry info successfully', async () => {
-      const resp = {
-        status: 200,
-        data: {
-          chain_id: '123456',
-        },
-      };
-      axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await entries.getEntry({ chainId: '123456', entryHash: 'sha256', signatureValidation: false });
-      expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/sha256', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
-      expect(response).toEqual({ chain_id: '123456' });
-    });
-  });
+describe('CHAIN ENTRIES UTIL Test', () => {
   describe('Create An Entry without signing', () => {
     let entries;
-    beforeAll(() => {
-      entries = new Entries({
+    let apiCall;
+    beforeAll(async () => {
+      apiCall = new ApiCall({
         baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
         },
+      });
+      entries = new ChainEntriesUtil({
+        chainId: '123456',
         automaticSigning: false,
+        apiCall: apiCall,
       });
     });
-    it('should return error message when chain id is missing', async () => {
+    it('should return error message when external ids is missing', async () => {
       try {
         await entries.create();
       } catch (error) {
-        expect(error).toEqual(new Error('chainId is required.'));
+        expect(error).toEqual(new Error('at least 1 externalId is required.'));
       }
     });
     it('should create an entry successfully', async () => {
       const data = {
-        chainId: '123456',
         externalIds: ['1'],
         content: '123',
         callbackUrl: 'http://callback.com',
@@ -88,32 +62,24 @@ describe('ENTRIES Test', () => {
       expect(response).toEqual({ entry_hash: '123456' });
     });
   });
-  describe('Get Entries Of Chain', () => {
+  describe('Get Entries', () => {
     let entries;
-    beforeAll(() => {
-      entries = new Entries({
+    let apiCall;
+    beforeAll(async () => {
+      apiCall = new ApiCall({
         baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
         },
       });
-    });
-    it('should return error message when chain id is missing', async () => {
-      try {
-        await entries.get();
-      } catch (error) {
-        expect(error).toEqual(new Error('chainId is required.'));
-      }
+      entries = new ChainEntriesUtil({
+        chainId: '123456',
+        automaticSigning: false,
+        apiCall: apiCall,
+      });
     });
     it('should return entries info successfully', async () => {
-      const data = {
-        chainId: '123456',
-        limit: 1,
-        offset: 1,
-        stages: ['factom'],
-      };
-
       const resp = {
         status: 200,
         data: {
@@ -121,28 +87,27 @@ describe('ENTRIES Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await entries.get(data);
-      expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/sha256', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
+      const response = await entries.get();
+      expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });
   });
-  describe('First Entry Of Chain', () => {
+  describe('First Entry', () => {
     let entries;
-    beforeAll(() => {
-      entries = new Entries({
+    let apiCall;
+    beforeAll(async () => {
+      apiCall = new ApiCall({
         baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
         },
       });
-    });
-    it('should return error message when chain id is missing', async () => {
-      try {
-        await entries.getFirst({ signatureValidation: false });
-      } catch (error) {
-        expect(error).toEqual(new Error('chainId is required.'));
-      }
+      entries = new ChainEntriesUtil({
+        chainId: '123456',
+        automaticSigning: false,
+        apiCall: apiCall,
+      });
     });
     it('should return first entry successfully', async () => {
       const resp = {
@@ -152,28 +117,27 @@ describe('ENTRIES Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await entries.getFirst({ chainId: '123456', signatureValidation: false });
+      const response = await entries.getFirst({ signatureValidation: false });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/first', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });
   });
-  describe('Last Entry Of Chain', () => {
+  describe('Last Entry', () => {
     let entries;
-    beforeAll(() => {
-      entries = new Entries({
+    let apiCall;
+    beforeAll(async () => {
+      apiCall = new ApiCall({
         baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
         },
       });
-    });
-    it('should return error message when chain id is missing', async () => {
-      try {
-        await entries.getLast();
-      } catch (error) {
-        expect(error).toEqual(new Error('chainId is required.'));
-      }
+      entries = new ChainEntriesUtil({
+        chainId: '123456',
+        automaticSigning: false,
+        apiCall: apiCall,
+      });
     });
     it('should return last entry successfully', async () => {
       const resp = {
@@ -183,34 +147,39 @@ describe('ENTRIES Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await entries.getLast({ chainId: '123456', signatureValidation: false });
+      const response = await entries.getLast({ signatureValidation: false });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/last', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });
   });
-  describe('Search Entries Of Chain', () => {
+  describe('Search Entries', () => {
     let entries;
-    beforeAll(() => {
-      entries = new Entries({
+    let apiCall;
+    beforeAll(async () => {
+      apiCall = new ApiCall({
         baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
         },
       });
+      entries = new ChainEntriesUtil({
+        chainId: '123456',
+        automaticSigning: false,
+        apiCall: apiCall,
+      });
     });
-    it('should return error message when chain id is missing', async () => {
+    it('should return error message when external ids is missing', async () => {
       try {
         await entries.search();
       } catch (error) {
-        expect(error).toEqual(new Error('chainId is required.'));
+        expect(error).toEqual(new Error('at least 1 externalId is required.'));
       }
     });
     it('should return entries successfully', async () => {
       const data = {
-        chainId: '123456',
         externalIds: ['1'],
-        offset: 1,
+        limit: 1,
       };
 
       const resp = {
@@ -227,7 +196,7 @@ describe('ENTRIES Test', () => {
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       const response = await entries.search(data);
-      expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/search?offset=1', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
+      expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/search?limit=1', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual({ chain_id: '123456' });
     });
   });
