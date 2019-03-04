@@ -1,15 +1,15 @@
 /* eslint-env jest */
 import axios from 'axios';
 import ApiCall from '../lib/api';
-import EntryUtil from '../lib/utils/entryUtil';
+import EntryUtil from '../lib/utils/entriesUtil';
 
 jest.mock('axios');
-describe('ENTRY UTIL Test', () => {
+describe('ENTRIES UTIL Test', () => {
   describe('Entry Info', () => {
     let apiCall;
     beforeAll(() => {
       apiCall = new ApiCall({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -18,14 +18,14 @@ describe('ENTRY UTIL Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await EntryUtil.getEntryInfo();
+        await EntryUtil.getEntry();
       } catch (error) {
         expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return error message when entry hash is missing', async () => {
       try {
-        await EntryUtil.getEntryInfo({ chainId: '123456' });
+        await EntryUtil.getEntry({ chainId: '123456' });
       } catch (error) {
         expect(error).toEqual(new Error('entryHash is required.'));
       }
@@ -38,7 +38,7 @@ describe('ENTRY UTIL Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.getEntryInfo({
+      const response = await EntryUtil.getEntry({
         chainId: '123456',
         entryHash: 'sha256',
         signatureValidation: false,
@@ -47,117 +47,30 @@ describe('ENTRY UTIL Test', () => {
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/sha256', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });
-  });
-  describe('Validating Signature', () => {
-    let apiCall;
-    beforeAll(() => {
-      apiCall = new ApiCall({
-        baseURL: 'https://apicast.io',
-        accessToken: {
-          appId: '123456',
-          appKey: '123456789',
-        },
-      });
-    });
-    it('should return a chain object with invalid chain format status when length of external ids less than 6.', async () => {
-      const data = {
-        data: {
-          stage: 'factom',
-          external_ids: [
-            'YXNkZmRhcw==',
-            'YXNmZHM=',
-            'ZmFzZGZzZmRm',
-          ],
-          entries: {
-            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
-          },
-          chain_id: '123456',
-        },
-      };
-      const response = await EntryUtil.validateSignature({ entry: data });
-      expect(response).toMatch('not_signed/invalid_entry_format');
-    });
-    it('should return a chain object with invalid chain format status when first external ids is not equal SignedEntry.', async () => {
-      const data = {
-        data: {
-          stage: 'factom',
-          external_ids: [
-            'YXNkZmRhcw==',
-            'YXNmZHM=',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-          ],
-          entries: {
-            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
-          },
-          chain_id: '123456',
-        },
-      };
-      const response = await EntryUtil.validateSignature({ entry: data });
-      expect(response).toMatch('not_signed/invalid_entry_format');
-    });
-    it('should return a chain object with invalid chain format status when second external ids is not equal 0x01.', async () => {
-      const data = {
-        data: {
-          stage: 'factom',
-          external_ids: [
-            'SignedEntry',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-          ],
-          entries: {
-            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
-          },
-          chain_id: '123456',
-        },
-      };
-      const response = await EntryUtil.validateSignature({ entry: data });
-      expect(response).toMatch('not_signed/invalid_entry_format');
-    });
-    it('should return a chain object with inactive key status.', async () => {
+    it('should return entry info successfully with signature validation is a function', async () => {
       const resp = {
         status: 200,
         data: {
-          data: [{
-            key: 'idpub',
-          }],
-        },
-      };
-      const data = {
-        data: {
-          stage: 'factom',
-          external_ids: [
-            'SignedEntry',
-            '0x01',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-          ],
-          entries: {
-            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
-          },
           chain_id: '123456',
-          dblock: {
-            height: 10000,
-          },
         },
       };
+
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.validateSignature({ entry: data, apiCall: apiCall });
-      expect(response).toMatch('inactive_key');
+      const response = await EntryUtil.getEntry({
+        chainId: '123456',
+        entryHash: 'sha256',
+        signatureValidation: () => 'not_signed/invalid_chain_format',
+        apiCall: apiCall,
+      });
+      expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/sha256', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
+      expect(response.status).toMatch('not_signed/invalid_chain_format');
     });
   });
   describe('Create An Entry without signing', () => {
     let apiCall;
     beforeAll(() => {
       apiCall = new ApiCall({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -166,7 +79,7 @@ describe('ENTRY UTIL Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await EntryUtil.createEntry();
+        await EntryUtil.create();
       } catch (error) {
         expect(error).toEqual(new Error('chainId is required.'));
       }
@@ -178,7 +91,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: false,
         };
 
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('at least 1 externalId is required.'));
       }
@@ -191,7 +104,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: false,
         };
 
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('externalIds must be an array.'));
       }
@@ -205,7 +118,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: false,
         };
 
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerChainId is required when passing a signerPrivateKey.'));
       }
@@ -220,7 +133,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: false,
         };
 
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
@@ -234,7 +147,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: false,
         };
 
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is required when passing a signerChainId.'));
       }
@@ -247,7 +160,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: false,
         };
 
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('content is required.'));
       }
@@ -262,7 +175,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: false,
         };
 
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('callbackUrl is an invalid url format.'));
       }
@@ -278,7 +191,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: false,
         };
 
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('callbackStages must be an array.'));
       }
@@ -314,7 +227,7 @@ describe('ENTRY UTIL Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.createEntry(data);
+      const response = await EntryUtil.create(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual({ entry_hash: '123456' });
     });
@@ -323,7 +236,7 @@ describe('ENTRY UTIL Test', () => {
     let apiCall;
     beforeAll(() => {
       apiCall = new ApiCall({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -336,7 +249,7 @@ describe('ENTRY UTIL Test', () => {
           chainId: '123456',
           automaticSigning: true,
         };
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is required.'));
       }
@@ -348,7 +261,7 @@ describe('ENTRY UTIL Test', () => {
           signerPrivateKey: 'idsec',
           automaticSigning: true,
         };
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
@@ -360,7 +273,7 @@ describe('ENTRY UTIL Test', () => {
           signerPrivateKey: 'idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ',
           automaticSigning: true,
         };
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerChainId is required.'));
       }
@@ -374,7 +287,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: true,
         };
 
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('content is required.'));
       }
@@ -391,7 +304,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: true,
         };
 
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('callbackUrl is an invalid url format.'));
       }
@@ -409,7 +322,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: true,
         };
 
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('callbackStages must be an array.'));
       }
@@ -426,7 +339,7 @@ describe('ENTRY UTIL Test', () => {
           automaticSigning: true,
         };
 
-        await EntryUtil.createEntry(data);
+        await EntryUtil.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('externalIds must be an array.'));
       }
@@ -451,7 +364,7 @@ describe('ENTRY UTIL Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.createEntry(data);
+      const response = await EntryUtil.create(data);
       expect(response).toEqual({ entry_hash: '123456' });
     });
   });
@@ -459,7 +372,7 @@ describe('ENTRY UTIL Test', () => {
     let apiCall;
     beforeAll(() => {
       apiCall = new ApiCall({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -468,7 +381,7 @@ describe('ENTRY UTIL Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await EntryUtil.getEntries();
+        await EntryUtil.get();
       } catch (error) {
         expect(error).toEqual(new Error('chainId is required.'));
       }
@@ -479,7 +392,7 @@ describe('ENTRY UTIL Test', () => {
           chainId: '123456',
           limit: '15',
         };
-        await EntryUtil.getEntries(data);
+        await EntryUtil.get(data);
       } catch (error) {
         expect(error).toEqual(new Error('limit must be an integer.'));
       }
@@ -491,14 +404,14 @@ describe('ENTRY UTIL Test', () => {
           limit: 15,
           offset: '1',
         };
-        await EntryUtil.getEntries(data);
+        await EntryUtil.get(data);
       } catch (error) {
         expect(error).toEqual(new Error('offset must be an integer.'));
       }
     });
     it('should return error message when stages is not array', async () => {
       try {
-        await EntryUtil.getEntries({ chainId: '123456', stages: '123' });
+        await EntryUtil.get({ chainId: '123456', stages: '123' });
       } catch (error) {
         expect(error).toEqual(new Error('stages must be an array.'));
       }
@@ -518,7 +431,7 @@ describe('ENTRY UTIL Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.getEntries(data);
+      const response = await EntryUtil.get(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries?limit=1&offset=1', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });
@@ -527,7 +440,7 @@ describe('ENTRY UTIL Test', () => {
     let apiCall;
     beforeAll(() => {
       apiCall = new ApiCall({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -536,7 +449,7 @@ describe('ENTRY UTIL Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await EntryUtil.getFirstEntry();
+        await EntryUtil.getFirst();
       } catch (error) {
         expect(error).toEqual(new Error('chainId is required.'));
       }
@@ -545,6 +458,7 @@ describe('ENTRY UTIL Test', () => {
       const data = {
         chainId: '123456',
         apiCall: apiCall,
+        signatureValidation: false,
       };
 
       const resp = {
@@ -554,16 +468,34 @@ describe('ENTRY UTIL Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.getFirstEntry(data);
+      const response = await EntryUtil.getFirst(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/first', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
+    });
+    it('should return entries info successfully with signature validation is a function', async () => {
+      const data = {
+        chainId: '123456',
+        apiCall: apiCall,
+        signatureValidation: () => 'valid_signature',
+      };
+
+      const resp = {
+        status: 200,
+        data: {
+          chain_id: '123456',
+        },
+      };
+      axios.mockImplementationOnce(() => Promise.resolve(resp));
+      const response = await EntryUtil.getFirst(data);
+      expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/first', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
+      expect(response.status).toMatch('valid_signature');
     });
   });
   describe('Last Entry', () => {
     let apiCall;
     beforeAll(() => {
       apiCall = new ApiCall({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -572,7 +504,7 @@ describe('ENTRY UTIL Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await EntryUtil.getLastEntry();
+        await EntryUtil.getLast();
       } catch (error) {
         expect(error).toEqual(new Error('chainId is required.'));
       }
@@ -581,6 +513,7 @@ describe('ENTRY UTIL Test', () => {
       const data = {
         chainId: '123456',
         apiCall: apiCall,
+        signatureValidation: false,
       };
 
       const resp = {
@@ -590,16 +523,34 @@ describe('ENTRY UTIL Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.getLastEntry(data);
+      const response = await EntryUtil.getLast(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/last', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
+    });
+    it('should return entries info successfully with signature validation is a function', async () => {
+      const data = {
+        chainId: '123456',
+        apiCall: apiCall,
+        signatureValidation: () => 'valid_signature',
+      };
+
+      const resp = {
+        status: 200,
+        data: {
+          chain_id: '123456',
+        },
+      };
+      axios.mockImplementationOnce(() => Promise.resolve(resp));
+      const response = await EntryUtil.getLast(data);
+      expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/last', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
+      expect(response.status).toMatch('valid_signature');
     });
   });
   describe('Search Entries', () => {
     let apiCall;
     beforeAll(() => {
       apiCall = new ApiCall({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -608,14 +559,14 @@ describe('ENTRY UTIL Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await EntryUtil.searchEntries();
+        await EntryUtil.search();
       } catch (error) {
         expect(error).toEqual(new Error('chainId is required.'));
       }
     });
     it('should return error message when external ids is missing', async () => {
       try {
-        await EntryUtil.searchEntries({ chainId: '123456' });
+        await EntryUtil.search({ chainId: '123456' });
       } catch (error) {
         expect(error).toEqual(new Error('at least 1 externalId is required.'));
       }
@@ -629,7 +580,7 @@ describe('ENTRY UTIL Test', () => {
           offset: 1,
         };
 
-        await EntryUtil.searchEntries(data);
+        await EntryUtil.search(data);
       } catch (error) {
         expect(error).toEqual(new Error('limit must be an integer.'));
       }
@@ -643,7 +594,7 @@ describe('ENTRY UTIL Test', () => {
           offset: '1',
         };
 
-        await EntryUtil.searchEntries(data);
+        await EntryUtil.search(data);
       } catch (error) {
         expect(error).toEqual(new Error('offset must be an integer.'));
       }
@@ -668,7 +619,7 @@ describe('ENTRY UTIL Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await EntryUtil.searchEntries(data);
+      const response = await EntryUtil.search(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries/search', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual({ chain_id: '123456' });
     });

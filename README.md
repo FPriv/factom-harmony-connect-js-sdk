@@ -22,5 +22,7 @@ To help developers better understand how the SDK works in practice, there is a s
 
 1) If you haven't done so already, run `npm install` followed by `npm run build`.
 2) `cd sample-app`
-3) `node server.js`
-4) Open http://localhost:8080 in your browser
+3) open `simulateNotary.js`
+4) Input your baseUrl, appId and appKey, which can be found or generated at https://account.factom.com
+5) `node server.js`
+6) Open http://localhost:8080 in your browser

@@ -8,7 +8,7 @@ describe('IDENTITY Test', () => {
     let identity;
     beforeAll(() => {
       identity = new Identity({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -16,14 +16,14 @@ describe('IDENTITY Test', () => {
       });
     });
     it('should return array of 3 private and public key pairs', () => {
-      identity.createIdentityKeyPair();
+      identity.createKeyPairs();
     });
   });
   describe('Create an Identity', () => {
     let identity;
     beforeAll(() => {
       identity = new Identity({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -32,14 +32,14 @@ describe('IDENTITY Test', () => {
     });
     it('should return error message when name is missing', async () => {
       try {
-        await identity.createIdentity();
+        await identity.create();
       } catch (error) {
         expect(error).toEqual(new Error('name is required.'));
       }
     });
     it('should return error message when name is not array', async () => {
       try {
-        await identity.createIdentity({ name: '123' });
+        await identity.create({ name: '123' });
       } catch (error) {
         expect(error).toEqual(new Error('name must be an array.'));
       }
@@ -47,7 +47,7 @@ describe('IDENTITY Test', () => {
     it('should return error message when keys is missing', async () => {
       try {
         const data = { name: ['123'] };
-        await identity.createIdentity(data);
+        await identity.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('at least 1 key is required.'));
       }
@@ -55,7 +55,7 @@ describe('IDENTITY Test', () => {
     it('should return error message when keys is not array', async () => {
       try {
         const data = { name: ['123'], keys: 'idpub' };
-        await identity.createIdentity(data);
+        await identity.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('keys must be an array.'));
       }
@@ -107,7 +107,7 @@ describe('IDENTITY Test', () => {
           ],
           keys: ['idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB'],
         };
-        await identity.createIdentity(data);
+        await identity.create(data);
       } catch (error) {
         expect(error).toEqual(
           new Error('calculated bytes of name and keys is 12655. It must be less than 10240, use less/shorter name or less keys.'),
@@ -135,7 +135,7 @@ describe('IDENTITY Test', () => {
             'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
           ],
         };
-        await identity.createIdentity(data);
+        await identity.create(data);
       } catch (error) {
         expect(error).toEqual(new Error(errors));
       }
@@ -156,7 +156,7 @@ describe('IDENTITY Test', () => {
             'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
           ],
         };
-        await identity.createIdentity(data);
+        await identity.create(data);
       } catch (error) {
         expect(error).toEqual(new Error(errors));
       }
@@ -173,7 +173,7 @@ describe('IDENTITY Test', () => {
           callbackUrl: 'callback.com',
           callbackStages: ['factom', 'replicated'],
         };
-        await await identity.createIdentity(data);
+        await await identity.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('callbackUrl is an invalid url format.'));
       }
@@ -190,7 +190,7 @@ describe('IDENTITY Test', () => {
           callbackUrl: 'http://callback.com',
           callbackStages: 'factom',
         };
-        await await identity.createIdentity(data);
+        await await identity.create(data);
       } catch (error) {
         expect(error).toEqual(
           new Error('callbackStages must be an array.'),
@@ -231,7 +231,7 @@ describe('IDENTITY Test', () => {
         name: [Buffer.from('1').toString('base64')],
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await identity.createIdentity(data);
+      const response = await identity.create(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/identities', {
         data: dataPostAPI,
         headers: {
@@ -248,7 +248,7 @@ describe('IDENTITY Test', () => {
     let identity;
     beforeAll(() => {
       identity = new Identity({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -257,7 +257,7 @@ describe('IDENTITY Test', () => {
     });
     it('should return error message when identity chain id is missing', async () => {
       try {
-        await identity.getIdentity();
+        await identity.get();
       } catch (error) {
         expect(error).toEqual(new Error('identityChainId is required.'));
       }
@@ -276,7 +276,7 @@ describe('IDENTITY Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await identity.getIdentity({
+      const response = await identity.get({
         identityChainId: '123456',
       });
       expect(axios).toHaveBeenCalledWith(
@@ -298,7 +298,7 @@ describe('IDENTITY Test', () => {
     let identity;
     beforeAll(() => {
       identity = new Identity({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -307,7 +307,7 @@ describe('IDENTITY Test', () => {
     });
     it('should return error message when identity chain id is missing', async () => {
       try {
-        await identity.getAllIdentityKeys();
+        await identity.getKeys();
       } catch (error) {
         expect(error).toEqual(new Error('identityChainId is required.'));
       }
@@ -318,7 +318,7 @@ describe('IDENTITY Test', () => {
           identityChainId: '123456',
           activeAtHeight: '1',
         };
-        await identity.getAllIdentityKeys(data);
+        await identity.getKeys(data);
       } catch (error) {
         expect(error).toEqual(new Error('activeAtHeight must be an integer.'));
       }
@@ -330,7 +330,7 @@ describe('IDENTITY Test', () => {
           activeAtHeight: 1,
           limit: '1',
         };
-        await identity.getAllIdentityKeys(data);
+        await identity.getKeys(data);
       } catch (error) {
         expect(error).toEqual(new Error('limit must be an integer.'));
       }
@@ -343,7 +343,7 @@ describe('IDENTITY Test', () => {
           limit: 1,
           offset: '1',
         };
-        await identity.getAllIdentityKeys(data);
+        await identity.getKeys(data);
       } catch (error) {
         expect(error).toEqual(new Error('offset must be an integer.'));
       }
@@ -370,7 +370,7 @@ describe('IDENTITY Test', () => {
         identityChainId: '123456',
       };
 
-      const response = await identity.getAllIdentityKeys(data);
+      const response = await identity.getKeys(data);
       expect(axios).toHaveBeenCalledWith(
         'https://apicast.io/identities/123456/keys',
         {
@@ -390,7 +390,7 @@ describe('IDENTITY Test', () => {
     let identity;
     beforeAll(() => {
       identity = new Identity({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -399,7 +399,7 @@ describe('IDENTITY Test', () => {
     });
     it('should return error message when identity chain id is missing', async () => {
       try {
-        await identity.createIdentityKeyReplacement();
+        await identity.createKeyReplacement();
       } catch (error) {
         expect(error).toEqual(new Error('identityChainId is required.'));
       }
@@ -409,7 +409,7 @@ describe('IDENTITY Test', () => {
         const data = {
           identityChainId: '123456',
         };
-        await identity.createIdentityKeyReplacement(data);
+        await identity.createKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('oldPublicKey is required.'));
       }
@@ -420,7 +420,7 @@ describe('IDENTITY Test', () => {
           identityChainId: '123456',
           oldPublicKey: 'idpub2',
         };
-        await identity.createIdentityKeyReplacement(data);
+        await identity.createKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('newPublicKey is required.'));
       }
@@ -432,7 +432,7 @@ describe('IDENTITY Test', () => {
           oldPublicKey: 'idpub2',
           newPublicKey: 'idpub2',
         };
-        await identity.createIdentityKeyReplacement(data);
+        await identity.createKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is required.'));
       }
@@ -445,7 +445,7 @@ describe('IDENTITY Test', () => {
           newPublicKey: 'idpub2',
           signerPrivateKey: 'idsec2',
         };
-        await identity.createIdentityKeyReplacement(data);
+        await identity.createKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('oldPublicKey is an invalid public key.'));
       }
@@ -458,7 +458,7 @@ describe('IDENTITY Test', () => {
           newPublicKey: 'idpub2',
           signerPrivateKey: 'idsec2',
         };
-        await identity.createIdentityKeyReplacement(data);
+        await identity.createKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('oldPublicKey is an invalid public key.'));
       }
@@ -471,7 +471,7 @@ describe('IDENTITY Test', () => {
           newPublicKey: 'idpub2',
           signerPrivateKey: 'idsec2',
         };
-        await identity.createIdentityKeyReplacement(data);
+        await identity.createKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('newPublicKey is an invalid public key.'));
       }
@@ -486,7 +486,7 @@ describe('IDENTITY Test', () => {
             'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zH12',
           signerPrivateKey: 'idsec2',
         };
-        await identity.createIdentityKeyReplacement(data);
+        await identity.createKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('newPublicKey is an invalid public key.'));
       }
@@ -501,7 +501,7 @@ describe('IDENTITY Test', () => {
             'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
           signerPrivateKey: 'idsec2',
         };
-        await identity.createIdentityKeyReplacement(data);
+        await identity.createKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
@@ -517,7 +517,7 @@ describe('IDENTITY Test', () => {
           signerPrivateKey:
             'idsec1Xbja4exmHFNgVSsk7VipNi4mwt6BjQFEZFCohs4Y7TzfhHo12',
         };
-        await identity.createIdentityKeyReplacement(data);
+        await identity.createKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
@@ -534,7 +534,7 @@ describe('IDENTITY Test', () => {
         callbackStages: ['factom', 'replicated'],
       };
       try {
-        await identity.createIdentityKeyReplacement(data);
+        await identity.createKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(new Error('callbackUrl is an invalid url format.'));
       }
@@ -551,7 +551,7 @@ describe('IDENTITY Test', () => {
         callbackStages: 'factom',
       };
       try {
-        await identity.createIdentityKeyReplacement(data);
+        await identity.createKeyReplacement(data);
       } catch (error) {
         expect(error).toEqual(
           new Error('callbackStages must be an array.'),
@@ -589,7 +589,7 @@ describe('IDENTITY Test', () => {
         callback_url: 'http://callback.com',
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await identity.createIdentityKeyReplacement(data);
+      const response = await identity.createKeyReplacement(data);
       expect(axios).toHaveBeenCalledWith(
         'https://apicast.io/identities/171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7/keys',
         {

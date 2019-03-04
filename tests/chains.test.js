@@ -8,7 +8,7 @@ describe('CHAINS Test', () => {
     let chains;
     beforeAll(() => {
       chains = new Chains({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -17,7 +17,7 @@ describe('CHAINS Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await chains.getChainInfo();
+        await chains.getChain();
       } catch (error) {
         expect(error).toEqual(new Error('chainId is required.'));
       }
@@ -52,7 +52,7 @@ describe('CHAINS Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.getChainInfo({ chainId: '123456', signatureValidation: false });
+      const response = await chains.getChain({ chainId: '123456', signatureValidation: false });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response.data).toEqual(dataCompare);
     });
@@ -77,121 +77,16 @@ describe('CHAINS Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.getChainInfo({ chainId: '123456789', signatureValidation: () => 'not_signed/invalid_chain_format' });
+      const response = await chains.getChain({ chainId: '123456789', signatureValidation: () => 'not_signed/invalid_chain_format' });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456789', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response.status).toMatch('not_signed/invalid_chain_format');
-    });
-  });
-  describe('Validating Signature', () => {
-    let chains;
-    beforeAll(() => {
-      chains = new Chains({
-        baseURL: 'https://apicast.io',
-        accessToken: {
-          appId: '123456',
-          appKey: '123456789',
-        },
-      });
-    });
-    it('should return a chain object with invalid chain format status when length of external ids less than 6.', async () => {
-      const data = {
-        data: {
-          stage: 'factom',
-          external_ids: [
-            'YXNkZmRhcw==',
-            'YXNmZHM=',
-            'ZmFzZGZzZmRm',
-          ],
-          entries: {
-            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
-          },
-          chain_id: '123456',
-        },
-      };
-      const response = await chains.validateSignature({ chain: data });
-      expect(response).toMatch('not_signed/invalid_chain_format');
-    });
-    it('should return a chain object with invalid chain format status when first external ids is not equal SignedChain.', async () => {
-      const data = {
-        data: {
-          stage: 'factom',
-          external_ids: [
-            'YXNkZmRhcw==',
-            'YXNmZHM=',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-          ],
-          entries: {
-            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
-          },
-          chain_id: '123456',
-        },
-      };
-      const response = await chains.validateSignature({ chain: data });
-      expect(response).toMatch('not_signed/invalid_chain_format');
-    });
-    it('should return a chain object with invalid chain format status when second external ids is not equal 0x01.', async () => {
-      const data = {
-        data: {
-          stage: 'factom',
-          external_ids: [
-            'SignedChain',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-          ],
-          entries: {
-            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
-          },
-          chain_id: '123456',
-        },
-      };
-      const response = await chains.validateSignature({ chain: data });
-      expect(response).toMatch('not_signed/invalid_chain_format');
-    });
-    it('should return a chain object with inactive key status.', async () => {
-      const resp = {
-        status: 200,
-        data: {
-          data: [{
-            key: 'idpub',
-          }],
-        },
-      };
-      const data = {
-        data: {
-          stage: 'factom',
-          external_ids: [
-            'SignedChain',
-            '0x01',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-            'ZmFzZGZzZmRm',
-          ],
-          entries: {
-            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
-          },
-          chain_id: '123456',
-          dblock: {
-            height: 10000,
-          },
-        },
-      };
-      axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.validateSignature({ chain: data });
-      expect(response).toMatch('inactive_key');
     });
   });
   describe('Create a Chain without siging', () => {
     let chains;
     beforeAll(() => {
       chains = new Chains({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -201,7 +96,7 @@ describe('CHAINS Test', () => {
     });
     it('should return error message when external ids is missing', async () => {
       try {
-        await chains.createChain();
+        await chains.create();
       } catch (error) {
         expect(error).toEqual(new Error('at least 1 externalId is required.'));
       }
@@ -212,7 +107,7 @@ describe('CHAINS Test', () => {
           externalIds: '1',
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('externalIds must be an array.'));
       }
@@ -224,7 +119,7 @@ describe('CHAINS Test', () => {
           signerPrivateKey: 'idsec',
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerChainId is required when passing a signerPrivateKey.'));
       }
@@ -237,7 +132,7 @@ describe('CHAINS Test', () => {
           signerChainId: '123456',
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
@@ -249,7 +144,7 @@ describe('CHAINS Test', () => {
           signerChainId: '123456',
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is required when passing a signerChainId.'));
       }
@@ -260,7 +155,7 @@ describe('CHAINS Test', () => {
           externalIds: ['1'],
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('content is required.'));
       }
@@ -273,7 +168,7 @@ describe('CHAINS Test', () => {
           callbackUrl: 'callback.com',
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('callbackUrl is an invalid url format.'));
       }
@@ -287,7 +182,7 @@ describe('CHAINS Test', () => {
           callbackStages: '123',
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('callbackStages must be an array.'));
       }
@@ -320,7 +215,7 @@ describe('CHAINS Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.createChain(data);
+      const response = await chains.create(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual(resp.data);
     });
@@ -329,7 +224,7 @@ describe('CHAINS Test', () => {
     let chains;
     beforeAll(() => {
       chains = new Chains({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -339,7 +234,7 @@ describe('CHAINS Test', () => {
     });
     it('should return error message when private key is missing', async () => {
       try {
-        await chains.createChain();
+        await chains.create();
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is required.'));
       }
@@ -349,7 +244,7 @@ describe('CHAINS Test', () => {
         const data = {
           signerPrivateKey: 'idsec',
         };
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
@@ -359,7 +254,7 @@ describe('CHAINS Test', () => {
         const data = {
           signerPrivateKey: 'idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ',
         };
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerChainId is required.'));
       }
@@ -370,7 +265,7 @@ describe('CHAINS Test', () => {
           signerPrivateKey: 'idsec1rxvt6BX7KJjaqUhVMQNBGzaa1H4oy43njXSW171HftLnTyvhZ',
           signerChainId: '123',
         };
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('content is required.'));
       }
@@ -382,7 +277,7 @@ describe('CHAINS Test', () => {
           content: '123',
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is required.'));
       }
@@ -395,7 +290,7 @@ describe('CHAINS Test', () => {
           signerPrivateKey: 'idsec',
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerPrivateKey is invalid.'));
       }
@@ -408,7 +303,7 @@ describe('CHAINS Test', () => {
           signerPrivateKey: 'idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB',
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('signerChainId is required.'));
       }
@@ -423,7 +318,7 @@ describe('CHAINS Test', () => {
           callbackUrl: 'callback.com',
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('callbackUrl is an invalid url format.'));
       }
@@ -439,7 +334,7 @@ describe('CHAINS Test', () => {
           callbackStages: '123',
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('callbackStages must be an array.'));
       }
@@ -455,7 +350,7 @@ describe('CHAINS Test', () => {
           callbackStages: ['factom'],
         };
 
-        await chains.createChain(data);
+        await chains.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('externalIds must be an array.'));
       }
@@ -477,7 +372,7 @@ describe('CHAINS Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.createChain(data);
+      const response = await chains.create(data);
       expect(response).toEqual(resp.data);
     });
   });
@@ -485,7 +380,7 @@ describe('CHAINS Test', () => {
     let chains;
     beforeAll(() => {
       chains = new Chains({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -500,7 +395,7 @@ describe('CHAINS Test', () => {
           stages: '123',
         };
 
-        await chains.getAllChains(data);
+        await chains.get(data);
       } catch (error) {
         expect(error).toEqual(new Error('limit must be an integer.'));
       }
@@ -513,7 +408,7 @@ describe('CHAINS Test', () => {
           stages: '123',
         };
 
-        await chains.getAllChains(data);
+        await chains.get(data);
       } catch (error) {
         expect(error).toEqual(new Error('offset must be an integer.'));
       }
@@ -526,7 +421,7 @@ describe('CHAINS Test', () => {
           stages: '123',
         };
 
-        await chains.getAllChains(data);
+        await chains.get(data);
       } catch (error) {
         expect(error).toEqual(new Error('stages must be an array.'));
       }
@@ -539,7 +434,7 @@ describe('CHAINS Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.getAllChains();
+      const response = await chains.get();
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });
@@ -548,7 +443,7 @@ describe('CHAINS Test', () => {
     let chains;
     beforeAll(() => {
       chains = new Chains({
-        baseURL: 'https://apicast.io',
+        baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -557,7 +452,7 @@ describe('CHAINS Test', () => {
     });
     it('should return error message when external ids is missing', async () => {
       try {
-        await chains.searchChains();
+        await chains.search();
       } catch (error) {
         expect(error).toEqual(new Error('at least 1 externalId is required.'));
       }
@@ -569,7 +464,7 @@ describe('CHAINS Test', () => {
           limit: '1',
         };
 
-        await chains.searchChains(data);
+        await chains.search(data);
       } catch (error) {
         expect(error).toEqual(new Error('limit must be an integer.'));
       }
@@ -582,7 +477,7 @@ describe('CHAINS Test', () => {
           offset: '1',
         };
 
-        await chains.searchChains(data);
+        await chains.search(data);
       } catch (error) {
         expect(error).toEqual(new Error('offset must be an integer.'));
       }
@@ -605,7 +500,7 @@ describe('CHAINS Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.searchChains(data);
+      const response = await chains.search(data);
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/search', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual({ chain_id: '123456' });
     });

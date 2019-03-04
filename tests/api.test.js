@@ -9,7 +9,7 @@ describe('APICall Test', () => {
       try {
         // eslint-disable-next-line no-new
         new APICall({
-          baseURL: 'apicast',
+          baseUrl: 'apicast',
           accessToken: {
             appId: '123456',
             appKey: '123456789',
@@ -24,7 +24,7 @@ describe('APICall Test', () => {
       try {
         // eslint-disable-next-line no-new
         new APICall({
-          baseURL: 'https://apicast.io/',
+          baseUrl: 'https://apicast.io/',
         });
       } catch (error) {
         expect(error).toEqual(new Error('The accessToken is required.'));
@@ -34,7 +34,7 @@ describe('APICall Test', () => {
     it('should produce a new APICall class', () => {
       // eslint-disable-next-line no-new
       const api = new APICall({
-        baseURL: 'https://apicast.io/',
+        baseUrl: 'https://apicast.io/',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
@@ -42,7 +42,7 @@ describe('APICall Test', () => {
       });
 
       expect(api).toEqual({
-        baseURL: 'https://apicast.io/',
+        baseUrl: 'https://apicast.io/',
         accessToken:
         {
           appId: '123456',
@@ -56,7 +56,7 @@ describe('APICall Test', () => {
     let apiCall;
     beforeAll(() => {
       apiCall = new APICall({
-        baseURL: 'https://apicast.io/',
+        baseUrl: 'https://apicast.io/',
         accessToken: {
           appId: '123456',
           appKey: '123456789',
