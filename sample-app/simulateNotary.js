@@ -21,8 +21,7 @@ module.exports = async (request, response) => {
   });
 
   try {
-    // Create initial key pairs, sdk will create 3 key pairs by default, you can change the number of key pair by passing {numberOfKeyPair: } to the params
-    // Create single key pair by using factomConnectSDK.keyUtil.createKeyPair()
+    // Create initial key pairs, sdk will create 3 key pairs by default, you can change the number of key pair by passing {numberOfKeyPairs: } to the params
     let originalKeyPairs = factomConnectSDK.identity.createKeyPairs();
     
     const publicKeyArr = [];
