@@ -6,7 +6,7 @@ const fs = require("fs");
 
 (async () => {
   const factomConnectSDK = new FactomConnectSDK({
-    baseURL: "YOUR API URL",
+    baseUrl: "YOUR API URL",
     accessToken: {
       appId: "YOUR APP ID",
       appKey: "YOUR APP KEY"
