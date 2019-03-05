@@ -13,7 +13,7 @@ const responseData = (response, data) => {
 module.exports = async (request, response) => {
   // Init factom sdk with your appId and appKey, which can be found or generated at https://account.factom.com
   const factomConnectSDK = new FactomConnectSDK({
-    baseURL: "YOUR API URL",
+    baseUrl: "YOUR API URL",
     accessToken: {
       appId: "YOUR APP ID",
       appKey: "YOUR APP KEY"
