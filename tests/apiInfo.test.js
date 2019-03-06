@@ -1,13 +1,13 @@
 /* eslint-env jest */
 import axios from 'axios';
-import Info from '../lib/resources/Info';
+import ApiInfo from '../lib/resources/ApiInfo';
 
 jest.mock('axios');
 describe('INFO Test', () => {
   describe('Get Info', () => {
     let info;
     beforeAll(() => {
-      info = new Info({
+      info = new ApiInfo({
         baseUrl: 'https://apicast.io',
         accessToken: {
           appId: '123456',

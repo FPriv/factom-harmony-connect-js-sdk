@@ -6,29 +6,30 @@ const fs = require("fs");
 
 (async () => {
   const factomConnectSDK = new FactomConnectSDK({
-    baseURL: "YOUR API URL",
+    baseUrl: "YOUR API URL",
     accessToken: {
-      appId: "YOUR APP ID",
-      appKey: "YOUR APP KEY"
+        appId: "YOUR APP ID",
+        appKey: "YOUR APP KEY"
     }
   });
 
   try {
     console.log("==============INFO==============");
-    console.log("factomConnectSDK.info.get");
-    await factomConnectSDK.info.get()
+    console.log("factomConnectSDK.apiInfo.get");
+    await factomConnectSDK.apiInfo.get()
 
-    console.log("==============IDENTITY==============");
-    console.log("factomConnectSDK.identity.createKeyPairs");
-    const originalKeyPairs = factomConnectSDK.identity.createKeyPairs();
+    console.log("==============KEY UTIL==============");
+    console.log("factomConnectSDK.keyUtil.generatePairs");
+    const originalKeyPairs = factomConnectSDK.keyUtil.generatePairs();
     const keyToSign = originalKeyPairs[0];
     const publicKeyArr = [];
     originalKeyPairs.forEach(item => {
       publicKeyArr.push(item.publicKey);
     });
 
-    console.log("factomConnectSDK.identity.create");
-    const createIdentityChainResponse = await factomConnectSDK.identity.create(
+    console.log("==============IDENTITIES==============");
+    console.log("factomConnectSDK.identities.create");
+    const createIdentityChainResponse = await factomConnectSDK.identities.create(
       {
         name: ["NotarySimulation", new Date().toISOString()],
         keys: [...publicKeyArr]
@@ -37,23 +38,30 @@ const fs = require("fs");
     
     const identityChainId = createIdentityChainResponse.chain_id;
 
-    console.log("factomConnectSDK.identity.get");
-    await factomConnectSDK.identity.get({
+    console.log("factomConnectSDK.identities.get");
+    await factomConnectSDK.identities.get({
       identityChainId: identityChainId
     });
 
-    console.log("factomConnectSDK.identity.getKeys");
-    const identityKeys = await factomConnectSDK.identity.getKeys({
+    // Temporary comment 
+    console.log("factomConnectSDK.identities.keys.get");
+    // await factomConnectSDK.identities.keys.get({
+    //   identityChainId: identityChainId,
+    //   signerPublicKey: keyToSign.publicKey
+    // });
+
+    console.log("factomConnectSDK.identities.keys.list");
+    await factomConnectSDK.identities.keys.list({
       identityChainId: identityChainId
     });
 
-    console.log("factomConnectSDK.identity.createKeyReplacement");
-    const replacementKeyPairs = factomConnectSDK.identity.createKeyPairs();
+    console.log("factomConnectSDK.identities.keys.replace");
+    const replacementKeyPairs = factomConnectSDK.keyUtil.generatePairs();
     const replacementEntryResponses = [];
     for (let index = 0; index < replacementKeyPairs.length; index++) {
       const newKeyPair = replacementKeyPairs[index];
       const originalKeyPair = originalKeyPairs[index];
-      const replacementEntryResponse= await factomConnectSDK.identity.createKeyReplacement({
+      const replacementEntryResponse= await factomConnectSDK.identities.keys.replace({
         identityChainId: identityChainId,
         oldPublicKey: originalKeyPair.publicKey,
         newPublicKey: newKeyPair.publicKey,
@@ -73,13 +81,13 @@ const fs = require("fs");
     })
     const chainId = createChainResponse.chain_id;
     
-    console.log("factomConnectSDK.chains.getChain");
-    await factomConnectSDK.chains.getChain({
+    console.log("factomConnectSDK.chains.get");
+    await factomConnectSDK.chains.get({
       chainId: chainId
     })
 
-    console.log("factomConnectSDK.chains.get");
-    await factomConnectSDK.chains.get();
+    console.log("factomConnectSDK.chains.list");
+    await factomConnectSDK.chains.list();
 
     console.log("factomConnectSDK.chains.search");
     await factomConnectSDK.chains.search({
@@ -89,8 +97,8 @@ const fs = require("fs");
     console.log("==============ENTRIES==============");
     const documentBuffer = fs.readFileSync("./Factom_Whitepaper_v1.2.pdf");
     const documentHash = sha256(documentBuffer);
-    console.log("factomConnectSDK.entries.create");
-    const createEntryResponse = await factomConnectSDK.entries.create({
+    console.log("factomConnectSDK.chains.entries.create");
+    const createEntryResponse = await factomConnectSDK.chains.entries.create({
       chainId: chainId,
       signerPrivateKey: keyToSign.privateKey,
       signerChainId: identityChainId,
@@ -102,74 +110,31 @@ const fs = require("fs");
     });
     const entryHash = createEntryResponse.entry_hash;
 
-    console.log("factomConnectSDK.entries.getEntry");
-    await factomConnectSDK.entries.getEntry({
+    console.log("factomConnectSDK.chains.entries.get");
+    await factomConnectSDK.chains.entries.get({
       chainId: chainId,
       entryHash: entryHash
     });
     
-    console.log("factomConnectSDK.entries.get");
-    await factomConnectSDK.entries.get({
+    console.log("factomConnectSDK.chains.entries.list");
+    await factomConnectSDK.chains.entries.list({
       chainId: chainId
     });
 
-    console.log("factomConnectSDK.entries.getFirst");
-    await factomConnectSDK.entries.getFirst({
+    console.log("factomConnectSDK.chains.entries.getFirst");
+    await factomConnectSDK.chains.entries.getFirst({
       chainId: chainId
     });
 
-    console.log("factomConnectSDK.entries.getLast");
-    await factomConnectSDK.entries.getLast({
+    console.log("factomConnectSDK.chains.entries.getLast");
+    await factomConnectSDK.chains.entries.getLast({
       chainId: chainId
     });
 
-    console.log("factomConnectSDK.entries.search");
-    await factomConnectSDK.entries.search({
+    console.log("factomConnectSDK.chains.entries.search");
+    await factomConnectSDK.chains.entries.search({
       chainId: chainId,
       externalIds: ["TestFunction", "DocumentEntry", "doc987"]
-    });
-
-    console.log("==============CHAIN==============");
-    console.log("factomConnectSDK.chain.get");
-    const chain = await factomConnectSDK.chain.get({
-      chainId: chainId
-    });
-    
-    console.log("==============CHAIN-ENTRY==============");
-    console.log("chain.entry.get");
-    await chain.entry.get({
-      entryHash: entryHash
-    })
-
-    console.log("==============CHAIN-ENTRIES==============");
-    console.log("chain.entries.create");
-    await chain.entries.create({
-      signerPrivateKey: keyToSign.privateKey,
-      signerChainId: identityChainId,
-      externalIds: ["TestFunction2", "DocumentEntry2", "doc9872"],
-      content: JSON.stringify({
-        document_hash: documentHash,
-        hash_type: "sha256"
-      })
-    });
-
-    console.log("chain.entries.get");
-    await chain.entries.get();
-
-    console.log("chain.entries.getFirst");
-    await chain.entries.getFirst({
-      chainId: chainId
-    });
-
-    console.log("chain.entries.getLast");
-    await chain.entries.getLast({
-      chainId: chainId
-    });
-
-    console.log("chain.entries.search");
-    await chain.entries.search({
-      chainId: chainId,
-      externalIds: ["TestFunction2", "DocumentEntry2", "doc9872"]
     });
   } catch (error) {
     console.log(error);

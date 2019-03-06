@@ -17,7 +17,7 @@ describe('CHAINS Test', () => {
     });
     it('should return error message when chain id is missing', async () => {
       try {
-        await chains.getChain();
+        await chains.get();
       } catch (error) {
         expect(error).toEqual(new Error('chainId is required.'));
       }
@@ -52,7 +52,7 @@ describe('CHAINS Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.getChain({ chainId: '123456', signatureValidation: false });
+      const response = await chains.get({ chainId: '123456', signatureValidation: false });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response.data).toEqual(dataCompare);
     });
@@ -77,7 +77,7 @@ describe('CHAINS Test', () => {
       };
 
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.getChain({ chainId: '123456789', signatureValidation: () => 'not_signed/invalid_chain_format' });
+      const response = await chains.get({ chainId: '123456789', signatureValidation: () => 'not_signed/invalid_chain_format' });
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456789', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response.status).toMatch('not_signed/invalid_chain_format');
     });
@@ -395,7 +395,7 @@ describe('CHAINS Test', () => {
           stages: '123',
         };
 
-        await chains.get(data);
+        await chains.list(data);
       } catch (error) {
         expect(error).toEqual(new Error('limit must be an integer.'));
       }
@@ -408,7 +408,7 @@ describe('CHAINS Test', () => {
           stages: '123',
         };
 
-        await chains.get(data);
+        await chains.list(data);
       } catch (error) {
         expect(error).toEqual(new Error('offset must be an integer.'));
       }
@@ -421,7 +421,7 @@ describe('CHAINS Test', () => {
           stages: '123',
         };
 
-        await chains.get(data);
+        await chains.list(data);
       } catch (error) {
         expect(error).toEqual(new Error('stages must be an array.'));
       }
@@ -434,7 +434,7 @@ describe('CHAINS Test', () => {
         },
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
-      const response = await chains.get();
+      const response = await chains.list();
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
       expect(response).toEqual({ chain_id: '123456' });
     });

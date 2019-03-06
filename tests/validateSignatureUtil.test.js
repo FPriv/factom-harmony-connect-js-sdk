@@ -92,9 +92,11 @@ describe('Validate Signature Util Test', () => {
       const resp = {
         status: 200,
         data: {
-          data: [{
+          data: {
             key: 'idpub',
-          }],
+            retired_height: 1001,
+            activated_height: 1001,
+          },
         },
       };
       const data = {
@@ -113,7 +115,7 @@ describe('Validate Signature Util Test', () => {
           },
           chain_id: '123456',
           dblock: {
-            height: 10000,
+            height: 1000,
           },
         },
       };
@@ -123,7 +125,7 @@ describe('Validate Signature Util Test', () => {
         validateForChain: true,
         apiCall: apiCall,
       });
-      expect(response).toMatch('inactive_key');
+      expect(response).toMatch('retired_key');
     });
   });
 });
