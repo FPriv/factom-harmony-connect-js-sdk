@@ -163,7 +163,7 @@ getStatus = (status) => {
       result = 'error';
       break;
     case 'invalid_signature':
-    case 'inactive_key':
+    case 'retired_key':
       result = 'Invalid';
       break;
     case 'valid_signature':

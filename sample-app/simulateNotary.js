@@ -15,14 +15,14 @@ module.exports = async (request, response) => {
   const factomConnectSDK = new FactomConnectSDK({
     baseUrl: "YOUR API URL",
     accessToken: {
-      appId: "YOUR APP ID",
-      appKey: "YOUR APP KEY"
+        appId: "YOUR APP ID",
+        appKey: "YOUR APP KEY"
     }
   });
 
   try {
     // Create initial key pairs, sdk will create 3 key pairs by default, you can change the number of key pair by passing {numberOfKeyPairs: } to the params
-    let originalKeyPairs = factomConnectSDK.identity.createKeyPairs();
+    let originalKeyPairs = factomConnectSDK.keyUtil.generatePairs();
     
     const publicKeyArr = [];
     for (let index = 0; index < originalKeyPairs.length; index++) {
@@ -30,7 +30,7 @@ module.exports = async (request, response) => {
     }
 
     // Create identity with originalKeyPairs created above
-    const createIdentityChainResponse = await factomConnectSDK.identity.create(
+    const createIdentityChainResponse = await factomConnectSDK.identities.create(
       {
         name: ["NotarySimulation", new Date().toISOString()],
         keys: [...publicKeyArr]
@@ -65,7 +65,7 @@ module.exports = async (request, response) => {
     * ]
     * In order to display the External Ids array then we need to get chain. However, we don't need to validate the signature so in this step pass in signatureValidation: false
     */
-    const chain = await factomConnectSDK.chain.get({
+    const chain = await factomConnectSDK.chains.get({
       chainId: createChainResponse.chain_id,
       signatureValidation: false
     });
@@ -85,7 +85,8 @@ module.exports = async (request, response) => {
     };
 
      //Create an entry, by default the chain will be signed so you need to pass in the private key and the identity chain id
-    const createEntryResponse = await chain.entries.create({
+    const createEntryResponse = await factomConnectSDK.chains.entries.create({
+      chainId: chain.data.chain_id,
       signerPrivateKey: keyToSign.privateKey,
       signerChainId: identityChainId,
       externalIds: ["NotarySimulation", "DocumentEntry", "doc987"],
@@ -108,7 +109,8 @@ module.exports = async (request, response) => {
     * ]
     * In order to display the External Ids array then we need to get entry. However, we don't need to validate the signature so in this step pass in signatureValidation: false
     */
-    const getEntryResponse = await chain.entry.get({
+    const getEntryResponse = await factomConnectSDK.chains.entries.get({
+      chainId: chain.data.chain_id,
       entryHash: createEntryResponse.entry_hash,
       signatureValidation: false
     });
@@ -122,14 +124,15 @@ module.exports = async (request, response) => {
     });
 
     //Get Chain with signature validation, by default all get chain/entry request will be automatically validating the signature
-    const chainWValidation = await factomConnectSDK.chain.get({
+    const chainWValidation = await factomConnectSDK.chains.get({
       chainId: chainSearchResult.data['0'].chain_id
     });
 
     //Search entry
     //Currently we only have 1 identityChainId to work with so pass in entryCreatedTime to make sure search function only return one result
     const entrySearchInput = ["DocumentEntry", "doc987", entryCreatedTime];
-    const searchEntryResults = await chainWValidation.entries.search({
+    const searchEntryResults = await factomConnectSDK.chains.entries.search({
+      chainId: chainWValidation.chain.data.chain_id,
       externalIds: ["DocumentEntry", "doc987", entryCreatedTime]
     });
 
@@ -137,7 +140,8 @@ module.exports = async (request, response) => {
      * Retrieve Blockchain Data aren't always necessary because it is common practice to store the chain_id and entry_hash within your own database.
      * Get Entry with signature validation, by default all get chain/entry request will be automatically validating the signature
      */
-    const entryWValidation =  await chainWValidation.entry.get({
+    const entryWValidation =  await factomConnectSDK.chains.entries.get({
+      chainId: chainWValidation.chain.data.chain_id,
       entryHash: searchEntryResults.data['0'].entry_hash
     })
     const entryContentJSON = JSON.parse(entryWValidation.entry.data.content)
@@ -153,14 +157,14 @@ module.exports = async (request, response) => {
       link: "/document",
     };
     // Proactive Security
-    let replaceKeyPairs = factomConnectSDK.identity.createKeyPairs();
+    let replaceKeyPairs = factomConnectSDK.keyUtil.generatePairs();
 
     //To replace new key, you need to sign this request with above or same level private key. In this case we are using same level private key.
     const replacementEntryResponses = [];
     for (let index = 0; index < replaceKeyPairs.length; index++) {
       const newKeyPair = replaceKeyPairs[index];
       const originalKeyPair = originalKeyPairs[index];
-      const replacementEntryResponse= await factomConnectSDK.identity.createKeyReplacement({
+      const replacementEntryResponse= await factomConnectSDK.identities.keys.replace({
         identityChainId: identityChainId,
         oldPublicKey: originalKeyPair.publicKey,
         newPublicKey: newKeyPair.publicKey,
@@ -169,7 +173,7 @@ module.exports = async (request, response) => {
       replacementEntryResponses.push(replacementEntryResponse)
     }
 
-    const identityKeys = await factomConnectSDK.identity.getKeys({
+    const identityKeys = await factomConnectSDK.identities.keys.list({
       identityChainId: identityChainId,
     })
 
@@ -189,7 +193,7 @@ module.exports = async (request, response) => {
       chainSearchResult: chainSearchResult.data,
       chainWValidation: {
         chainId: chainWValidation.chainId,
-        externalIds: chainWValidation.data.external_ids,
+        externalIds: chainWValidation.chain.data.external_ids,
         status: chainWValidation.status
       },
       entrySearchInput: entrySearchInput,
