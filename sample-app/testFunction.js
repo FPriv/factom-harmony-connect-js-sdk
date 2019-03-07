@@ -3,40 +3,27 @@
 const FactomConnectSDK = require("../dist/factomHarmonyConnectSdk.cjs");
 const sha256 = require("js-sha256"); // Using any external library for hash data
 const fs = require("fs");
+const configure = require("./configure");
 
 (async () => {
-  const factomConnectSDK = new FactomConnectSDK({
-    baseUrl: "YOUR API URL",
-    accessToken: {
-        appId: "YOUR APP ID",
-        appKey: "YOUR APP KEY"
-    }
-  });
+  const factomConnectSDK = new FactomConnectSDK(configure);
 
   try {
     console.log("==============INFO==============");
     console.log("factomConnectSDK.apiInfo.get");
-    await factomConnectSDK.apiInfo.get()
-
-    console.log("==============KEY UTIL==============");
-    console.log("factomConnectSDK.keyUtil.generatePairs");
-    const originalKeyPairs = factomConnectSDK.keyUtil.generatePairs();
-    const keyToSign = originalKeyPairs[0];
-    const publicKeyArr = [];
-    originalKeyPairs.forEach(item => {
-      publicKeyArr.push(item.publicKey);
-    });
+    await factomConnectSDK.apiInfo.get();
 
     console.log("==============IDENTITIES==============");
     console.log("factomConnectSDK.identities.create");
     const createIdentityChainResponse = await factomConnectSDK.identities.create(
       {
-        name: ["NotarySimulation", new Date().toISOString()],
-        keys: [...publicKeyArr]
+        name: ["NotarySimulation", new Date().toISOString()]
       }
     );
-    
+
+    const originalKeyPairs = createIdentityChainResponse.key_pairs;
     const identityChainId = createIdentityChainResponse.chain_id;
+    const keyToSign = originalKeyPairs[2];
 
     console.log("factomConnectSDK.identities.get");
     await factomConnectSDK.identities.get({
@@ -56,7 +43,10 @@ const fs = require("fs");
     });
 
     console.log("factomConnectSDK.identities.keys.replace");
-    const replacementKeyPairs = factomConnectSDK.keyUtil.generatePairs();
+    const replacementKeyPairs = [];
+    for(let i = 0; i < 3; i++) {
+      replacementKeyPairs.push(factomConnectSDK.utils.generateKeyPair());
+    }
     const replacementEntryResponses = [];
     for (let index = 0; index < replacementKeyPairs.length; index++) {
       const newKeyPair = replacementKeyPairs[index];

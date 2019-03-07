@@ -3,6 +3,7 @@
 const FactomConnectSDK = require("../dist/factomHarmonyConnectSdk.cjs");
 const sha256 = require("js-sha256"); // Using any external library for hash data
 const fs = require("fs");
+const configure = require("./configure");
 
 // Handle node response
 const responseData = (response, data) => {
@@ -12,30 +13,16 @@ const responseData = (response, data) => {
 
 module.exports = async (request, response) => {
   // Init factom sdk with your appId and appKey, which can be found or generated at https://account.factom.com
-  const factomConnectSDK = new FactomConnectSDK({
-    baseUrl: "YOUR API URL",
-    accessToken: {
-        appId: "YOUR APP ID",
-        appKey: "YOUR APP KEY"
-    }
-  });
+  const factomConnectSDK = new FactomConnectSDK(configure);
 
   try {
-    // Create initial key pairs, sdk will create 3 key pairs by default, you can change the number of key pair by passing {numberOfKeyPairs: } to the params
-    let originalKeyPairs = factomConnectSDK.keyUtil.generatePairs();
-    
-    const publicKeyArr = [];
-    for (let index = 0; index < originalKeyPairs.length; index++) {
-      publicKeyArr.push(originalKeyPairs[index].publicKey);
-    }
-
-    // Create identity with originalKeyPairs created above
+    // Create identity without keys. System automatic generating 3 key pairs.
     const createIdentityChainResponse = await factomConnectSDK.identities.create(
       {
-        name: ["NotarySimulation", new Date().toISOString()],
-        keys: [...publicKeyArr]
+        name: ["NotarySimulation", new Date().toISOString()]
       }
     );
+    const originalKeyPairs = createIdentityChainResponse.key_pairs;
 
     //We'll use this later for sign chain/entry
     const identityChainId = createIdentityChainResponse.chain_id;
@@ -157,7 +144,10 @@ module.exports = async (request, response) => {
       link: "/document",
     };
     // Proactive Security
-    let replaceKeyPairs = factomConnectSDK.keyUtil.generatePairs();
+    const replaceKeyPairs = [];
+    for(let i = 0; i < 3; i++) {
+      replaceKeyPairs.push(factomConnectSDK.utils.generateKeyPair());
+    }
 
     //To replace new key, you need to sign this request with above or same level private key. In this case we are using same level private key.
     const replacementEntryResponses = [];
