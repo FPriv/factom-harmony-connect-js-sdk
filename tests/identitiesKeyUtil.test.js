@@ -22,18 +22,18 @@ describe('IDENTITIES KEY UTIL Test', () => {
         expect(error).toEqual(new Error('identityChainId is required.'));
       }
     });
-    it('should return error message when signer public key is missing', async () => {
+    it('should return error message when key string is missing', async () => {
       try {
         await keys.get({ identityChainId: '123456' });
       } catch (error) {
-        expect(error).toEqual(new Error('signerPublicKey is required.'));
+        expect(error).toEqual(new Error('keyString is required.'));
       }
     });
-    it('should return error message when signer public key is invalid', async () => {
+    it('should return error message when key string is invalid', async () => {
       try {
-        await keys.get({ identityChainId: '123456', signerPublicKey: 'idpub' });
+        await keys.get({ identityChainId: '123456', keyString: 'idpub' });
       } catch (error) {
-        expect(error).toEqual(new Error('signerPublicKey is invalid.'));
+        expect(error).toEqual(new Error('keyString is invalid.'));
       }
     });
     it('should get Identity Key successfully', async () => {
@@ -49,7 +49,7 @@ describe('IDENTITIES KEY UTIL Test', () => {
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       const data = {
         identityChainId: '123456',
-        signerPublicKey: 'idpub2Cktw6EgcBVMHMXmfcCyTHndcFvG7fJKyBpy3sTYcdTmdTuKya',
+        keyString: 'idpub2Cktw6EgcBVMHMXmfcCyTHndcFvG7fJKyBpy3sTYcdTmdTuKya',
       };
 
       const response = await keys.get(data);
@@ -193,6 +193,7 @@ describe('IDENTITIES KEY UTIL Test', () => {
         const data = {
           identityChainId: '123456',
           oldPublicKey: 'idpub2',
+          newPublicKey: '',
         };
         await keys.replace(data);
       } catch (error) {
@@ -216,7 +217,6 @@ describe('IDENTITIES KEY UTIL Test', () => {
         const data = {
           identityChainId: '123456',
           oldPublicKey: 'idpub2',
-          newPublicKey: 'idpub2',
           signerPrivateKey: 'idsec2',
         };
         await keys.replace(data);

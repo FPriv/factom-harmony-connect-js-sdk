@@ -4,21 +4,6 @@ import Identities from '../lib/resources/Identities';
 
 jest.mock('axios');
 describe('IDENTITIES Test', () => {
-  // describe('Create an Identity Key Pair', () => {
-  //   let identities;
-  //   beforeAll(() => {
-  //     identities = new Identities({
-  //       baseUrl: 'https://apicast.io',
-  //       accessToken: {
-  //         appId: '123456',
-  //         appKey: '123456789',
-  //       },
-  //     });
-  //   });
-  //   it('should return array of 3 private and public key pairs', () => {
-  //     identities.createKeyPairs();
-  //   });
-  // });
   describe('Create an Identity', () => {
     let identities;
     beforeAll(() => {
@@ -46,7 +31,7 @@ describe('IDENTITIES Test', () => {
     });
     it('should return error message when keys is missing', async () => {
       try {
-        const data = { name: ['123'] };
+        const data = { name: ['123'], keys: [] };
         await identities.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('at least 1 key is required.'));
@@ -105,12 +90,11 @@ describe('IDENTITIES Test', () => {
             'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
             'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
           ],
-          keys: ['idsec1xQLPp8bDpbaiDiZGiowSgLQ5cpBifJtDSdYX9XAqLrPPxwcvB'],
         };
         await identities.create(data);
       } catch (error) {
         expect(error).toEqual(
-          new Error('calculated bytes of name and keys is 12655. It must be less than 10240, use less/shorter name or less keys.'),
+          new Error('calculated bytes of name and keys is 12771. It must be less than 10240, use less/shorter name or less keys.'),
         );
       }
     });
