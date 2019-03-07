@@ -11,30 +11,19 @@ const configure = require("./configure");
   try {
     console.log("==============INFO==============");
     console.log("factomConnectSDK.apiInfo.get");
-    await factomConnectSDK.apiInfo.get()
-
-    console.log("==============UTILS==============");
-    console.log("factomConnectSDK.utils.generatePair");
-    const originalKeyPairs = [];
-    for(let i = 0; i < 3; i++) {
-      originalKeyPairs.push(factomConnectSDK.utils.generatePair());
-    }
-    const keyToSign = originalKeyPairs[0];
-    const publicKeyArr = [];
-    originalKeyPairs.forEach(item => {
-      publicKeyArr.push(item.publicKey);
-    });
+    await factomConnectSDK.apiInfo.get();
 
     console.log("==============IDENTITIES==============");
     console.log("factomConnectSDK.identities.create");
     const createIdentityChainResponse = await factomConnectSDK.identities.create(
       {
-        name: ["NotarySimulation", new Date().toISOString()],
-        keys: [...publicKeyArr]
+        name: ["NotarySimulation", new Date().toISOString()]
       }
     );
-    
+
+    const originalKeyPairs = createIdentityChainResponse.key_pairs;
     const identityChainId = createIdentityChainResponse.chain_id;
+    const keyToSign = originalKeyPairs[2];
 
     console.log("factomConnectSDK.identities.get");
     await factomConnectSDK.identities.get({
@@ -56,7 +45,7 @@ const configure = require("./configure");
     console.log("factomConnectSDK.identities.keys.replace");
     const replacementKeyPairs = [];
     for(let i = 0; i < 3; i++) {
-      replacementKeyPairs.push(factomConnectSDK.utils.generatePair());
+      replacementKeyPairs.push(factomConnectSDK.utils.generateKeyPair());
     }
     const replacementEntryResponses = [];
     for (let index = 0; index < replacementKeyPairs.length; index++) {

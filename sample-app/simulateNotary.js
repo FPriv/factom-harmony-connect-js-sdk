@@ -146,7 +146,7 @@ module.exports = async (request, response) => {
     // Proactive Security
     const replaceKeyPairs = [];
     for(let i = 0; i < 3; i++) {
-      replaceKeyPairs.push(factomConnectSDK.utils.generatePair());
+      replaceKeyPairs.push(factomConnectSDK.utils.generateKeyPair());
     }
 
     //To replace new key, you need to sign this request with above or same level private key. In this case we are using same level private key.
