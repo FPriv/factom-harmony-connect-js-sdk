@@ -13,7 +13,7 @@ function onSimulation() {
       $('<div/>', {
         html: `<div class="row mt-3">
                 <div class="col s2">
-                  <p class="font-weight-bold">Public Key ${index + 1}</p>
+                  <p class="font-weight-bold">Generated Public Key ${index + 1}</p>
                 </div>
                 <div class="col s10">
                   <p>${item.publicKey}</p>
@@ -108,31 +108,24 @@ function onSimulation() {
     $('#vf_HashValidation').html(hashMatch);
 
     //Proactive Security
-    data.replaceKeyPairs.forEach((item, index) => {
-      $('<div/>', {
-        html: `<div class="row mt-3">
-                <div class="col s2">
-                  <p class="font-weight-bold">New Public Key ${index + 1}</p>
-                </div>
-                <div class="col s10">
-                  <p>${item.publicKey}</p>
-                </div>
-              </div>`,
-      }).appendTo('#newPublicKeys');
-    });
-
-    data.replacementEntryResponses.forEach((item, index) => {
-      $('<div/>', {
-        html: `<div class="row mt-3">
-                <div class="col s2">
-                  <p class="font-weight-bold">Entry Hash ${index + 1}</p>
-                </div>
-                <div class="col s10">
-                  <p>${item.entry_hash}</p>
-                </div>
-              </div>`,
-      }).appendTo('#replaceKeys');
-    });
+    $('<div/>', {
+      html: `<div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">Replacement Entry Hash</p>
+              </div>
+              <div class="col s10">
+                <p>${data.replacementEntryResponse.entry_hash}</p>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col s2">
+                <p class="font-weight-bold">New Public Key</p>
+              </div>
+              <div class="col s10">
+                <p>${data.replaceKeyPair.publicKey}</p>
+              </div>
+            </div>`,
+    }).appendTo('#replaceKey');
 
     data.identityKeys.data.forEach((item, index) => {
       $('<div/>', {

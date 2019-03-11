@@ -35,7 +35,7 @@ module.exports = async (request, response) => {
       signerChainId: identityChainId,
       externalIds: ["NotarySimulation", "CustomerChain", "cust123"],
       content:
-        "This chain represents a notary service’s customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients"
+        "This chain represents a notary service's customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients"
     });
 
     /**
@@ -143,25 +143,15 @@ module.exports = async (request, response) => {
       hash: documentHashAfter,
       link: "/document",
     };
-    // Proactive Security
-    const replaceKeyPairs = [];
-    for(let i = 0; i < 3; i++) {
-      replaceKeyPairs.push(factomConnectSDK.utils.generateKeyPair());
-    }
 
-    //To replace new key, you need to sign this request with above or same level private key. In this case we are using same level private key.
-    const replacementEntryResponses = [];
-    for (let index = 0; index < replaceKeyPairs.length; index++) {
-      const newKeyPair = replaceKeyPairs[index];
-      const originalKeyPair = originalKeyPairs[index];
-      const replacementEntryResponse= await factomConnectSDK.identities.keys.replace({
-        identityChainId: identityChainId,
-        oldPublicKey: originalKeyPair.publicKey,
-        newPublicKey: newKeyPair.publicKey,
-        signerPrivateKey: originalKeyPair.privateKey,
-      })
-      replacementEntryResponses.push(replacementEntryResponse)
-    }
+    // Proactive Security
+    // To replace a key, you need to sign this request with the private key of the same level or above. In this case we are using one of the same level.
+    const originalKeyPair = originalKeyPairs[2];
+    const replacementEntryResponse = await factomConnectSDK.identities.keys.replace({
+      identityChainId: identityChainId,
+      oldPublicKey: originalKeyPair.publicKey,
+      signerPrivateKey: originalKeyPair.privateKey,
+    })
 
     const identityKeys = await factomConnectSDK.identities.keys.list({
       identityChainId: identityChainId,
@@ -196,8 +186,8 @@ module.exports = async (request, response) => {
         entryContentJSON: entryContentJSON,
       },
       documentAfter: documentAfter,
-      replaceKeyPairs: replaceKeyPairs,
-      replacementEntryResponses: replacementEntryResponses,
+      replaceKeyPair: replacementEntryResponse.key_pair,
+      replacementEntryResponse: replacementEntryResponse,
       identityKeys: identityKeys,
     });
   } catch (error) {

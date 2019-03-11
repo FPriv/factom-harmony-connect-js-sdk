@@ -47,7 +47,7 @@
     <div id="result">
       <p>
         <a href="https://docs.harmony.factom.com/">Click here</a> to learn how
-        you to view the created data (chains and entries) using the Factom
+        to view the created data (chains and entries) using the Factom
         Explorer
       </p>
       <div class="section first-section">
@@ -55,10 +55,6 @@
           <h3>Initialization</h3>
         </div>
         <div class="section-body">
-          <h5 class="card-title">Generate Keys</h5>
-          <div id="generatePublicKeys">
-          </div>
-
           <h5 class="card-title">Create Identity (for notary company)</h5>
           <div class="row mt-3">
             <div class="col s2">
@@ -68,6 +64,7 @@
               <p id="identityChainId"></p>
             </div>
           </div>
+          <div id="generatePublicKeys">
         </div>
       </div>
 
@@ -125,7 +122,7 @@
             </div>
             <div class="row ml-10">
               <div class="col s2">
-                <p class="font-weight-bold">Signature</p>
+                <p class="font-weight-bold">Signature (hex)</p>
               </div>
               <div class="col s10">
                 <p id="chainSignature"></p>
@@ -215,7 +212,7 @@
               </div>
               <div class="row ml-10">
                 <div class="col s2">
-                  <p class="font-weight-bold">Signature</p>
+                  <p class="font-weight-bold">Signature (hex)</p>
                 </div>
                 <div class="col s10">
                   <p id="entrySignature"></p>
@@ -321,7 +318,7 @@
             </div>
             <div class="row ml-10">
               <div class="col s2">
-                <p class="font-weight-bold">Signature</p>
+                <p class="font-weight-bold">Signature (hex)</p>
               </div>
               <div class="col s10">
                 <p id="rc_chainSignature"></p>
@@ -425,7 +422,7 @@
             </div>
             <div class="row ml-10">
               <div class="col s2">
-                <p class="font-weight-bold">Signature</p>
+                <p class="font-weight-bold">Signature (hex)</p>
               </div>
               <div class="col s10">
                 <p id="rc_entrySignature"></p>
@@ -527,13 +524,8 @@
         </div>
         <div class="section-body">
           <div>
-            <h5 class="card-title">Generate New Keys</h5>
-            <div id="newPublicKeys">
-            </div>
-          </div>
-          <div>
-            <h5 class="card-title">Replace Keys</h5>
-            <div id="replaceKeys">
+            <h5 class="card-title">Replace Key</h5>
+            <div id="replaceKey">
             </div>
           </div>
           <div>
