@@ -104,7 +104,7 @@ function onSimulation() {
     $('#vs_DocumentHash').html(data.documentAfter.hash);
     $('#vf_BlockchainDocument').html(data.entryWValidation.entryContentJSON.document_hash);
     $('#vf_DocumentHash').html(data.documentAfter.hash);
-    var hashMatch = data.documentAfter.hash === data.entryWValidation.entryContentJSON.document_hash ? 'Valid' : 'Invalid';
+    var hashMatch = data.documentAfter.hash === data.entryWValidation.entryContentJSON.document_hash ? '<i class="material-icons validation success">check</i>Valid' : '<i class="material-icons validation fail">close</i>Invalid';
     $('#vf_HashValidation').html(hashMatch);
 
     //Proactive Security
@@ -143,6 +143,8 @@ function onSimulation() {
     });
 
     //Finish
+    var collapsibleElems = document.querySelectorAll('.collapsible');
+    M.Collapsible.init(collapsibleElems)
     $("#loading").hide();
     $('#first-step').hide();
     $('#result').show();
@@ -157,10 +159,10 @@ getStatus = (status) => {
       break;
     case 'invalid_signature':
     case 'retired_key':
-      result = 'Invalid';
+      result = '<i class="material-icons validation fail">close</i>Invalid';
       break;
     case 'valid_signature':
-      result = 'Valid';
+      result = '<i class="material-icons validation success">check</i>Valid';
       break;
   }
 
