@@ -9,6 +9,7 @@
   height: 20px;
   background-repeat: no-repeat;
 }
+nav .title{ font-size: 1.5rem; }
 #main-container {
   margin-top: 2rem;
 }
