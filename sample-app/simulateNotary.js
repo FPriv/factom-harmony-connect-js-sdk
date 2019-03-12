@@ -190,7 +190,7 @@ module.exports = async (request, response) => {
 
     //Get all keys and caculate key's state
     const identityChain = await factomConnectSDK.identities.get({ identityChainId: identityChainId });
-    identityKeys = calculateState({
+    const identityKeys = calculateState({
       activeKeys: identityChain.data.active_keys,
       pendingKey: identityChain.data.pending_key
     });
