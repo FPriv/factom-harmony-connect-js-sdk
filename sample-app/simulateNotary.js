@@ -15,15 +15,15 @@ const calculateState = (identitiesKeys) => {
   const result = [];
   identitiesKeys.activeKeys.forEach((item) => {
     let state = "";
-    if (item.activated_height == null) {
+    if (item.activated_height === null) {
       // "Pending" if the activated height is null
       // "Pending and Replacement Pending" if activated_height is null and there is a pending key replacement for the same priority
-      state = identitiesKeys.pendingKey && item.priority == identitiesKeys.pendingKey.priority ? "Pending and Replacement Pending" : "Pending";
+      state = identitiesKeys.pendingKey && item.priority === identitiesKeys.pendingKey.priority ? "Pending and Replacement Pending" : "Pending";
     } else {
       // "Active" if activated_height is not null and retired_height is null
       // "Active and Replacement Pending" if activated_height is not null, retired_height is null and there is a pending key replacement for the same priority
       // "Retired/replaced" if retired_height is not null
-      state = item.retired_height ? "Retired/replaced" : (identitiesKeys.pendingKey && item.priority == identitiesKeys.pendingKey.priority ? "Active and Replacement Pending" : "Active");
+      state = item.retired_height ? "Retired/replaced" : (identitiesKeys.pendingKey && item.priority === identitiesKeys.pendingKey.priority ? "Active and Replacement Pending" : "Active");
     }
 
     result.push({

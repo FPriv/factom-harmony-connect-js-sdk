@@ -34,7 +34,7 @@ function onSimulation() {
 
     var additionalExternalIds = '';
     for (var index = 6; index < data.createdChainInfo.externalIds.length; index++) {
-      if (index == data.createdChainInfo.externalIds.length - 1) additionalExternalIds += data.createdChainInfo.externalIds[index]
+      if (index === data.createdChainInfo.externalIds.length - 1) additionalExternalIds += data.createdChainInfo.externalIds[index]
       else additionalExternalIds += data.createdChainInfo.externalIds[index] + ', ';
     }
     $('#chainAdditionalExternalIDs').html(additionalExternalIds);
@@ -51,7 +51,7 @@ function onSimulation() {
     $('#entryTimestamp').html(data.createdEntryInfo.externalIds[5]);
     additionalExternalIds = '';
     for (var index = 6; index < data.createdEntryInfo.externalIds.length; index++) {
-      if (index == data.createdEntryInfo.externalIds.length - 1) additionalExternalIds += data.createdEntryInfo.externalIds[index]
+      if (index === data.createdEntryInfo.externalIds.length - 1) additionalExternalIds += data.createdEntryInfo.externalIds[index]
       else additionalExternalIds += data.createdEntryInfo.externalIds[index] + ', ';
     }
     $('#entryAdditionalExternalIDs').html(additionalExternalIds);
@@ -72,7 +72,7 @@ function onSimulation() {
     $('#rc_chainTimestamp').html(data.chainWValidation.externalIds[5]);
     additionalExternalIds = '';
     for (var index = 6; index < data.chainWValidation.externalIds.length; index++) {
-      if (index == data.chainWValidation.externalIds.length - 1) additionalExternalIds += data.chainWValidation.externalIds[index]
+      if (index === data.chainWValidation.externalIds.length - 1) additionalExternalIds += data.chainWValidation.externalIds[index]
       else additionalExternalIds += data.chainWValidation.externalIds[index] + ', ';
     }
     $('#rc_chainAdditionalExternalIDs').html(additionalExternalIds);
@@ -92,7 +92,7 @@ function onSimulation() {
     $('#rc_entryTimestamp').html(data.entryWValidation.external_ids[5]);
     additionalExternalIds = '';
     for (var index = 6; index < data.entryWValidation.external_ids.length; index++) {
-      if (index == data.entryWValidation.external_ids.length - 1) additionalExternalIds += data.entryWValidation.external_ids[index]
+      if (index === data.entryWValidation.external_ids.length - 1) additionalExternalIds += data.entryWValidation.external_ids[index]
       else additionalExternalIds += data.entryWValidation.external_ids[index] + ', ';
     }
     $('#rc_entryAdditionalExternalIDs').html(additionalExternalIds);
@@ -128,7 +128,7 @@ function onSimulation() {
     }).appendTo('#replaceKey');
 
     data.identityKeys.forEach((item) => {
-      lineThrough = item.state == "Pending and Replacement Pending" ? "lineThrough" : "";
+      lineThrough = item.state === "Pending and Replacement Pending" ? "lineThrough" : "";
       $('<div/>', {
         html: `<div class="row mt-3">
                 <div class="col s2">
