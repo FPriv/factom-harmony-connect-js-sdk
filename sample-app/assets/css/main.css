@@ -123,6 +123,9 @@ i.validation {
 }
 .validation.success { color: green; }
 .validation.fail { color: red; }
+p.lineThrough {
+  text-decoration: line-through;
+}
 @-webkit-keyframes rotate360 {
   100% {
     -webkit-transform: rotate(360deg);

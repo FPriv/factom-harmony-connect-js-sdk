@@ -15,23 +15,23 @@ describe('IDENTITIES Test', () => {
         },
       });
     });
-    it('should return error message when name is missing', async () => {
+    it('should return error message when names is missing', async () => {
       try {
         await identities.create();
       } catch (error) {
-        expect(error).toEqual(new Error('name is required.'));
+        expect(error).toEqual(new Error('names is required.'));
       }
     });
     it('should return error message when name is not array', async () => {
       try {
-        await identities.create({ name: '123' });
+        await identities.create({ names: '123' });
       } catch (error) {
-        expect(error).toEqual(new Error('name must be an array.'));
+        expect(error).toEqual(new Error('names must be an array.'));
       }
     });
     it('should return error message when keys is missing', async () => {
       try {
-        const data = { name: ['123'], keys: [] };
+        const data = { names: ['123'], keys: [] };
         await identities.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('at least 1 key is required.'));
@@ -39,7 +39,7 @@ describe('IDENTITIES Test', () => {
     });
     it('should return error message when keys is not array', async () => {
       try {
-        const data = { name: ['123'], keys: 'idpub' };
+        const data = { names: ['123'], keys: 'idpub' };
         await identities.create(data);
       } catch (error) {
         expect(error).toEqual(new Error('keys must be an array.'));
@@ -48,7 +48,7 @@ describe('IDENTITIES Test', () => {
     it('should return error message when total bytes of name and key are lager than 10240 bytes', async () => {
       try {
         const data = {
-          name: [
+          names: [
             'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
             'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
             'The primary benefit of using Identities within your application the ability to verify that a certain user/device/organization/etc. actually signed and published a certain message that you see in your chain. Let is go through an example of how this creation of a signed entry works for an identity we made already',
@@ -94,7 +94,7 @@ describe('IDENTITIES Test', () => {
         await identities.create(data);
       } catch (error) {
         expect(error).toEqual(
-          new Error('calculated bytes of name and keys is 12771. It must be less than 10240, use less/shorter name or less keys.'),
+          new Error('calculated bytes of names and keys is 12771. It must be less than 10240, use less/shorter names or less keys.'),
         );
       }
     });
@@ -112,7 +112,7 @@ describe('IDENTITIES Test', () => {
 
       try {
         const data = {
-          name: ['123'],
+          names: ['123'],
           keys: [
             '123',
             '123',
@@ -133,7 +133,7 @@ describe('IDENTITIES Test', () => {
       ];
       try {
         const data = {
-          name: ['123'],
+          names: ['123'],
           keys: [
             'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
             'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
@@ -148,7 +148,7 @@ describe('IDENTITIES Test', () => {
     it('should return error message when callback url is missing URL scheme.', async () => {
       try {
         const data = {
-          name: ['1'],
+          names: ['1'],
           keys: [
             'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
             'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv',
@@ -165,7 +165,7 @@ describe('IDENTITIES Test', () => {
     it('should return error message when callback stages is not array.', async () => {
       try {
         const data = {
-          name: ['1'],
+          names: ['1'],
           keys: [
             'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
             'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv',
@@ -194,7 +194,7 @@ describe('IDENTITIES Test', () => {
       };
 
       const data = {
-        name: ['1'],
+        names: ['1'],
         keys: [
           'idpub2TWHFrWrJxVEmbeXnMRWeKBdFp7bEByosS1phV1bH7NS99zHF9',
           'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv',
@@ -212,7 +212,7 @@ describe('IDENTITIES Test', () => {
           'idpub2FEZg6PwVuDXfsxEMinnqVfgjuNS2GzMSQwJgTdmUFQaoYpTnv',
           'idpub1tkTRwxonwCfsvTkk5enWzbZgQSRpWDYtdzPUnq83AgQtecSgc',
         ],
-        name: [Buffer.from('1').toString('base64')],
+        names: [Buffer.from('1').toString('base64')],
       };
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       const response = await identities.create(data);
@@ -255,7 +255,7 @@ describe('IDENTITIES Test', () => {
           created_height: 118460,
           chain_id:
             '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
-          name: ['RU1QTE9ZRUU=', 'QUJDMTIz'],
+          names: ['RU1QTE9ZRUU=', 'QUJDMTIz'],
         },
       };
 
