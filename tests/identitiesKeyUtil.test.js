@@ -22,18 +22,18 @@ describe('IDENTITIES KEY UTIL Test', () => {
         expect(error).toEqual(new Error('identityChainId is required.'));
       }
     });
-    it('should return error message when key string is missing', async () => {
+    it('should return error message when key is missing', async () => {
       try {
         await keys.get({ identityChainId: '123456' });
       } catch (error) {
-        expect(error).toEqual(new Error('keyString is required.'));
+        expect(error).toEqual(new Error('key is required.'));
       }
     });
-    it('should return error message when key string is invalid', async () => {
+    it('should return error message when key is invalid', async () => {
       try {
-        await keys.get({ identityChainId: '123456', keyString: 'idpub' });
+        await keys.get({ identityChainId: '123456', key: 'idpub' });
       } catch (error) {
-        expect(error).toEqual(new Error('keyString is invalid.'));
+        expect(error).toEqual(new Error('key is invalid.'));
       }
     });
     it('should get Identity Key successfully', async () => {
@@ -49,7 +49,7 @@ describe('IDENTITIES KEY UTIL Test', () => {
       axios.mockImplementationOnce(() => Promise.resolve(resp));
       const data = {
         identityChainId: '123456',
-        keyString: 'idpub2Cktw6EgcBVMHMXmfcCyTHndcFvG7fJKyBpy3sTYcdTmdTuKya',
+        key: 'idpub2Cktw6EgcBVMHMXmfcCyTHndcFvG7fJKyBpy3sTYcdTmdTuKya',
       };
 
       const response = await keys.get(data);
