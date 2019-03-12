@@ -9,6 +9,7 @@
   height: 20px;
   background-repeat: no-repeat;
 }
+nav .title{ font-size: 1.5rem; }
 #main-container {
   margin-top: 2rem;
 }
@@ -91,25 +92,7 @@ ul{
   text-align: center;
   margin: 1em 0;
 }
-.twoToneButton {
-  display: inline-block;
-  outline: none;
-  padding: 10px 20px;
-  line-height: 1.4;
-  background: #2bbbad;
-  border-radius: 4px;
-  border: 1px solid #2bbbad;
-  color: #fff;
-  position: relative;
-  transition: padding-right 0.3s ease;
-  font-weight: 700;
-}
-
-.twoToneButton.spinning {
-  background-color: #2bbbad;
-  padding-right: 40px;
-}
-.twoToneButton.spinning:after {
+.btn-large.spinning:after {
   content: '';
   right: 6px;
   top: 50%;
@@ -121,7 +104,7 @@ ul{
   -webkit-animation: rotate360 0.5s infinite linear, exist 0.1s forwards ease;
           animation: rotate360 0.5s infinite linear, exist 0.1s forwards ease;
 }
-.twoToneButton.spinning:before {
+.btn-large.spinning:before {
   content: "";
   width: 0px;
   height: 0px;
@@ -134,6 +117,12 @@ ul{
   -webkit-animation: rotate360 0.5s infinite linear, exist 0.1s forwards ease;
           animation: rotate360 0.5s infinite linear, exist 0.1s forwards ease;
 }
+i.validation {
+  vertical-align: text-bottom;
+  font-size: 20px;
+}
+.validation.success { color: green; }
+.validation.fail { color: red; }
 @-webkit-keyframes rotate360 {
   100% {
     -webkit-transform: rotate(360deg);

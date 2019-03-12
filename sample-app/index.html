@@ -2,10 +2,13 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Factom SDK sample</title>
+  <title>Factom Harmony Notary Simulation</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="./assets/css/main.css" />
@@ -16,6 +19,12 @@
   <nav class="white" role="navigation">
     <div class="nav-wrapper container">
       <a href="/" class="brand-logo header-logo"></a>
+      <span class="title brand-logo center black-text">JS SDK Notary Simulation</span>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a class="blue-text" target="_blank" href="https://github.com/FactomProject/factom-harmony-connect-js-sdk">SDK Docs</a></li>
+        <li><a class="blue-text" target="_blank" href="https://docs.harmony.factom.com">API Docs</a></li>
+        <li><a class="blue-text" target="_blank" href="https://account.factom.com">Account</a></li>
+      </ul>
     </div>
   </nav>
 
@@ -39,17 +48,24 @@
     </div>
     <div id="first-step">
       <img src="./assets/image/notary.png" />
-      <button id="simulateBtn" class="twoToneButton" onclick="onSimulation()">
+      <button id="simulateBtn" class="waves-effect waves-light btn-large" onclick="onSimulation()">
         Run Notary Simulation
       </button>
     </div>
 
     <div id="result">
-      <p>
-        <a href="https://docs.harmony.factom.com/">Click here</a> to learn how
-        to view the created data (chains and entries) using the Factom
-        Explorer
-      </p>
+      <ul class="collapsible">
+        <li class="blue lighten-4">
+          <span class="collapsible-header blue lighten-3" tabindex="0"><i class="material-icons">info_outline</i> Want to view this data on the Blockchain? Click here for details on how.</span>
+          <span class="collapsible-body">
+            <ol>
+              <li>Log into your account at <a target="_blank" href="https://account.factom.com">https://account.factom.com</a></li>
+              <li>Once logged in, you will see a list of your applications. All the way to the right of each row is a "Launch Explorer" link. Click this link for the row that you configured the NotarySimulator with.</li>
+              <li>Simply take any Chain ID or Entry Hash that you see below and search it at the top of the screen!</li>
+            </ol>
+          </span>
+        </li>
+      </ul> 
       <div class="section first-section">
         <div class="section-header">
           <h3>Initialization</h3>
@@ -540,7 +556,7 @@
         <div class="section-body">
           <hr>
           <p class="center-align">
-            <a href="/" class="twoToneButton">Start Over</a>
+            <a href="/" class="waves-effect waves-light btn">Start Over</a>
           </p>
         <div>
       </div>
