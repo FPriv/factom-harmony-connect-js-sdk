@@ -92,7 +92,7 @@ describe('COMMON UTIL Test', () => {
 
       expect(CommonUtil.decodeResponse(data)).toEqual(dataDecoded);
     });
-    it('should return data with name has been decoded.', () => {
+    it('should return data with names has been decoded.', () => {
       const data = {
         data: {
           version: 1,
@@ -100,7 +100,7 @@ describe('COMMON UTIL Test', () => {
           created_height: 118460,
           chain_id: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
           all_keys_href: '/v1/identities/<chain_id>/keys',
-          name: 'RU1QTE9ZRUU=',
+          names: 'RU1QTE9ZRUU=',
         },
       };
 
@@ -111,7 +111,7 @@ describe('COMMON UTIL Test', () => {
           created_height: 118460,
           chain_id: '171e5851451ce6f2d9730c1537da4375feb442870d835c54a1bca8ffa7e2bda7',
           all_keys_href: '/v1/identities/<chain_id>/keys',
-          name: 'EMPLOYEE',
+          names: 'EMPLOYEE',
         },
       };
 
