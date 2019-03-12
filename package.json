@@ -4,12 +4,9 @@
   "description": "",
   "main": "dist/factomHarmonyConnectSdk.cjs.js",
   "module": "dist/factomHarmonyConnectSdk.esm.js",
-  "browser": "dist/factomHarmonyConnectSdk.iife.js",
   "scripts": {
     "test": "jest",
-    "build": "npm run build:elliptic && npm run build:rollup",
-    "build:elliptic": "webpack --config webpack.elliptic.js",
-    "build:rollup": "rollup -c"
+    "build": "rollup -c"
   },
   "author": "",
   "license": "ISC",
@@ -33,16 +30,10 @@
     "nodemon": "^1.18.9",
     "path": "^0.12.7",
     "rollup": "^1.1.2",
-    "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-json": "^3.1.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-globals": "^1.4.0",
-    "rollup-plugin-node-resolve": "^4.0.0",
-    "webpack": "^4.29.0",
-    "webpack-cli": "^3.2.1"
+    "rollup-plugin-node-resolve": "^4.0.0"
   },
   "dependencies": {
     "axios": "^0.18.0",

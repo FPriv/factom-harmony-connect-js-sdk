@@ -86,22 +86,10 @@ describe('IDENTITIES KEY UTIL Test', () => {
         expect(error).toEqual(new Error('identityChainId is required.'));
       }
     });
-    it('should return error message when active at height is not an integer', async () => {
-      try {
-        const data = {
-          identityChainId: '123456',
-          activeAtHeight: '1',
-        };
-        await keys.list(data);
-      } catch (error) {
-        expect(error).toEqual(new Error('activeAtHeight must be an integer.'));
-      }
-    });
     it('should return error message when limit is not an integer', async () => {
       try {
         const data = {
           identityChainId: '123456',
-          activeAtHeight: 1,
           limit: '1',
         };
         await keys.list(data);
@@ -113,7 +101,6 @@ describe('IDENTITIES KEY UTIL Test', () => {
       try {
         const data = {
           identityChainId: '123456',
-          activeAtHeight: 1,
           limit: 1,
           offset: '1',
         };

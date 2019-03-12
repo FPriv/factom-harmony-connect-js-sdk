@@ -16,7 +16,7 @@ function onSimulation() {
                   <p class="font-weight-bold">Generated Public Key ${index + 1}</p>
                 </div>
                 <div class="col s10">
-                  <p>${item.publicKey}</p>
+                  <p>${item.public_key}</p>
                 </div>
               </div>`,
       }).appendTo('#generatePublicKeys');
@@ -122,21 +122,22 @@ function onSimulation() {
                 <p class="font-weight-bold">New Public Key</p>
               </div>
               <div class="col s10">
-                <p>${data.replaceKeyPair.publicKey}</p>
+                <p>${data.replaceKeyPair.public_key}</p>
               </div>
             </div>`,
     }).appendTo('#replaceKey');
 
-    data.identityKeys.data.forEach((item, index) => {
+    data.identityKeys.forEach((item) => {
+      lineThrough = item.state == "Pending and Replacement Pending" ? "lineThrough" : "";
       $('<div/>', {
         html: `<div class="row mt-3">
                 <div class="col s2">
-                  <p class="font-weight-bold">Public Key ${index + 1}</p>
+                  <p class="font-weight-bold ${lineThrough}">Public Key ${item.priority + 1}</p>
                 </div>
                 <div class="col s10">
-                  <p>${item.key}</p>
-                  <p><b>Activated Height:</b> ${item.activated_height}</p>
-                  <p><b>Retired Height:</b> ${item.retired_height}</p>
+                  <p class="${lineThrough}">${item.key}</p>
+                  <p class="${lineThrough}"><b>Activated Height:</b> ${item.activatedHeight}</p>
+                  <p class="${lineThrough}"><b>State:</b> ${item.state}</p>
                 </div>
               </div>`,
       }).appendTo('#retrievePublicKeys');
