@@ -19,7 +19,7 @@ describe('IDENTITIES Test', () => {
       try {
         await identities.create();
       } catch (error) {
-        expect(error).toEqual(new Error('names is required.'));
+        expect(error).toEqual(new Error('at least 1 name is required.'));
       }
     });
     it('should return error message when name is not array', async () => {
