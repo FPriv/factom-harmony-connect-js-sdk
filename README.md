@@ -4,11 +4,9 @@ INTRODUCTION
 About This Document
 -------------------
 
-This documentation is written for developers with a basic level of
-coding knowledge and familiarity of the JavaScript programming language.
+This documentation is written for developers with a basic level of coding knowledge and familiarity of the JavaScript programming language.
 
-Readers can find guidelines to quickly get started with building and
-using the JavaScript SDK for Factom Harmony Connect.
+Readers can find guidelines to quickly get started with building and using the JavaScript SDK for Factom Harmony Connect.
 
 You can learn more about Factom Harmony Connect
 [here](https://docs.harmony.factom.com/).
@@ -101,7 +99,7 @@ When the Factom SDK is initialized, there will be an optional
 The primary benefit of `automaticSigning` param is to encourage you to
 create chains and entries with unique signatures. Later on, you can
 validate that the chains or entries were created by you or that a
-certain user/device/ organization/etc.actually signed and published a
+certain user/device/ organization/etc. actually signed and published a
 certain message that you see in your chain.
 
 Now that you have initialized the SDK, you can use the SDK\'s Methods,
