@@ -174,7 +174,7 @@ License
 
 [identities](documentation/identities.md)
 
-[api_info](documentation/apiInfo.md)
+[apiInfo](documentation/apiInfo.md)
 
 [chains](documentation/chains.md)
 
