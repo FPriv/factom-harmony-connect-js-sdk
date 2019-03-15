@@ -25,6 +25,13 @@ Creates a new Identity chain. You will need to include a unique names array for 
 | `params.callbackUrl`    | optional | string </br> The URL you would like the callbacks to be sent to. </br> **Note:** If this is not specified, callbacks will not be activated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | **callbackUrl is an invalid url format.** </br> An invalid `callbackUrl` format was provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `params.callbackStages` | optional | array of strings </br> The immutability stages you would like to be notified about. This list can include any or all of these three stages: `replicated`, `factom`, and `anchored`. For example: when you would like to trigger the callback from Connect at `replicated` and `factom` stage, you would send them in the format: [‘replicated’, ‘factom’]. </br> **Note:** For this field to matter, the URL must be provided. If callbacks are activated (URL has been specified) and this field is not sent, it will default to `factom` and `anchored`. | **callbackStages must be an array.** </br> An invalid `callbackStages` format was provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
+**Sample**
+```JS
+await factomConnectSDK.identities.create({
+      names: ["NotarySimulation", "Test Identity"]
+});
+```
+
 **Returns**
 
 **Response**: Accepted
@@ -37,6 +44,28 @@ The public key in base58 Idpub format. </br>
     - **key_pairs[].private_key:** string </br>
 The private key in base58 Idsec format. 
 
+```JS
+{
+   'stage':'replicated',
+   'entry_hash':'64e5c70cc7b58e3746e2e2e43c6a01b4b504512a3e87d39faf467823c43ccf1e',
+   'chain_id':'107c8e488e95b63ca6fe1c409aa22c380b5c7be387d139c1cd0afaf608d1ae42',
+   'key_pairs':[
+      {
+         'private_key':'idsec1fKP8B6csh3yAHMiEu2x8NBBJvx7nkWhbJB6XvRobaKibvbMy2',
+         'public_key':'idpub2EDrNudZUKBfKfppPXeeTZJVU4nzMCXQf9vicDeApafbzV3iXa'
+      },
+      {
+         'private_key':'idsec2PY5YdmmMDDVrvkHctfFjbZybe3NSAPbtr9aJJTLrVj4tekXGx',
+         'public_key':'idpub1mxNZop6vAGmutD87hdYz1hog1NnaSfFj3icTUiq6xUyjiiy89'
+      },
+      {
+         'private_key':'idsec36HAy7vPMwCpDVeEDnGrkkW77W4QZ6rMvwrQ9tNP9JWgG6P2yv',
+         'public_key':'idpub1zbpmSTnvErRkzoXus1hBmHSSFxvagqD3nZiMyna4JmnSnUDwF'
+      }
+   ]
+}
+```
+
 ### get
 
 Gets a summary of the identity chain's current state.
@@ -46,6 +75,13 @@ Gets a summary of the identity chain's current state.
 | **Name**                 | **Type** | **Description**                                                       | **SDK Error Message & Description**                                                   |
 |--------------------------|----------|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | `params.identityChainId` | required | string </br> The unique identifier for the identity chain being requested. | **identityChainId is required.**  </br> `identityChainId` parameter was not provided. |
+
+**Sample**
+```JS
+await factomConnectSDK.identities.get({
+      identityChainId: '107c8e488e95b63ca6fe1c409aa22c380b5c7be387d139c1cd0afaf608d1ae42'
+});
+```
 
 **Returns**
 
@@ -70,6 +106,46 @@ Gets a summary of the identity chain's current state.
 	-  **data.pending_key.priority:** integer </br> The level of this key within the hierarchy. A lower number indicates a key that allows a holder to replace higher numbered keys. The master key is priority 0.
 	-  **data.pending_key.entry_hash:** string </br> The hash of the entry that was made documenting the key replacement. 
 
+```JS
+{
+   'data':{
+      'stage':'replicated',
+      'pending_key':None,
+      'version':1,
+      'active_keys':[
+         {
+            'activated_height':None,
+            'entry_hash':'64e5c70cc7b58e3746e2e2e43c6a01b4b504512a3e87d39faf467823c43ccf1e',
+            'key':'idpub2EDrNudZUKBfKfppPXeeTZJVU4nzMCXQf9vicDeApafbzV3iXa',
+            'priority':0,
+            'retired_height':None
+         },
+         {
+            'activated_height':None,
+            'entry_hash':'64e5c70cc7b58e3746e2e2e43c6a01b4b504512a3e87d39faf467823c43ccf1e',
+            'key':'idpub1mxNZop6vAGmutD87hdYz1hog1NnaSfFj3icTUiq6xUyjiiy89',
+            'priority':1,
+            'retired_height':None
+         },
+         {
+            'activated_height':None,
+            'entry_hash':'64e5c70cc7b58e3746e2e2e43c6a01b4b504512a3e87d39faf467823c43ccf1e',
+            'key':'idpub1zbpmSTnvErRkzoXus1hBmHSSFxvagqD3nZiMyna4JmnSnUDwF',
+            'priority':2,
+            'retired_height':None
+         }
+      ],
+      'names':[
+         'NotarySimulation',
+         '2019-03-15T04:17:36.684136'
+      ],
+      'created_height':None,
+      'all_keys_href':'/v1/identities/107c8e488e95b63ca6fe1c409aa22c380b5c7be387d139c1cd0afaf608d1ae42/keys',
+      'chain_id':'107c8e488e95b63ca6fe1c409aa22c380b5c7be387d139c1cd0afaf608d1ae42'
+   }
+}
+```
+
 ### keys
 
 ##### list
@@ -84,6 +160,13 @@ are paginated.
 | `params.identityChainId` | required | string </br> The unique identifier of the identity chain whose keys are being requested.                                                                                                                                                                                                                 | **identityChainId is required.** </br> `identityChainId` parameter was not provided.          | |
 | `params.limit`           | optional | integer </br> The maximum number of keys you would like to be returned. The default value is 15.                                                                                                                                                                                | **limit must be an integer.** </br> An invalid `limit` format was provided.                   |
 | `params.offset`          | optional | integer </br> The key index (in number of keys from the first key) to start from in the list of all keys. For example, if you have already received the first 15 keys and you would like the next set, you would send an offset of 15. Default value is 0 which represents the first item. | **offset must be an integer.** </br> An invalid `offset` format was provided.                 |
+
+**Sample**
+```JS
+await factomConnectSDK.identities.keys.list({
+      identityChainId: '107c8e488e95b63ca6fe1c409aa22c380b5c7be387d139c1cd0afaf608d1ae42'
+});
+```
 
 **Returns**
 
@@ -102,6 +185,37 @@ to replace higher numbered keys. The master key is priority 0.
 -   **limit**: integer </br> The number of keys returned in the "data" object.
 -   **count**: integer </br> The total number of keys found (both active and retired) for the identity.
 
+```JS
+{
+   'offset':0,
+   'limit':15,
+   'data':[
+      {
+         'activated_height':None,
+         'entry_hash':'64e5c70cc7b58e3746e2e2e43c6a01b4b504512a3e87d39faf467823c43ccf1e',
+         'key':'idpub1mxNZop6vAGmutD87hdYz1hog1NnaSfFj3icTUiq6xUyjiiy89',
+         'priority':1,
+         'retired_height':None
+      },
+      {
+         'activated_height':None,
+         'entry_hash':'64e5c70cc7b58e3746e2e2e43c6a01b4b504512a3e87d39faf467823c43ccf1e',
+         'key':'idpub1zbpmSTnvErRkzoXus1hBmHSSFxvagqD3nZiMyna4JmnSnUDwF',
+         'priority':2,
+         'retired_height':None
+      },
+      {
+         'activated_height':None,
+         'entry_hash':'64e5c70cc7b58e3746e2e2e43c6a01b4b504512a3e87d39faf467823c43ccf1e',
+         'key':'idpub2EDrNudZUKBfKfppPXeeTZJVU4nzMCXQf9vicDeApafbzV3iXa',
+         'priority':0,
+         'retired_height':None
+      }
+   ],
+   'count':3
+}
+```
+
 ##### get
 
 Gets information about a specific public key for a given Identity,
@@ -115,6 +229,14 @@ applicable.
 | `params.identityChainId` | required | string </br> The unique identifier for the Identity that the key belongs to.                                | **identityChainId is required.** </br> `identityChainId` parameter was not provided.                                                                       |
 | `params.key`             | required | string </br> The public key string to get information, which must be in base58 idpub format. | **key is required.** </br> `key` parameter was not provided. </br></br> **key is invalid.** </br> An invalid `key` format was provided. |
 
+**Sample**
+```JS
+await factomConnectSDK.identities.keys.get({
+      identityChainId: '107c8e488e95b63ca6fe1c409aa22c380b5c7be387d139c1cd0afaf608d1ae42',
+      signerPublicKey: 'idpub1zbpmSTnvErRkzoXus1hBmHSSFxvagqD3nZiMyna4JmnSnUDwF'
+});
+```
+
 **Returns**
 
 **Response:** OK
@@ -124,6 +246,18 @@ applicable.
 	-   **data.retired_height:** integer </br> The height at which this key was retired for this identity. The value can be null if key is still active.
 	-   **data.priority:** integer </br> The level of this key within the hierarchy. The master key is priority 0. 
 	-   **data.entry_hash:** string </br> The entry hash of the entry where this key was activated.
+
+```JS
+{
+   'data':{
+      'activated_height':None,
+      'entry_hash':'64e5c70cc7b58e3746e2e2e43c6a01b4b504512a3e87d39faf467823c43ccf1e',
+      'key':'idpub1zbpmSTnvErRkzoXus1hBmHSSFxvagqD3nZiMyna4JmnSnUDwF',
+      'priority':2,
+      'retired_height':None
+   }
+}
+```
 
 ##### replace
 
@@ -146,6 +280,15 @@ This method will automatically generate a new key pair for you and return it. Op
 | `params.callbackUrl`      | optional | string </br> The URL you would like the callbacks to be sent to. </br> **Note:** If this is not specified, callbacks will not be activated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | **callbackUrl is an invalid url format.** </br> An invalid `callbackUrl` format was provided.                                                                                                                                           |
 | `params.callbackStages`   | optional | array of strings </br> The immutability stages you'd like to be notified about. This list can include any or all of these three stages: `replicated`, `factom`, and `anchored`. For example: when you would like to trigger the callback from Connect from `replicated` and `factom` then you should send them in the format: [‘replicated’, ‘factom’].  </br> **Note:** For this field to matter, the URL must be provided. If callbacks are activated (URL has been specified) and this field is not sent, it will default to `factom` and `anchored`.| **callbackStages must be an array.** </br> An invalid `callbackStages` format was provided.                                                                                                                                             |
 
+**Sample**
+```JS
+await factomConnectSDK.identities.keys.replace({
+      identityChainId: '20ea6362994571c477e8b552fa38a6028760f2089ac1024fffee828279c9baa7',
+      oldPublicKey: 'idpub1uAysiWct2XpmRSk7ydNHNRdtynXn46GwTKyPYM2t5q2chHaBA',
+      signerPrivateKey: 'idsec32pHEsJfcx98eBD4WTZDvAfxSwtFeyVy5ZSAad7R2dLgaurKkh',
+});
+```
+
 **Returns**
 
 **Response:** OK
@@ -156,3 +299,14 @@ This method will automatically generate a new key pair for you and return it. Op
 The public key in base58 Idpub format. 
     - **key_pair.private_key:** string</br> 
     The private key in base58 Idsec format. 
+
+```JS
+{
+   'stage':'replicated',
+   'entry_hash':'0fd4bdfead13b471cf47883223a843f454dae1d5bd29fff4cc308eda83d00c1d',
+   'key_pair':{
+      'private_key':'idsec2UQ8d9QK1gUZUJoDSmQtN4UJ1MvSvr64UDFGLuatCPvDaYx1Wj',
+      'public_key':'idpub2Z7mJWCyUDensnQ5UcTxXUrQH9BsGDHjQbmNU5f3Rp3XpW7bYR'
+   }
+}
+```
