@@ -12,6 +12,13 @@ Gets information about a specific chain from Connect.
 | `params.chainId`             | required | string </br> The unique identifier created for each chain.                                                                                                                                                                                                                            | **chainId is required** </br> `chainId` parameter was not provided. |
 | `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`) </br> Default value is `true`. Indicates whether the SDK automatically validates that the chain was signed based on our signing standard. </br> `custom function`: allows for validating the chain's signature  based on custom logic. |                                                                     |
 
+**Sample**
+```JS
+await factomConnectSDK.chains.get({
+      chainId: '4b9532c79d53ab22b85951b4a5853f81c2682132b3c810a95128c30401cd1e58'
+});
+```
+
 **Returns**
 
 **Response:** OK
@@ -40,6 +47,36 @@ Displays an empty string ("") when `signatureValidation` is set to `false`.
     that key was retired for the signer identity at a height lower than when this chain reached the `factom` immutability stage.
     -   **valid_signature:** A chain that conformed to the SignedChain structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this chain reached the `factom` immutability stage.
 
+```JS
+{
+  'chain':{
+     'data':{
+        'stage':'replicated',
+        'external_ids':[
+           'SignedChain',
+           '0x01',
+           'd22fd62b2c64061d48121d24bfa4e57826caaf532df1524da6eb243da3daa84f',
+           'idpub25ZVKWA7BqTM7VmBtWK5DYNQwusqMpxbWABigfvqqQVNcd2Fr6',
+           '2a0ebd83a34fef6e38049815d199398eb4e5ed34a32e8f9f1fa6184d2ec6015e7be601d0fb75679e62575c3cdd7779f52a84a9853f8725932e3a92143d2b3c05',
+           '2019-03-15T03:43:22.200505',
+           'NotarySimulation',
+           'CustomerChain',
+           'cust123'
+        ],
+        'entries':{
+           'href':'/v1/chains/4b9532c79d53ab22b85951b4a5853f81c2682132b3c810a95128c30401cd1e58/entries'
+        },
+        'eblock':None,
+        'dblock':None,
+        'created_at':None,
+        'content':"This chain represents a notary service's customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients",
+        'chain_id':'4b9532c79d53ab22b85951b4a5853f81c2682132b3c810a95128c30401cd1e58'
+     }
+  },
+  'status':'valid_signature'
+}
+```
+
 ### create
 
 Creates a new chain with or without signature:
@@ -60,6 +97,16 @@ Creates a new chain with or without signature:
 | `params.callbackUrl`      | optional                               | string </br> The URL where you would like to receive the callback from Connect. </br> **Note:** If this is not specified, callbacks will not be activated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | **callbackUrl is an invalid url format.** </br> An invalid `callbackUrl` format was provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `params.callbackStages`   | optional                               | array of strings </br> The immutability stages you would like to be notified about. This list can include any or all of the three stages: `replicated`, `factom`, and `anchored`. For example, when you would like to trigger the callback from Connect at `replicated` and `factom` stage, you would send them in the format: [‘replicated’, ‘factom’]. </br> **Note:** For this field to matter, the URL must be provided. If callbacks are activated (URL has been specified) and this field is not sent, it will default to `factom` and `anchored`. | **callbackStages must be an array.** </br> An invalid `callbackStages` format was provided.   |                                                                                           
 
+**Sample**
+```JS
+await factomConnectSDK.chains.create({
+      signerPrivateKey: 'idsec2rY42dadPcytBLEx9sanpCJk3PHqLnVwMYuPF7jcmDULVRySH2',
+      signerChainId: 'd22fd62b2c64061d48121d24bfa4e57826caaf532df1524da6eb243da3daa84f',
+      externalIds: ["TestFunction", "CustomerChain", "cust123"],
+      content: "This chain represents a notary service’s customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients"
+});
+```
+
 **Returns**
 
 **Response:** Accepted
@@ -67,6 +114,14 @@ Creates a new chain with or without signature:
 -   **chain_id:** string </br> This is the unique identifier created for each chain.  </br>**Note**: Chain ID is a hash based on the external IDs you choose. External IDs must be unique or else the chain creation will fail.
 -   **entry_hash:** string </br> The SHA256 Hash of the first entry of this new chain.
 -   **stage:** string </br> The immutability stage that this chain has reached.
+
+```JS
+{
+   'stage':'replicated',
+   'entry_hash':'e76e92550fb49634f83bea791345c138e2f081da0053f0a2e19c03da98036a36',
+   'chain_id':'4b9532c79d53ab22b85951b4a5853f81c2682132b3c810a95128c30401cd1e58'
+}
+```
 
 ### list
 
@@ -80,7 +135,10 @@ Gets all of the chains on Factom.
 | `params.offset` | optional | integer </br>   The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position. | **offset must be an integer.**  </br>   An invalid `offset` format was provided. |   |
 | `params.stages` | optional | array of strings </br>  The immutability stages you want to restrict results to. You can choose any from `replicated`, `factom`, and `anchored`. The default value are these three stages: `replicated`, `factom`, and `anchored`. </br>  **Note**: If you would like to search among multiple stages, you would send them in the format: [‘replicated’, ‘factom’]. | **stages must be an array.**</br>  An invalid `stages` format was provided.   |   
 
-
+**Sample**
+```JS
+await factomConnectSDK.chains.list();
+```
 
 **Returns**
 
@@ -95,6 +153,33 @@ Gets all of the chains on Factom.
 -   **limit:** integer </br> The number of chains returned.
 -   **count:** integer </br> The total number of chains seen.
 
+```JS
+{
+   'offset':0,
+   'limit':1,
+   'data':[
+      {
+         'stage':'replicated',
+         'href':'/v1/chains/e8ac011c4b0f6a5539e835811da7404442fcbbe6c26ce5feaa8b702dbd99209e',
+         'external_ids':[
+            'SignedChain',
+            '0x01',
+            '7cdd5333033b4bb6a6c73b4b239257516793b3b83ea6c698d9b9db9764717704',
+            'idpub2174LhCanGnM6dHiin6hkzVD7x2M18ChiQShJAohMc9yzP79R9',
+	    'c12700993e2764ed3786f910a6d7038326a628966b5ea861b4522a76257c362b8bbdfd1a73f239a7aaa20737b579d60f1905879fff1e7b7f2edcc5e73c6bd601',
+            '2019-03-15T03:51:57.383862',
+            'NotarySimulation',
+            'CustomerChain',
+            'cust123'
+         ],
+         'created_at':None,
+         'chain_id':'e8ac011c4b0f6a5539e835811da7404442fcbbe6c26ce5feaa8b702dbd99209e'
+      }
+   ],
+   'count':1298
+}
+```
+
 ### search
 
 Finds all of the chains with `externalIds` that match what you entered. 
@@ -107,6 +192,12 @@ Finds all of the chains with `externalIds` that match what you entered.
 | `params.limit`       | optional | integer </br> The number of items you would like to return back in each stage. The default value is 15.                                                                                                                                                                                                                                                                             | **limit must be an integer.** </br> An invalid `limit` format was provided.                                                                                                          |   |
 | `params.offset`      | optional | integer </br>  The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position. | **offset must be an integer.**</br>  An invalid `offset` format was provided.                                                                                                       |   |
 
+**Sample**
+```JS
+await factomConnectSDK.chains.search({
+      externalIds: ["TestFunction", "CustomerChain", "cust123"]
+});
+```
 
 **Returns**
 
@@ -120,6 +211,33 @@ Finds all of the chains with `externalIds` that match what you entered.
 -   **offset:** integer </br> The index of the first chain returned from the total set, which starts from 0.
 -   **limit:** integer </br> The number of chains returned.
 -   **count:** integer </br> The total number of chains seen.
+
+```JS
+{
+   'offset':0,
+   'limit':1,
+   'data':[
+      {
+         'stage':'factom',
+         'href':'/v1/chains/75f40155d87c1da402c4e9e8e0ee6b8915aa5db98e32e6f4d1649ca495e7f225',
+         'external_ids':[
+            'SignedChain',
+            '0x01',
+            '33f4a13b69c91b0f6a13e940bcd83831cb1fefd4a26a956e1ec456b02d553fa3',
+            'idpub2qSXVg7Tw2o3FUu7vz6j96FrS3BTVjvhM4mMLoAvmyK5t2VDXG',
+	    '9aae05eb4c164f416fa1f2b7911c0a278dd9f10b5714781e4b14c579c70041fb937dfdc039c9f9b9a04d075915312c66c54a0e3ebecc5bd726ed14b12a4dc708',
+            '2019-03-04T04:29:54.222Z',
+            'TestFunction',
+            'CustomerChain',
+            'cust123'
+         ],
+         'created_at':'2019-03-04T04:30:00.000000Z',
+         'chain_id':'75f40155d87c1da402c4e9e8e0ee6b8915aa5db98e32e6f4d1649ca495e7f225'
+      }
+   ],
+   'count':19
+}
+```
 
 ### entries
 
@@ -135,6 +253,13 @@ Gets information about a specific entry on Connect.
 | `params.entryHash`           | required | string </br> The SHA256 hash of the entry.                                                                                                                                                                                                                                                                             | **entryHash is required.** </br> `entryHash` parameter was not provided. |
 | `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`) </br> The default value is `true`. Indicates whether the SDK automatically validates that the entry was signed based on our signing standard. </br> `custom function`: allows for validating the entry's signature based on custom logic. |                                                                                |
 
+**Sample**
+```JS
+await factomConnectSDK.chains.entries.get({
+      chainId: 'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2',
+      entryHash: 'cccf02ac98c9e04f556508aa4dc9e277d44e8ce2006a244ebec082e0bed36efc'
+});
+```
 
 **Returns**
 
@@ -164,6 +289,37 @@ In case `signatureValidation` is set to `true` then one of the following values 
     - **retired_height:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key, but that key was retired for the signer identity at a height lower than when this entry reached the `factom` immutability stage.
     - **valid_signature:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this entry reached the `factom` immutability stage.
 
+```JS
+{
+   'entry':{
+      'data':{
+         'stage':'replicated',
+         'external_ids':[
+            'SignedEntry',
+            '0x01',
+            '8c33e7432cdfd3933beb6de5ccbc3706ac21458ed53352e02658daf2dce8f27c',
+            'idpub3D92p9aiSFo6ad4UbkvcPDE7cFcGqQky2yMk1gjKCfWwh9zfpq',
+	    '116ef1cdcbb6b047729dd5cba77aeb2ef61a764af847a2c85c6aee531545aa678ef220ec35e36d13ee9b82779bef1106d5fb7f97b1640a6991cc645c67d6ee0e',
+            '2019-03-15T03:58:31.259724',
+            'NotarySimulation',
+            'DocumentEntry',
+            'doc987'
+         ],
+         'entry_hash':'cccf02ac98c9e04f556508aa4dc9e277d44e8ce2006a244ebec082e0bed36efc',
+         'eblock':None,
+         'dblock':None,
+         'created_at':None,
+         'content':'{"document_hash": "98e8447527dd18fd054ff76371d4885972887481b1499dad02ac3c39748a4012", "hash_type": "sha256"}',
+         'chain':{
+            'href':'/v1/chains/c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2',
+            'chain_id':'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2'
+         }
+      }
+   },
+   'status':'valid_signature'
+}
+```
+
 ##### create
 
 Creates a new entry for the selected chain with or without signature:
@@ -187,6 +343,16 @@ Creates a new entry for the selected chain with or without signature:
 | `params.callbackUrl`      | optional                         | string</br> the URL you would like the callbacks to be sent to **Note:** If this is not specified, callbacks will not be activated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | **callbackUrl is an invalid url format.**</br> An invalid `callbackUrl` format was provided                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `params.callbackStages`   | optional                         | array of strings</br>  The immutability stages you would like to be notified about. This list can include any or all of these three stages: `replicated`,  `factom`, and `anchored`. For example, when you would like to trigger the callback from Connect from `replicated` and `factom` then you would send them in the format: ['replicated', 'factom'].</br> **Note:** For this field to matter, the URL must be provided.</br> If callbacks are activated (URL has been specified) and this field is not sent, it will default to `factom` and `anchored`. | **callbackStages must be an array.**</br> An invalid `callbackStages` format was provided                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
+**Sample**
+```JS
+await factomConnectSDK.chains.entries.create({
+      chainId: 'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2',
+      signerPrivateKey: 'idsec1xbKD6tkgLPMBuNQbTnHPr6mFoeF7iQV4ybTN63sKdFg7h1uWH',
+      signerChainId: '8c33e7432cdfd3933beb6de5ccbc3706ac21458ed53352e02658daf2dce8f27c',
+      externalIds: ["TestFunction", "DocumentEntry", "doc987"],
+      content: 'Abc123'
+});
+```
 
 **Returns**
 
@@ -195,6 +361,13 @@ Creates a new entry for the selected chain with or without signature:
     The SHA256 Hash of the entry you just created. You can use this hash
     to reference this entry in the future.
 -   **stage:** string </br> The current immutability stage of the new entry.
+
+```JS
+{
+   'stage':'replicated',
+   'entry_hash':'cccf02ac98c9e04f556508aa4dc9e277d44e8ce2006a244ebec082e0bed36efc'
+}
+```
 
 ##### list
 
@@ -208,6 +381,13 @@ Gets list of all entries contained on a specified chain.
 | `params.limit`   | optional | integer </br> The number of items you would like back in each page. The default value is 15.                                                                                                                                                                                                                                                                                       | **limit must ben an integer.**</br> An invalid `limit` format was provided.  |
 | `params.offset`  | optional | integer</br> The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position.  | **offset must be an integer.**</br> An invalid `offset` format was provided.|
 | `params.stages`  | optional | array of strings</br>  The immutability stages you want to restrict results to. You can choose any from `replicated`, `factom`, and `anchored`. The default value are these three stages: `replicated`, `factom` and `anchored`.</br>  **Note:** If you would like to search among multiple stages, you would send them in the format ['replicated', 'factom'].  | **stages must be an array.**</br>  An invalid `stages` format was provided. |
+
+**Sample**
+```JS
+await factomConnectSDK.chains.entries.list({
+      chainId: 'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2'
+});
+```
 
 **Returns**
 
@@ -224,6 +404,36 @@ Gets list of all entries contained on a specified chain.
 -   **limit:** integer </br> The number of entries returned per page.
 -   **count:** integer </br> The total number of entries seen.
 
+```JS
+{
+   'offset':0,
+   'limit':15,
+   'data':[
+      {
+         'stage':'replicated',
+         'href':'/v1/chains/c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2/entries/bcf9ce3beba20007408319a3965a6dde2ad23eb45a20f0d61827b8dc3c584ced',
+         'entry_hash':'bcf9ce3beba20007408319a3965a6dde2ad23eb45a20f0d61827b8dc3c584ced',
+         'created_at':None,
+         'chain':{
+            'href':'/v1/chains/c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2',
+            'chain_id':'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2'
+         }
+      },
+      {
+         'stage':'replicated',
+	 'href':'/v1/chains/c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2/entries/cccf02ac98c9e04f556508aa4dc9e277d44e8ce2006a244ebec082e0bed36efc',
+         'entry_hash':'cccf02ac98c9e04f556508aa4dc9e277d44e8ce2006a244ebec082e0bed36efc',
+         'created_at':None,
+         'chain':{
+            'href':'/v1/chains/c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2',
+            'chain_id':'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2'
+         }
+      }
+   ],
+   'count':2
+}
+```
+
 ##### getFirst
 
 Retrieves the first entry that has been saved to this chain.
@@ -234,6 +444,13 @@ Retrieves the first entry that has been saved to this chain.
 |------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
 | `params.chainId`             | required | string </br>  The chain identifier.                                                                                                                                                                                                                                                                               | **chainId is required.**</br>  `chainId` parameter was not provided.|
 | `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`)</br> Default value is `true`. Indicates whether the SDK automatically validates that the entry was signed based on our signing standard.</br>`custom function`: allows for validating the entry's signature based on custom logic. |                                                                           |
+
+**Sample**
+```JS
+await factomConnectSDK.chains.entries.getFirst({
+      chainId: 'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2'
+});
+```
 
 **Returns**
 
@@ -263,6 +480,37 @@ In case `signatureValidation` is set to `true` then one of the following values 
     - **invalid_signature:** An entry was created in the proper SignedEntry structure, but the signature does not match the attached key.
     - **retired_height:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key, but that key was retired for the signer identity at a height lower than when this entry reached the `factom` immutability stage.
     - **valid_signature:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this entry reached the `factom` immutability stage.
+
+```JS
+{
+   'entry':{
+      'data':{
+         'stage':'replicated',
+         'external_ids':[
+            'SignedChain',
+            '0x01',
+            '8c33e7432cdfd3933beb6de5ccbc3706ac21458ed53352e02658daf2dce8f27c',
+            'idpub3D92p9aiSFo6ad4UbkvcPDE7cFcGqQky2yMk1gjKCfWwh9zfpq',
+            '54d5c4771f70bc197a8f6a347ce3a921425e3db4957918cc7bc305d694d59566989bf0be29843e805cc958ad0eed81b9a766c7b54602f474cc503c908729010d',
+            '2019-03-15T03:58:28.544972',
+            'NotarySimulation',
+            'CustomerChain',
+            'cust123'
+         ],
+         'entry_hash':'bcf9ce3beba20007408319a3965a6dde2ad23eb45a20f0d61827b8dc3c584ced',
+         'eblock':None,
+         'dblock':None,
+         'created_at':None,
+         'content':"This chain represents a notary service's customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients",
+         'chain':{
+            'href':'/v1/chains/c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2',
+            'chain_id':'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2'
+         }
+      }
+   },
+   'status':'not_signed/invalid_entry_format'
+}
+```
 
 ##### getLast
 
@@ -275,6 +523,13 @@ Gets the last entry that has been saved to this chain.
 | `params.chainId`             | required | string </br>  The chain identifier.                                                                                                                                                                                                                                                                               | **chainId is required.**</br>  `chainId` parameter was not provided.</br> |
 | `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`)</br> Default value is `true`. Indicates whether the SDK automatically validates that the entry</br> was signed based on our signing standard.</br>`custom function`: allows for validating the entry's signature based on custom logic. |                                                                           |
 
+**Sample**
+```JS
+await factomConnectSDK.chains.entries.getLast({
+      chainId: 'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2'
+});
+```
+
 **Returns**
 
 **Response:** OK
@@ -303,6 +558,37 @@ In case `signatureValidation` is set to `true` then one of the following values 
     - **invalid_signature:** An entry was created in the proper SignedEntry structure, but the signature does not match the attached key.
     - **retired_height:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key, but that key was retired for the signer identity at a height lower than when this entry reached the `factom` immutability stage.
     - **valid_signature:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this entry reached the `factom` immutability stage.
+
+```JS
+{
+   'entry':{
+      'data':{
+         'stage':'replicated',
+         'external_ids':[
+            'SignedChain',
+            '0x01',
+            '8c33e7432cdfd3933beb6de5ccbc3706ac21458ed53352e02658daf2dce8f27c',
+            'idpub3D92p9aiSFo6ad4UbkvcPDE7cFcGqQky2yMk1gjKCfWwh9zfpq',
+            '54d5c4771f70bc197a8f6a347ce3a921425e3db4957918cc7bc305d694d59566989bf0be29843e805cc958ad0eed81b9a766c7b54602f474cc503c908729010d',
+            '2019-03-15T03:58:28.544972',
+            'NotarySimulation',
+            'CustomerChain',
+            'cust123'
+         ],
+         'entry_hash':'bcf9ce3beba20007408319a3965a6dde2ad23eb45a20f0d61827b8dc3c584ced',
+         'eblock':None,
+         'dblock':None,
+         'created_at':None,
+         'content':"This chain represents a notary service's customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients",
+         'chain':{
+            'href':'/v1/chains/c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2',
+            'chain_id':'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2'
+         }
+      }
+   },
+   'status':'not_signed/invalid_entry_format'
+}
+```
 
 ##### search
 
@@ -317,6 +603,14 @@ Finds all of the entries with `externalIds` that match what you entered.
 | `params.limit`       | optional | integer</br> The number of items you would like to return back in each page. The default value is 15.                                                                                                                                                                                                                                                                              | **limit must be an integer.**</br> An invalid `limit` format was provided.</br>                                                                                                      |
 | `params.offset`      | optional | integer </br> The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position. | **offset must be an integer.**</br> An invalid `offset` format was provided.                                                                                                                         |
 
+**Sample**
+```JS
+await factomConnectSDK.chains.entries.search({
+      chainId: 'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2',
+      externalIds: ["TestFunction", "DocumentEntry", "doc987"]
+});
+```
+
 **Returns**
 
 **Response:** OK
@@ -329,3 +623,29 @@ Finds all of the entries with `externalIds` that match what you entered.
 -   **offset:** integer </br> The index of the first item returned from the total set, which starts from 0.
 -   **limit:** integer </br> The number of entries returned per page.
 -   **count:** integer </br> The total number of entries seen.
+
+```JS
+{
+   'offset':0,
+   'limit':15,
+   'data':[
+      {
+         'stage':'replicated',
+         'href':'/v1/chains/c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2/entries/cccf02ac98c9e04f556508aa4dc9e277d44e8ce2006a244ebec082e0bed36efc',
+         'external_ids':[
+            'SignedEntry',
+            '0x01',
+            '8c33e7432cdfd3933beb6de5ccbc3706ac21458ed53352e02658daf2dce8f27c',
+            'idpub3D92p9aiSFo6ad4UbkvcPDE7cFcGqQky2yMk1gjKCfWwh9zfpq',
+            '116ef1cdcbb6b047729dd5cba77aeb2ef61a764af847a2c85c6aee531545aa678ef220ec35e36d13ee9b82779bef1106d5fb7f97b1640a6991cc645c67d6ee0e',
+            '2019-03-15T03:58:31.259724',
+            'NotarySimulation',
+            'DocumentEntry',
+            'doc987'
+         ],
+         'entry_hash':'cccf02ac98c9e04f556508aa4dc9e277d44e8ce2006a244ebec082e0bed36efc'
+      }
+   ],
+   'count':1
+}
+```
