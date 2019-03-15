@@ -5,7 +5,7 @@ chains
 
 Gets information about a specific chain from Connect.
 
-**Parameters:**
+**Parameters**
 
 | **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                       | **SDK Error Message & Description**                                 |
 |------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
@@ -61,7 +61,7 @@ Creates a new chain with or without signature:
 | `params.callbackStages`   | optional                               | array of strings </br> The immutability stages you would like to be notified about. This list can include any or all of the three stages: `replicated`, `factom`, and `anchored`. For example, when you would like to trigger the callback from Connect at `replicated` and `factom` stage, you would send them in the format: [‘replicated’, ‘factom’]. </br> **Note:** For this field to matter, the URL must be provided. If callbacks are activated (URL has been specified) and this field is not sent, it will default to `factom` and `anchored`. | **callbackStages must be an array.** </br> An invalid `callbackStages` format was provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 **Returns**
 
-**Response**: Accepted
+**Response:** Accepted
 
 -   **chain_id:** string </br> This is the unique identifier created for each chain.  </br>**Note**: Chain ID is a hash based on the external IDs you choose. External IDs must be unique or else the chain creation will fail.
 -   **entry_hash:** string </br> The SHA256 Hash of the first entry of this new chain.
@@ -189,7 +189,7 @@ Creates a new entry for the selected chain with or without signature:
 
 **Returns**
 
-**Response**: Accepted
+**Response:** Accepted
 -   **entry_hash** string </br>
     The SHA256 Hash of the entry you just created. You can use this hash
     to reference this entry in the future.
@@ -199,7 +199,7 @@ Creates a new entry for the selected chain with or without signature:
 
 Gets list of all entries contained on a specified chain.
 
-**Parameters:**
+**Parameters**
 
 | **Name**         | **Type** | **Description**                                                                                                                                                                                                                                                                                                                                                                            | **SDK Error Message & Description**                                                    |
 |------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
@@ -227,7 +227,7 @@ Gets list of all entries contained on a specified chain.
 
 Retrieves the first entry that has been saved to this chain.
 
-**Parameters:**
+**Parameters**
 
 | **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                                                   | **SDK Error Message & Description**                                       |
 |------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
@@ -267,7 +267,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 
 Gets the last entry that has been saved to this chain.
 
-**Parameters:**
+**Parameters**
 
 | **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                                                   | **SDK Error Message & Description**                                       |
 |------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
@@ -307,7 +307,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 
 Finds all of the entries with `externalIds` that match what you entered. 
 
-**Parameters:**
+**Parameters**
 
 | **Name**             | **Type** | **Description**                                                                                                                                                                                                                                                                                                                                                                            | **SDK Error Message & Description**                                                                                                                                                 |
 |----------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
