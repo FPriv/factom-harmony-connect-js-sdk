@@ -47,7 +47,8 @@ Gets a summary of the identity chain's current state.
 |--------------------------|----------|-----------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | `params.identityChainId` | required | string </br> The unique identifier for the identity chain being requested. | **identityChainId is required.**  </br> `identityChainId` parameter was not provided. |
 
-**Returns**</br> 
+**Returns**
+
 **Response**: OK
 - **data:** object
 - **data.version:** string </br> The identity chain's schema version. This details the format of this digital identity. For more information about the Factom identity schemas, view the documentation [here] (URL).
