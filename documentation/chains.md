@@ -1,7 +1,7 @@
 chains
 ------
 
-#### get
+### get
 
 Gets information about a specific chain from Connect.
 
@@ -40,7 +40,7 @@ Displays an empty string ("") when `signatureValidation` is set to `false`.
     that key was retired for the signer identity at a height lower than when this chain reached the `factom` immutability stage.
     -   **valid_signature:** A chain that conformed to the SignedChain structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this chain reached the `factom` immutability stage.
 
-#### create
+### create
 
 Creates a new chain with or without signature:
 
@@ -67,7 +67,7 @@ Creates a new chain with or without signature:
 -   **entry_hash:** string </br> The SHA256 Hash of the first entry of this new chain.
 -   **stage:** string </br> The immutability stage that this chain has reached.
 
-#### list
+### list
 
 Gets all of the chains on Factom.
 
@@ -94,7 +94,7 @@ Gets all of the chains on Factom.
 -   **limit:** integer </br> The number of chains returned.
 -   **count:** integer </br> The total number of chains seen.
 
-#### search
+### search
 
 Finds all of the chains with `externalIds` that match what you entered. 
 
@@ -120,7 +120,7 @@ Finds all of the chains with `externalIds` that match what you entered.
 -   **limit:** integer </br> The number of chains returned.
 -   **count:** integer </br> The total number of chains seen.
 
-#### entries
+### entries
 
 ##### get
 
