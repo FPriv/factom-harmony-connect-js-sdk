@@ -12,7 +12,7 @@ Gets information about a specific chain from Connect.
 | `params.chainId`             | required | string </br> The unique identifier created for each chain.                                                                                                                                                                                                                            | **chainId is required** </br> `chainId` parameter was not provided. |
 | `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`) </br> Default value is `true`. Indicates whether the SDK automatically validates that the chain was signed based on our signing standard. </br> `custom function`: allows for validating the chain's signature  based on custom logic. |                                                                     |
 
-**Returns:**
+**Returns**
 
 **Response:** OK
 -   **data:** object
@@ -107,7 +107,7 @@ Finds all of the chains with `externalIds` that match what you entered.
 | `params.offset`      | optional | integer </br>  The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position. | **offset must be an integer.**</br>  An invalid `offset` format was provided.                                                                                                       |   |
 
 
-**Returns:**
+**Returns**
 
 **Response:** OK
 -   **data:** array of objects </br> An array that contains the chains on this page.
@@ -135,7 +135,7 @@ Gets information about a specific entry on Connect.
 | `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`) </br> The default value is `true`. Indicates whether the SDK automatically validates that the entry was signed based on our signing standard. </br> `custom function`: allows for validating the entry's signature based on custom logic. |                                                                                |
 
 
-**Returns:**
+**Returns**
 
 **Response:** OK
 -   **data:** object
@@ -187,7 +187,7 @@ Creates a new entry for the selected chain with or without signature:
 | `params.callbackStages`   | optional                         | array of strings</br>  The immutability stages you would like to be notified about. This list can include any or all of these three stages: `replicated`,  `factom`, and `anchored`. For example, when you would like to trigger the callback from Connect from `replicated` and `factom` then you would send them in the format: ['replicated', 'factom'].</br> **Note:** For this field to matter, the URL must be provided.</br> If callbacks are activated (URL has been specified) and this field is not sent, it will default to `factom` and `anchored`. | **callbackStages must be an array.**</br> An invalid `callbackStages` format was provided                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 
-**Returns:**
+**Returns**
 
 **Response**: Accepted
 -   **entry_hash** string </br>
@@ -208,7 +208,7 @@ Gets list of all entries contained on a specified chain.
 | `params.offset`  | optional | integer</br> The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position.  | **offset must be an integer.**</br> An invalid `offset` format was provided.|
 | `params.stages`  | optional | array of strings</br>  The immutability stages you want to restrict results to. You can choose any from `replicated`, `factom`, and `anchored`. The default value are these three stages: `replicated`, `factom` and `anchored`.</br>  **Note:** If you would like to search among multiple stages, you would send them in the format ['replicated', 'factom'].  | **stages must be an array.**</br>  An invalid `stages` format was provided. |
 
-**Returns:**
+**Returns**
 
 **Response:** OK
 
@@ -234,7 +234,7 @@ Retrieves the first entry that has been saved to this chain.
 | `params.chainId`             | required | string </br>  The chain identifier.                                                                                                                                                                                                                                                                               | **chainId is required.**</br>  `chainId` parameter was not provided.|
 | `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`)</br> Default value is `true`. Indicates whether the SDK automatically validates that the entry was signed based on our signing standard.</br>`custom function`: allows for validating the entry's signature based on custom logic. |                                                                           |
 
-**Returns:**
+**Returns**
 
 **Response:** OK
 
@@ -274,7 +274,7 @@ Gets the last entry that has been saved to this chain.
 | `params.chainId`             | required | string </br>  The chain identifier.                                                                                                                                                                                                                                                                               | **chainId is required.**</br>  `chainId` parameter was not provided.</br> |
 | `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`)</br> Default value is `true`. Indicates whether the SDK automatically validates that the entry</br> was signed based on our signing standard.</br>`custom function`: allows for validating the entry's signature based on custom logic. |                                                                           |
 
-**Returns:**
+**Returns**
 
 **Response:** OK
 
@@ -316,7 +316,7 @@ Finds all of the entries with `externalIds` that match what you entered.
 | `params.limit`       | optional | integer</br> The number of items you would like to return back in each page. The default value is 15.                                                                                                                                                                                                                                                                              | **limit must be an integer.**</br> An invalid `limit` format was provided.</br>                                                                                                      |
 | `params.offset`      | optional | integer </br> The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position. | **offset must be an integer.**</br> An invalid `offset` format was provided.                                                                                                                         |
 
-**Returns:**
+**Returns**
 
 **Response:** OK
 
