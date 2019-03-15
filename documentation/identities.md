@@ -62,7 +62,12 @@ Gets a summary of the identity chain's current state.
 	-   **data.active_keys[].retired_height:** integer </br> The height at which this key was retired for this identity. This will be null if key is still active.
 	-   **data.active_keys[].priority:** integer </br> The level of this key within the hierarchy. A lower number indicates a key that allows a holder to replace higher numbered keys. The master key is priority 0.
 	-   **data.active_keys[].entry_hash:** string </br> The hash of the entry that was made documenting the key replacement.
-
+- **data.pending_key:** object </br> A new public key that has been submitted as a replacement for a currently active key. Once the entry for the replacement is written into the blockchain, this key will become active and the replaced key will be retired.
+	-  **data.pending_key.key:** string </br> The public key in base58 idpub format.
+	-  **data.pending_key.activated_height:** integer </br> The height at which this key became active for this identity
+	-  **data.pending_key.retired_height:** integer </br> The height at which this key was retired for this identity. This will be null if key is still active.
+	-  **data.pending_key.priority:** integer </br> The level of this key within the hierarchy. A lower number indicates a key that allows a holder to replace higher numbered keys. The master key is priority 0.
+	-  **data.pending_key.entry_hash:** string </br> The hash of the entry that was made documenting the key replacement. 
 
 #### keys
 
