@@ -12,7 +12,7 @@ The **Keys** for an **Identity** have priorities, where keys with a higher prior
 - The lower priority keys are typically kept in “hot storage” and accessible for use by your live application. Still, these keys should be treated with care, for example: not being stored in repositories or not being stored in plaintext, etc. as they could be used by anyone, whom obtains them to indicate ownership of an Identity.
 
 
-#### create
+### create
 
 Creates a new Identity chain. You will need to include a unique names array for your Identity. This method will automatically generate 3 Public/Private keys pairs for you and return them, be sure to save them for future use. Optionally, you can pass in an array of public keys you have generated on your own, at which point no keys will be returned.
 
@@ -37,7 +37,7 @@ The public key in base58 Idpub format. </br>
     - **key_pairs[].private_key:** string </br>
 The private key in base58 Idsec format. 
 
-#### get
+### get
 
 Gets a summary of the identity chain's current state.
 
@@ -69,7 +69,7 @@ Gets a summary of the identity chain's current state.
 	-  **data.pending_key.priority:** integer </br> The level of this key within the hierarchy. A lower number indicates a key that allows a holder to replace higher numbered keys. The master key is priority 0.
 	-  **data.pending_key.entry_hash:** string </br> The hash of the entry that was made documenting the key replacement. 
 
-#### keys
+### keys
 
 ##### list
 
@@ -114,7 +114,7 @@ applicable.
 | `params.identityChainId` | required | string </br> The unique identifier for the Identity that the key belongs to.                                | **identityChainId is required.** </br> `identityChainId` parameter was not provided.                                                                       |
 | `params.key`             | required | string </br> The public key string to get information, which must be in base58 idpub format. | **key is required.** </br> `key` parameter was not provided. </br></br> **key is invalid.** </br> An invalid `key` format was provided. |
 
-**Returns:**
+**Returns**
 
 **Response**: OK
 -   **data:** object
