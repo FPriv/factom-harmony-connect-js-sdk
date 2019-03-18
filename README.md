@@ -18,8 +18,8 @@ Table of Contents
  
 [SAMPLE APPLICATION](#sampleapplication)
 - [Overview](#overview) 
-- [Installation](appinstallation)
-- [Usage](appusage)
+- [Installation](#appinstallation)
+- [Usage](#appusage)
 
 <a name="Introduction"></a>INTRODUCTION 
 ============
