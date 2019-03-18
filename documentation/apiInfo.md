@@ -1,8 +1,3 @@
-# Table of Contents
-
-1. apiInfo
-- [get](#get)
-
 apiInfo
 -------
 ### get <a name="get"></a>
