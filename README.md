@@ -29,7 +29,7 @@ provides access to other layers.
 **Request/Response Handler:** Handles all requests/responses (HTTP /
 HTTPS) from Connect API before passing them to other components.
 
-Tables of Contents
+Table of Contents
 ===============
 1. [GETTING STARTED](#gettingstarted)
  - [System Requirements](#requirements)
