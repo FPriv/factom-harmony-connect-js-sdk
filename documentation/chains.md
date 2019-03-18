@@ -1,6 +1,6 @@
 chains
 ------
-## Table of Contents
+### Table of Contents
 
 - [get](#get)
 - [create](#create)
