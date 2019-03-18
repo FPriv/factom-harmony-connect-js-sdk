@@ -1,4 +1,19 @@
-INTRODUCTION
+Table of Contents
+===============
+1. [INTRODUCTION](#Introduction)
+2. [GETTING STARTED](#gettingstarted)
+ - [System Requirements](#requirements)
+ - [Installation](#installation)
+ - [Usage](#usage)
+ - [License](#license)
+2. [METHODS](#methods)
+ - [utils](#utils)
+ - [identities](#identities)
+ - [apiInfo](#apiInfo)
+ - [chains](#chains) 
+3. [SAMPLE APPLICATION](#sampleapplication)
+
+<a name="Introduction"></a>INTRODUCTION 
 ============
 
 About This Document
@@ -29,19 +44,6 @@ provides access to other layers.
 **Request/Response Handler:** Handles all requests/responses (HTTP /
 HTTPS) from Connect API before passing them to other components.
 
-Table of Contents
-===============
-1. [GETTING STARTED](#gettingstarted)
- - [System Requirements](#requirements)
- - [Installation](#installation)
- - [Usage](#usage)
- - [License](#license)
-2. [METHODS](#methods)
- - [utils](#utils)
- - [identities](#identities)
- - [apiInfo](#apiInfo)
- - [chains](#chains) 
-3. [SAMPLE APPLICATION](#sampleapplication)
 
 GETTING STARTED <a name="gettingstarted"></a>
 ===============
