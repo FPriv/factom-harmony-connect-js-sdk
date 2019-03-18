@@ -14,7 +14,7 @@ You can learn more about Factom Harmony Connect
 This SDK is open source and can be accessed on Github
 [here](https://github.com/FactomProject/factom-harmony-connect-js-sdk).
 
-SDK Architecture Overview
+SDK Architecture Overview  
 -------------------------
 
 ![architecture](documentation/pictures/architecture.jpg?raw=true)
@@ -29,13 +29,27 @@ provides access to other layers.
 **Request/Response Handler:** Handles all requests/responses (HTTP /
 HTTPS) from Connect API before passing them to other components.
 
-GETTING STARTED
+Tables of Contents
+===============
+1. [GETTING STARTED](#gettingstarted)
+ - [System Requirements](#requirements)
+ - [Installation](#installation)
+ - [Usage](#usage)
+ - [License](#license)
+2. [METHODS](#methods)
+ - [utils](#utils)
+ - [identities](#identities)
+ - [apiInfo](#apiInfo)
+ - [chains](#chains) 
+3. [SAMPLE APPLICATION](#sampleapplication)
+
+GETTING STARTED <a name="gettingstarted"></a>
 ===============
 
 This section contains a summary of the steps required to get started
 with JavaScript Connect SDK installation.
 
-System Requirements
+System Requirements <a name="requirements"></a>
 -------------------
 
 In order to use this JavaScript SDK, you will need the following tools:
@@ -47,14 +61,14 @@ In order to use this JavaScript SDK, you will need the following tools:
 -   NPM: Node installation will include `Npm`, which is responsible for
     dependencies management.
 
-Installation 
+Installation <a name="installation"></a>
 -------------
 
 **Node.js**
 
 `npm install factom-harmony-connect`
 
-Usage
+Usage <a name="usage"></a>
 -----
 
 This SDK relies on
@@ -161,22 +175,22 @@ const entry = await FactomSDK.chains.entries.get({
 ```
 
 
-License
+License <a name="license"></a>
 -------
 
 *This section will be provided by Factom.*
 
-# METHODS
+# METHODS <a name="methods"></a>
 
-[utils](documentation/utils.md)
+[utils](documentation/utils.md) <a name="utils"></a>
 
-[identities](documentation/identities.md)
+[identities](documentation/identities.md) <a name="identities"></a>
 
-[apiInfo](documentation/apiInfo.md)
+[apiInfo](documentation/apiInfo.md) <a name="apiInfo"></a>
 
-[chains](documentation/chains.md)
+[chains](documentation/chains.md) <a name="chains"></a>
 
-# SAMPLE APPLICATION
+# SAMPLE APPLICATION <a name="sampleapplication"></a>
 
 
 Overview
