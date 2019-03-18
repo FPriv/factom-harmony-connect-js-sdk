@@ -1,6 +1,6 @@
 apiInfo
 -------
-### get <a name="get"></a>
+### get <a name="getInfo"></a>
 
 Gets general information about the Connect API.
 
