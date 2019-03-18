@@ -1,15 +1,15 @@
-apiInfo
+apiInfo <a name="apiInfo"></a>
 -------
 ### get <a name="getInfo"></a>
 
 Gets general information about the Connect API.
 
-**Sample**  <a name="sample"></a>
+**Sample** 
 ```JS
 await factomConnectSDK.apiInfo.get();
 ```
 
-**Returns** <a name="returns"></a></br> 
+**Returns** 
 
 **Response:** OK
 -   **version:** string </br> Current version of the Connect API.
