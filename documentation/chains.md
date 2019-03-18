@@ -1,4 +1,6 @@
-# Table of Contents
+chains
+------
+## Table of Contents
 
 - [get](#get)
 - [create](#create)
@@ -12,10 +14,7 @@
 	- [getLast](#entries_last)
 	- [search](#entries_search)
 
-chains
-------
-
-### <a name="get"></a>get 
+### <a name="get"></a> get 
 
 Gets information about a specific chain from Connect.
 
