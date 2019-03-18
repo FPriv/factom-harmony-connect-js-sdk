@@ -1,7 +1,7 @@
 utils
 -----
 
-### generateKeyPair
+### generateKeyPair <a name="generateKeyPair"></a>
 
 Creates a Public/Private Key Pair which can be applied to Identities
 during creation or when replacing a key. An Identity's keys are used to
