@@ -1,22 +1,30 @@
 Table of Contents
 ===============
-1. [INTRODUCTION](#Introduction)
-2. [GETTING STARTED](#gettingstarted)
+[INTRODUCTION](#Introduction) 
+- [About This Document](#about)
+- [SDK Architecture Overview](#architecture) 
+
+[GETTING STARTED](#gettingstarted)
  - [System Requirements](#requirements)
  - [Installation](#installation)
  - [Usage](#usage)
  - [License](#license)
-2. [METHODS](#methods)
+ 
+ [METHODS](#methods) 
  - [utils](#utils)
  - [identities](#identities)
  - [apiInfo](#apiInfo)
  - [chains](#chains) 
-3. [SAMPLE APPLICATION](#sampleapplication)
+ 
+[SAMPLE APPLICATION](#sampleapplication)
+- [Overview](#overview) 
+- [Installation](app_installation)
+- [Usage](app_usage)
 
 <a name="Introduction"></a>INTRODUCTION 
 ============
 
-About This Document
+<a name="about"></a>About This Document 
 -------------------
 
 This documentation is written for developers with a basic level of coding knowledge and familiarity of the JavaScript programming language.
@@ -29,7 +37,7 @@ You can learn more about Factom Harmony Connect
 This SDK is open source and can be accessed on Github
 [here](https://github.com/FactomProject/factom-harmony-connect-js-sdk).
 
-SDK Architecture Overview  
+<a name="architecture"></a>SDK Architecture Overview  
 -------------------------
 
 ![architecture](documentation/pictures/architecture.jpg?raw=true)
@@ -45,13 +53,13 @@ provides access to other layers.
 HTTPS) from Connect API before passing them to other components.
 
 
-GETTING STARTED <a name="gettingstarted"></a>
+<a name="gettingstarted"></a> GETTING STARTED 
 ===============
 
 This section contains a summary of the steps required to get started
 with JavaScript Connect SDK installation.
 
-System Requirements <a name="requirements"></a>
+<a name="requirements"></a> System Requirements 
 -------------------
 
 In order to use this JavaScript SDK, you will need the following tools:
@@ -63,14 +71,14 @@ In order to use this JavaScript SDK, you will need the following tools:
 -   NPM: Node installation will include `Npm`, which is responsible for
     dependencies management.
 
-Installation <a name="installation"></a>
+<a name="installation"></a> Installation 
 -------------
 
 **Node.js**
 
 `npm install factom-harmony-connect`
 
-Usage <a name="usage"></a>
+<a name="usage"></a> Usage 
 -----
 
 This SDK relies on
@@ -177,12 +185,12 @@ const entry = await FactomSDK.chains.entries.get({
 ```
 
 
-License <a name="license"></a>
+<a name="license"></a> License 
 -------
 
 *This section will be provided by Factom.*
 
-# METHODS <a name="methods"></a>
+# <a name="methods"></a> METHODS 
 
 [utils](documentation/utils.md) <a name="utils"></a>
 
@@ -192,10 +200,10 @@ License <a name="license"></a>
 
 [chains](documentation/chains.md) <a name="chains"></a>
 
-# SAMPLE APPLICATION <a name="sampleapplication"></a>
+# <a name="sampleapplication"></a> SAMPLE APPLICATION 
 
 
-Overview
+<a name="overview"></a> Overview
 --------
 ![architecture](documentation/pictures/sample-app-1.jpg?raw=true)
 
@@ -226,7 +234,7 @@ The concept of the Sample App is a simple Notary service with a business flow as
 -   **A developer who had access to one of the keys leaves employment with the Notary company, so they carry out proactive security:** The app replaces the old key pair that the employee had access to. 
 
 
-Installation
+<a name="app_installation"></a> Installation
 ------------
 
 1.  Checkout the repository.
@@ -238,7 +246,7 @@ Installation
 7.  Run `node server.js`.
 8.  Open localhost:8080 on your browser.
 
-Usage
+<a name="app_usage"></a> Usage
 -----
 
 **Starting screen:** The app comes with a starting page where the user
