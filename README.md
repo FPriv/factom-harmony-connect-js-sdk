@@ -192,13 +192,32 @@ const entry = await FactomSDK.chains.entries.get({
 
 # <a name="methods"></a> METHODS 
 
- <a name="utils"></a>[utils](documentation/utils.md)
-
+<a name="utils"></a>[utils](documentation/utils.md)
+ - <a name="generateKeyPair"></a>[generateKeyPair]
+ 
 <a name="identities"></a>[identities](documentation/identities.md) 
+ - <a name="identitiescreate"></a>[create]
+ - <a name="identitiesget"></a>[get]
+ - <a name="keys"></a>[keys]
+   - <a name="keyslist"></a>[list]
+   - <a name="keysget"></a>[get]
+   - <a name="keyreplace"></a>[replace]
 
 <a name="apiInfo"></a>[apiInfo](documentation/apiInfo.md) 
-
+ - <a name="infoget"></a>[get]
+ 
 <a name="chains"></a>[chains](documentation/chains.md) 
+   - <a name="chainsget"></a> [get]
+   - <a name="chainscreate"></a>[create]
+   - <a name="chainslist"></a>[list]
+   - <a name="chainssearch"></a>[search]
+   - <a name="chainsentries"></a>[entries]
+     - <a name="entriesget"></a>[get]
+     - <a name="entriescreate"></a>[create]
+     - <a name="entrieslist"></a>[list]
+     - <a name="entriesfirst"></a>[getFirst]
+     - <a name="entrieslast"></a>[getLast]
+     - <a name="entriessearch"></a>[search]
 
 # <a name="sampleapplication"></a> SAMPLE APPLICATION 
 
