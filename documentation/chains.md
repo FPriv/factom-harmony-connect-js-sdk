@@ -1,7 +1,21 @@
+# Table of Contents
+
+- [get](#get)
+- [create](#create)
+- [list](#list)
+- [search](#search)
+- [entries](#entries)
+	- [get](#entries_get)
+	- [create](#entries_create)
+	- [list](#entries_list)
+	- [getFirst](#entries_first)
+	- [getLast](#entries_last)
+	- [search](#entries_search)
+
 chains
 ------
 
-### get
+### get <a name="get"></a>
 
 Gets information about a specific chain from Connect.
 
@@ -77,7 +91,7 @@ Displays an empty string ("") when `signatureValidation` is set to `false`.
 }
 ```
 
-### create
+### create <a name="create"></a>
 
 Creates a new chain with or without signature:
 
@@ -123,7 +137,7 @@ await factomConnectSDK.chains.create({
 }
 ```
 
-### list
+### list <a name="list"></a>
 
 Gets all of the chains on Factom.
 
@@ -180,7 +194,7 @@ await factomConnectSDK.chains.list();
 }
 ```
 
-### search
+### search <a name="search"></a>
 
 Finds all of the chains with `externalIds` that match what you entered. 
 
@@ -239,9 +253,9 @@ await factomConnectSDK.chains.search({
 }
 ```
 
-### entries
+### entries <a name="entries"></a>
 
-##### get
+##### get <a name="entries_get"></a>
 
 Gets information about a specific entry on Connect.
 
@@ -320,7 +334,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 }
 ```
 
-##### create
+##### create <a name="entries_create"></a>
 
 Creates a new entry for the selected chain with or without signature:
 
@@ -369,7 +383,7 @@ await factomConnectSDK.chains.entries.create({
 }
 ```
 
-##### list
+##### list <a name="entries_list"></a>
 
 Gets list of all entries contained on a specified chain.
 
@@ -434,7 +448,7 @@ await factomConnectSDK.chains.entries.list({
 }
 ```
 
-##### getFirst
+##### getFirst <a name="entries_first"></a>
 
 Retrieves the first entry that has been saved to this chain.
 
@@ -512,7 +526,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 }
 ```
 
-##### getLast
+##### getLast <a name="entries_last"></a>
 
 Gets the last entry that has been saved to this chain.
 
@@ -590,7 +604,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 }
 ```
 
-##### search
+##### search <a name="entries_search"></a>
 
 Finds all of the entries with `externalIds` that match what you entered. 
 
