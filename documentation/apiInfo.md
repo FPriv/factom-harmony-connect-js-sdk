@@ -1,11 +1,10 @@
+# Table of Contents
+
+1. apiInfo
+- [get](#get)
+
 apiInfo
 -------
-
-### Table of Contents
-1. [get](#get)
- - [Sample](#sample)</br>
- - [Returns](#returns)
-
 ### get <a name="get"></a>
 
 Gets general information about the Connect API.
