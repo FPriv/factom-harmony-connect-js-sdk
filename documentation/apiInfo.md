@@ -1,7 +1,7 @@
 apiInfo
 -------
 
-### Tables of Contents
+### Table of Contents
 1. [get](#get)
  - [Sample](#sample)</br>
  - [Returns](#returns)
