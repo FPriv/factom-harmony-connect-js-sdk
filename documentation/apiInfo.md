@@ -2,9 +2,9 @@ apiInfo
 -------
 
 # Tables of Contents
-1. [API Get info](#get)</br>
-  [Sample](#sample)</br>
-  [Returns](#returns)
+1. [get](#get)
+ - [Sample](#sample)</br>
+ - [Returns](#returns)
 
 ### get <a name="get"></a>
 
