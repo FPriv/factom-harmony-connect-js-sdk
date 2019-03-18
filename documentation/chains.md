@@ -254,7 +254,7 @@ await factomConnectSDK.chains.search({
 
 ### <a name="entries"></a>entries 
 
-##### <a name="entries_get"></a>get 
+##### <a name="entries_get"></a> get 
 
 Gets information about a specific entry on Connect.
 
