@@ -18,8 +18,8 @@ Table of Contents
  
 [SAMPLE APPLICATION](#sampleapplication)
 - [Overview](#overview) 
-- [Installation](app_installation)
-- [Usage](app_usage)
+- [Installation](appinstallation)
+- [Usage](appusage)
 
 <a name="Introduction"></a>INTRODUCTION 
 ============
@@ -89,7 +89,7 @@ For more details of a specific module, please refer to the
 [**Methods**](#METHODS) section.
 
 If you want to understand how the SDK works in practice, refer to the
-[**Sample Application**](#SAMPLE-APPLICATION) section.
+[**Sample Application**](#sampleapplication) section.
 
 Below is an example of how to use the SDK. Before executing any
 requests, you will need to instantiate an instance of the SDK. The
@@ -192,13 +192,13 @@ const entry = await FactomSDK.chains.entries.get({
 
 # <a name="methods"></a> METHODS 
 
-[utils](documentation/utils.md) <a name="utils"></a>
+ <a name="utils"></a>[utils](documentation/utils.md)
 
-[identities](documentation/identities.md) <a name="identities"></a>
+<a name="identities"></a>[identities](documentation/identities.md) 
 
-[apiInfo](documentation/apiInfo.md) <a name="apiInfo"></a>
+<a name="apiInfo"></a>[apiInfo](documentation/apiInfo.md) 
 
-[chains](documentation/chains.md) <a name="chains"></a>
+<a name="chains"></a>[chains](documentation/chains.md) 
 
 # <a name="sampleapplication"></a> SAMPLE APPLICATION 
 
@@ -234,7 +234,7 @@ The concept of the Sample App is a simple Notary service with a business flow as
 -   **A developer who had access to one of the keys leaves employment with the Notary company, so they carry out proactive security:** The app replaces the old key pair that the employee had access to. 
 
 
-<a name="app_installation"></a> Installation
+<a name="appinstallation"></a> Installation
 ------------
 
 1.  Checkout the repository.
@@ -246,7 +246,7 @@ The concept of the Sample App is a simple Notary service with a business flow as
 7.  Run `node server.js`.
 8.  Open localhost:8080 on your browser.
 
-<a name="app_usage"></a> Usage
+<a name="appusage"></a> Usage
 -----
 
 **Starting screen:** The app comes with a starting page where the user
