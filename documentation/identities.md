@@ -234,7 +234,7 @@ applicable.
 ```JS
 await factomConnectSDK.identities.keys.get({
       identityChainId: '107c8e488e95b63ca6fe1c409aa22c380b5c7be387d139c1cd0afaf608d1ae42',
-      signerPublicKey: 'idpub1zbpmSTnvErRkzoXus1hBmHSSFxvagqD3nZiMyna4JmnSnUDwF'
+      key: 'idpub1zbpmSTnvErRkzoXus1hBmHSSFxvagqD3nZiMyna4JmnSnUDwF'
 });
 ```
 
