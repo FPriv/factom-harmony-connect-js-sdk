@@ -2,19 +2,19 @@ chains
 ------
 ### Table of Contents
 
-- [get](#get)
-- [create](#create)
-- [list](#list)
-- [search](#search)
-- [entries](#entries)
-	- [get](#entries_get)
-	- [create](#entries_create)
-	- [list](#entries_list)
-	- [getFirst](#entries_first)
-	- [getLast](#entries_last)
-	- [search](#entries_search)
+- [get](#chainsGet)
+- [create](#chainsCreate)
+- [list](#chainsList)
+- [search](#chainsSearch)
+- [entries](#chainsEntries)
+	- [get](#entriesGet)
+	- [create](#entriesCreate)
+	- [list](#entriesList)
+	- [getFirst](#entriesFirst)
+	- [getLast](#entriesLast)
+	- [search](#entriesSearch)
 
-### <a name="get"></a> get 
+### <a name="chainsGet"></a> get 
 
 Gets information about a specific chain from Connect.
 
@@ -90,7 +90,7 @@ Displays an empty string ("") when `signatureValidation` is set to `false`.
 }
 ```
 
-### <a name="create"></a>create 
+### <a name="chainsCreate"></a>create 
 
 Creates a new chain with or without signature:
 
@@ -136,7 +136,7 @@ await factomConnectSDK.chains.create({
 }
 ```
 
-### <a name="list"></a>list 
+### <a name="chainsList"></a>list 
 
 Gets all of the chains on Factom.
 
@@ -193,7 +193,7 @@ await factomConnectSDK.chains.list();
 }
 ```
 
-### <a name="search"></a>search 
+### <a name="chainsSearch"></a>search 
 
 Finds all of the chains with `externalIds` that match what you entered. 
 
@@ -252,9 +252,9 @@ await factomConnectSDK.chains.search({
 }
 ```
 
-### <a name="entries"></a>entries 
+### <a name="chainsEntries"></a>entries 
 
-##### <a name="entries_get"></a> get 
+##### <a name="entriesGet"></a> get 
 
 Gets information about a specific entry on Connect.
 
@@ -333,7 +333,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 }
 ```
 
-##### <a name="entries_create"></a>create 
+##### <a name="entriesCreate"></a>create 
 
 Creates a new entry for the selected chain with or without signature:
 
@@ -382,7 +382,7 @@ await factomConnectSDK.chains.entries.create({
 }
 ```
 
-##### <a name="entries_list"></a> list 
+##### <a name="entriesList"></a> list 
 
 Gets list of all entries contained on a specified chain.
 
@@ -447,7 +447,7 @@ await factomConnectSDK.chains.entries.list({
 }
 ```
 
-##### <a name="entries_first"></a>getFirst 
+##### <a name="entriesFirst"></a>getFirst 
 
 Retrieves the first entry that has been saved to this chain.
 
@@ -525,7 +525,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 }
 ```
 
-##### <a name="entries_last"></a> getLast 
+##### <a name="entriesLast"></a> getLast 
 
 Gets the last entry that has been saved to this chain.
 
@@ -603,7 +603,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 }
 ```
 
-##### <a name="entries_search"></a>search 
+##### <a name="entriesSearch"></a>search 
 
 Finds all of the entries with `externalIds` that match what you entered. 
 
