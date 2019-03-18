@@ -1,16 +1,21 @@
 apiInfo
 -------
 
-### get
+# Tables of Contents
+1. [API Get info](#get)
+	1. [Sample](#sample)
+   	2. [Returns](#returns)
+
+### get <a name="get"></a>
 
 Gets general information about the Connect API.
 
-**Sample**
+**Sample**  <a name="sample"></a>
 ```JS
 await factomConnectSDK.apiInfo.get();
 ```
 
-**Returns**</br>
+**Returns** <a name="returns"></a></br> 
 
 **Response:** OK
 -   **version:** string </br> Current version of the Connect API.
