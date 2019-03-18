@@ -15,7 +15,7 @@
 chains
 ------
 
-### get <a name="get"></a>
+### <a name="get"></a>get 
 
 Gets information about a specific chain from Connect.
 
@@ -91,7 +91,7 @@ Displays an empty string ("") when `signatureValidation` is set to `false`.
 }
 ```
 
-### create <a name="create"></a>
+### <a name="create"></a>create 
 
 Creates a new chain with or without signature:
 
@@ -137,7 +137,7 @@ await factomConnectSDK.chains.create({
 }
 ```
 
-### list <a name="list"></a>
+### <a name="list"></a>list 
 
 Gets all of the chains on Factom.
 
@@ -194,7 +194,7 @@ await factomConnectSDK.chains.list();
 }
 ```
 
-### search <a name="search"></a>
+### <a name="search"></a>search 
 
 Finds all of the chains with `externalIds` that match what you entered. 
 
@@ -253,9 +253,9 @@ await factomConnectSDK.chains.search({
 }
 ```
 
-### entries <a name="entries"></a>
+### <a name="entries"></a>entries 
 
-##### get <a name="entries_get"></a>
+##### <a name="entries_get"></a>get 
 
 Gets information about a specific entry on Connect.
 
@@ -334,7 +334,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 }
 ```
 
-##### create <a name="entries_create"></a>
+##### <a name="entries_create"></a>create 
 
 Creates a new entry for the selected chain with or without signature:
 
@@ -383,7 +383,7 @@ await factomConnectSDK.chains.entries.create({
 }
 ```
 
-##### list <a name="entries_list"></a>
+##### <a name="entries_list"></a> list 
 
 Gets list of all entries contained on a specified chain.
 
@@ -448,7 +448,7 @@ await factomConnectSDK.chains.entries.list({
 }
 ```
 
-##### getFirst <a name="entries_first"></a>
+##### <a name="entries_first"></a>getFirst 
 
 Retrieves the first entry that has been saved to this chain.
 
@@ -526,7 +526,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 }
 ```
 
-##### getLast <a name="entries_last"></a>
+##### <a name="entries_last"></a> getLast 
 
 Gets the last entry that has been saved to this chain.
 
@@ -604,7 +604,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 }
 ```
 
-##### search <a name="entries_search"></a>
+##### <a name="entries_search"></a>search 
 
 Finds all of the entries with `externalIds` that match what you entered. 
 
