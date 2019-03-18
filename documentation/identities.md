@@ -39,10 +39,11 @@ await factomConnectSDK.identities.create({
 -   **entry_hash:** string </br> The unique identifier of the first entry that has been created in this identity chain.
 -   **stage:** string </br> The current immutability stage of the identity chain and its first entry.
 -   **key_pairs:** an array of objects </br> The 3 key pairs generated automatically by Factom SDK. This value is not returned if the public keys are provided when creating this identity.
-    - **key_pairs[].public_key:** string </br>
-The public key in base58 Idpub format. </br>
     - **key_pairs[].private_key:** string </br>
 The private key in base58 Idsec format. 
+    - **key_pairs[].public_key:** string </br>
+The public key in base58 Idpub format. </br>
+
 
 ```JS
 {
@@ -295,10 +296,11 @@ await factomConnectSDK.identities.keys.replace({
 -   **entry_hash:** string </br> The entry hash that will point to the key replacement entry on the blockchain.
 -   **stage**: string </br> The current immutability stage of the new entry.
 -   **key_pair:** object </br> The key pair generated automatically by the Factom SDK. This value will not be returned if the new public key is provided when calling this method. 
-    - **key_pair.public_key:** string</br> 
-The public key in base58 Idpub format. 
     - **key_pair.private_key:** string</br> 
     The private key in base58 Idsec format. 
+    - **key_pair.public_key:** string</br> 
+The public key in base58 Idpub format. 
+
 
 ```JS
 {
