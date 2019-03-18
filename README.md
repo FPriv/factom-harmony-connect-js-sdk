@@ -226,17 +226,17 @@ const entry = await FactomSDK.chains.entries.get({
   - <a name="infoget"></a>[get]
   
 <a name="chains"></a>[chains](documentation/chains.md) 
-  - <a name="chainsget"></a>[get]
-  - <a name="chainscreate"></a>[create]
-  - <a name="chainslist"></a>[list]
-  - <a name="chainssearch"></a>[search]
-  - <a name="chainsentries"></a>[entries]
-     - <a name="entriesget"></a>[get]
-     - <a name="entriescreate"></a>[create]
-     - <a name="entrieslist"></a>[list]
-     - <a name="entriesfirst"></a>[getFirst]
-     - <a name="entrieslast"></a>[getLast]
-     - <a name="entriessearch"></a>[search]
+  - <a name="chainsget"></a>[get](documentation/chains.md#get) 
+  - <a name="chainscreate"></a>[create](documentation/chains.md#create) 
+  - <a name="chainslist"></a>[list](documentation/chains.md#list) 
+  - <a name="chainssearch"></a>[search](documentation/chains.md#search) 
+  - <a name="chainsentries"></a>[entries](documentation/chains.md#entries) 
+     - <a name="entriesget"></a>[get](documentation/chains.md#entries_get) 
+     - <a name="entriescreate"></a>[create](documentation/chains.md#entries_create) 
+     - <a name="entrieslist"></a>[list](documentation/chains.md#entries_list) 
+     - <a name="entriesfirst"></a>[getFirst](documentation/chains.md#entries_first) 
+     - <a name="entrieslast"></a>[getLast](documentation/chains.md#entries_last) 
+     - <a name="entriessearch"></a>[search](documentation/chains.md#entries_search) 
      
 # <a name="sampleapplication"></a> SAMPLE APPLICATION 
 
