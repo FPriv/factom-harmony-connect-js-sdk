@@ -16,9 +16,9 @@ The **Keys** for an **Identity** have priorities, where keys with a higher prior
 - [create](#create)
 - [get](#get)
 - [keys](#keys)
-	- [list](#keys_list)
-	- [get](#keys_get)
-	- [replace](#keys_replace)
+	- [list](#keysList)
+	- [get](#keysGet)
+	- [replace](#keysReplace)
 
 ### <a name="create"></a>create
 
@@ -157,7 +157,7 @@ await factomConnectSDK.identities.get({
 
 ### <a name="keys"></a>keys
 
-##### <a name="keys_list"></a>list
+##### <a name="keysList"></a>list
 
 Returns all of the keys that were ever active for this Identity. Results
 are paginated. 
@@ -225,7 +225,7 @@ to replace higher numbered keys. The master key is priority 0.
 }
 ```
 
-##### <a name="keys_get"></a>get
+##### <a name="keysGet"></a>get
 
 Gets information about a specific public key for a given Identity,
 including the heights at which the key was activated and retired if
@@ -268,7 +268,7 @@ await factomConnectSDK.identities.keys.get({
 }
 ```
 
-##### <a name="keys_replace"></a>replace
+##### <a name="keysReplace"></a>replace
 
 Creates an entry in the Identity Chain for a key replacement, which means the old key will be deactivated (referred to as a “retired” key) and the new key will be activated. 
 
