@@ -12,28 +12,28 @@ Table of Contents
  
  [METHODS](#methods) 
  - [utils](#utils)
-   - [generateKeyPair](#generatekeypair)
+   - [generateKeyPair](#generateKeyPair)
  - [identities](#identities)
-   - [create](#identitiescreate)
-   - [get](#identitiesget)
-   - [keys](#keys)
-     - [list](#keyslist)
-     - [get](#keysget)
-     - [replace](#keyreplace)
+   - [create](#identitiesCreate)
+   - [get](#identitiesGet)
+   - [keys](#identitiesKeys)
+     - [list](#keysList)
+     - [get](#keysGet)
+     - [replace](#keysReplace)
  - [apiInfo](#apiInfo)
-   - [get](#infoget)
+   - [get](#infoGet)
  - [chains](#chains) 
-   - [get](#chainsget)
-   - [create](#chainscreate)
-   - [list](#chainslist)
-   - [search](#chainssearch)
-   - [entries](#chainsentries)
-     - [get](#entriesget)
-     - [create](#entriescreate)
-     - [list](#entrieslist)
-     - [getFirst](#entriesfirst)
-     - [getLast](#entrieslast)
-     - [search](#entriessearch)
+   - [get](#chainsGet)
+   - [create](#chainsCreate)
+   - [list](#chainsList)
+   - [search](#chainsSearch)
+   - [entries](#chainsEntries)
+     - [get](#entriesGet)
+     - [create](#entriesCreate)
+     - [list](#entriesList)
+     - [getFirst](#entriesFirst)
+     - [getLast](#entriesLast)
+     - [search](#entriesSearch)
      
 [SAMPLE APPLICATION](#sampleapplication)
 - [Overview](#overview) 
@@ -212,31 +212,31 @@ const entry = await FactomSDK.chains.entries.get({
 # <a name="methods"></a> METHODS 
 
 <a name="utils"></a>[utils](documentation/utils.md)
- - <a name="generatekeypair"></a>[generateKeyPair]
+ - <a name="generateKeyPair"></a>[generateKeyPair](documentation/utils.md#generateKeyPair)
 
 <a name="identities"></a>[identities](documentation/identities.md) 
-  - <a name="identitiescreate"></a>[create]
-  - <a name="identitiesget"></a>[get]
-  - <a name="keys"></a>[keys]
-     - <a name="keyslist"></a>[list]
-     - <a name="keysget"></a>[get]
-     - <a name="keyreplace"></a>[replace]
+  - <a name="identitiesCreate"></a>[create](documentation/identities.md#identitiesCreate) 
+  - <a name="identitiesGet"></a>[get](documentation/identities.md#identitiesGet) 
+  - <a name="identitiesKeys"></a>[keys](documentation/identities.md#identitiesKeys) 
+     - <a name="keysList"></a>[list](documentation/identities.md#keysList) 
+     - <a name="keysGet"></a>[get](documentation/identities.md#keysGet) 
+     - <a name="keysReplace"></a>[replace](documentation/identities.md#keysReplace) 
   
 <a name="apiInfo"></a>[apiInfo](documentation/apiInfo.md) 
-  - <a name="infoget"></a>[get]
+  - <a name="infoGet"></a>[get](documentation/apiInfo.md#getInfo) 
   
 <a name="chains"></a>[chains](documentation/chains.md) 
-  - <a name="chainsget"></a>[get](documentation/chains.md#get) 
-  - <a name="chainscreate"></a>[create](documentation/chains.md#create) 
-  - <a name="chainslist"></a>[list](documentation/chains.md#list) 
-  - <a name="chainssearch"></a>[search](documentation/chains.md#search) 
-  - <a name="chainsentries"></a>[entries](documentation/chains.md#entries) 
-     - <a name="entriesget"></a>[get](documentation/chains.md#entries_get) 
-     - <a name="entriescreate"></a>[create](documentation/chains.md#entries_create) 
-     - <a name="entrieslist"></a>[list](documentation/chains.md#entries_list) 
-     - <a name="entriesfirst"></a>[getFirst](documentation/chains.md#entries_first) 
-     - <a name="entrieslast"></a>[getLast](documentation/chains.md#entries_last) 
-     - <a name="entriessearch"></a>[search](documentation/chains.md#entries_search) 
+  - <a name="chainsGet"></a>[get](documentation/chains.md#chainsGet) 
+  - <a name="chainsCreate"></a>[create](documentation/chains.md#chainsCreate) 
+  - <a name="chainsList"></a>[list](documentation/chains.md#chainsList) 
+  - <a name="chainsSearch"></a>[search](documentation/chains.md#chainsSearch) 
+  - <a name="chainsEntries"></a>[entries](documentation/chains.md#chainsEntries) 
+     - <a name="entriesGet"></a>[get](documentation/chains.md#entriesGet) 
+     - <a name="entriesCreate"></a>[create](documentation/chains.md#entriesCreate) 
+     - <a name="entriesList"></a>[list](documentation/chains.md#entriesList) 
+     - <a name="entriesFirst"></a>[getFirst](documentation/chains.md#entriesFirst) 
+     - <a name="entriesLast"></a>[getLast](documentation/chains.md#entriesLast) 
+     - <a name="entriesSearch"></a>[search](documentation/chains.md#entriesSearch) 
      
 # <a name="sampleapplication"></a> SAMPLE APPLICATION 
 
