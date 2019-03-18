@@ -13,14 +13,14 @@ The **Keys** for an **Identity** have priorities, where keys with a higher prior
 
 ### Table of Contents
 
-- [create](#create)
-- [get](#get)
-- [keys](#keys)
+- [create](#identitiesCreate)
+- [get](#identitiesGet)
+- [keys](#identitiesKeys)
 	- [list](#keysList)
 	- [get](#keysGet)
 	- [replace](#keysReplace)
 
-### <a name="create"></a>create
+### <a name="identitiesCreate"></a>create
 
 Creates a new Identity chain. You will need to include a unique names array for your Identity. This method will automatically generate 3 Public/Private keys pairs for you and return them, be sure to save them for future use. Optionally, you can pass in an array of public keys you have generated on your own, at which point no keys will be returned.
 
@@ -75,7 +75,7 @@ The public key in base58 Idpub format. </br>
 }
 ```
 
-### <a name="get"></a>get
+### <a name="identitiesGet"></a>get
 
 Gets a summary of the identity chain's current state.
 
@@ -155,7 +155,7 @@ await factomConnectSDK.identities.get({
 }
 ```
 
-### <a name="keys"></a>keys
+### <a name="identitiesKeys"></a>keys
 
 ##### <a name="keysList"></a>list
 
