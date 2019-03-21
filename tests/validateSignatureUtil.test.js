@@ -88,7 +88,7 @@ describe('Validate Signature Util Test', () => {
       });
       expect(response).toMatch('not_signed/invalid_entry_format');
     });
-    it('should return a chain object with inactive key status.', async () => {
+    it('should return a chain object with invalid chain format status when third external ids is invalid key.', async () => {
       const resp = {
         status: 200,
         data: {
@@ -107,6 +107,45 @@ describe('Validate Signature Util Test', () => {
             '0x01',
             'ZmFzZGZzZmRm',
             'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+            'ZmFzZGZzZmRm',
+          ],
+          entries: {
+            href: '/v1/chains/2475e1add69e4aae98ca325f883579c370d049f34cc6b4531c19b0f10c7c7094/entries',
+          },
+          chain_id: '123456',
+          dblock: {
+            height: 1000,
+          },
+        },
+      };
+      axios.mockImplementationOnce(() => Promise.resolve(resp));
+      const response = await ValidateSignatureUtil.validateSignature({
+        obj: data,
+        validateForChain: true,
+        apiCall: apiCall,
+      });
+      expect(response).toMatch('not_signed/invalid_chain_format');
+    });
+    it('should return a chain object with inactive key status.', async () => {
+      const resp = {
+        status: 200,
+        data: {
+          data: {
+            key: 'idpub',
+            retired_height: 1001,
+            activated_height: 1001,
+          },
+        },
+      };
+      const data = {
+        data: {
+          stage: 'factom',
+          external_ids: [
+            'SignedChain',
+            '0x01',
+            'ZmFzZGZzZmRm',
+            'idpub2WL2aH5Y2s7atB1LwjEyaKa62pnuJXUaL5kcbahzwahc1Hiba6',
             'ZmFzZGZzZmRm',
             'ZmFzZGZzZmRm',
           ],
