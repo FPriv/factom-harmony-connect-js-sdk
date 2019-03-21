@@ -72,7 +72,7 @@ In order to use this JavaScript SDK, you will need the following tools:
 
 **Node.js**
 
-`npm install factom-harmony-connect`
+`npm install factom-connect-sdk`
 
 <a name="usage"></a> Usage 
 -----
