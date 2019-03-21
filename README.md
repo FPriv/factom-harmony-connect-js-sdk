@@ -184,7 +184,7 @@ const entry = await FactomSDK.chains.entries.get({
 <a name="license"></a> License 
 -------
 
-*This section will be provided by Factom.*
+The Harmony Connect SDK is provided with an MIT License.
 
 # <a name="methods"></a> METHODS 
 
