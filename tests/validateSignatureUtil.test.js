@@ -146,7 +146,7 @@ describe('Validate Signature Util Test', () => {
             '0x01',
             'ZmFzZGZzZmRm',
             'idpub2WL2aH5Y2s7atB1LwjEyaKa62pnuJXUaL5kcbahzwahc1Hiba6',
-            'ZmFzZGZzZmRm',
+            '779229d23cdb7380869e63e5156a5497170bceec139b37e7af2a4d1aae14d053d19f7626e08d4bbb003d4b05d941f43402f1288af2ff0391a2dee4abf0919b07',
             'ZmFzZGZzZmRm',
           ],
           entries: {
