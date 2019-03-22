@@ -1,5 +1,5 @@
 {
-  "name": "factom-connect-sdk",
+  "name": "factom-harmony-connect",
   "version": "1.0.0",
   "description": "",
   "main": "dist/factomHarmonyConnectSdk.cjs.js",
@@ -10,6 +10,7 @@
   },
   "author": "",
   "license": "ISC",
+  "files": ["dist"],
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-core": "^6.20.0",
