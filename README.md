@@ -1,26 +1,26 @@
 Table of Contents
 ===============
-[INTRODUCTION](#Introduction) 
+[INTRODUCTION](#Introduction)
 - [About This Document](#about)
-- [SDK Architecture Overview](#architecture) 
+- [SDK Architecture Overview](#architecture)
 
 [GETTING STARTED](#gettingstarted)
  - [System Requirements](#requirements)
  - [Installation](#installation)
  - [Usage](#usage)
  - [License](#license)
- 
-[METHODS](#methods) 
-     
+
+[METHODS](#methods)
+
 [SAMPLE APPLICATION](#sampleapplication)
-- [Overview](#overview) 
+- [Overview](#overview)
 - [Installation](#appinstallation)
 - [Usage](#appusage)
 
-<a name="Introduction"></a>INTRODUCTION 
+<a name="Introduction"></a>INTRODUCTION
 ============
 
-<a name="about"></a>About This Document 
+<a name="about"></a>About This Document
 -------------------
 
 This documentation is written for developers with a basic level of coding knowledge and familiarity of the JavaScript programming language.
@@ -33,7 +33,7 @@ You can learn more about Factom Harmony Connect
 This SDK is open source and can be accessed on Github
 [here](https://github.com/FactomProject/factom-harmony-connect-js-sdk).
 
-<a name="architecture"></a>SDK Architecture Overview  
+<a name="architecture"></a>SDK Architecture Overview
 -------------------------
 
 ![architecture](documentation/pictures/architecture.jpg?raw=true)
@@ -49,13 +49,13 @@ provides access to other layers.
 HTTPS) from Connect API before passing them to other components.
 
 
-<a name="gettingstarted"></a> GETTING STARTED 
+<a name="gettingstarted"></a> GETTING STARTED
 ===============
 
 This section contains a summary of the steps required to get started
 with JavaScript Connect SDK installation.
 
-<a name="requirements"></a> System Requirements 
+<a name="requirements"></a> System Requirements
 -------------------
 
 In order to use this JavaScript SDK, you will need the following tools:
@@ -67,14 +67,14 @@ In order to use this JavaScript SDK, you will need the following tools:
 -   NPM: Node installation will include `Npm`, which is responsible for
     dependencies management.
 
-<a name="installation"></a> Installation 
+<a name="installation"></a> Installation
 -------------
 
 **Node.js**
 
 `npm install factom-harmony-connect`
 
-<a name="usage"></a> Usage 
+<a name="usage"></a> Usage
 -----
 
 This SDK relies on
@@ -110,11 +110,11 @@ When the Factom SDK is initialized, there will be an optional
 
 -   When this initial config is set to `true` as default, all chain
     and entry POST methods require passing the params:
-    `signerPrivateKey` and `signerChainId` which will be used to create signed chains and entries, 
-    as per the Factom Signing Standard. 
+    `signerPrivateKey` and `signerChainId` which will be used to create signed chains and entries,
+    as per the Factom Signing Standard.
 
--   When this initial config is set to `false`, the FactomSDK will not sign the chains and entries that are 
-    created and therefore it does not require the params: `signerPrivateKey` and `signerChainId`.  
+-   When this initial config is set to `false`, the FactomSDK will not sign the chains and entries that are
+    created and therefore it does not require the params: `signerPrivateKey` and `signerChainId`.
 
 The primary benefit of `automaticSigning` param is to encourage you to
 create chains and entries with unique signatures. Later on, you can
@@ -181,72 +181,72 @@ const entry = await FactomSDK.chains.entries.get({
 ```
 
 
-<a name="license"></a> License 
+<a name="license"></a> License
 -------
 
-*This section will be provided by Factom.*
+The Harmony Connect SDK is provided with an MIT License.
 
-# <a name="methods"></a> METHODS 
+# <a name="methods"></a> METHODS
 
 <a name="utils"></a>[utils](documentation/utils.md)
  - <a name="generateKeyPair"></a>[generateKeyPair](documentation/utils.md#generateKeyPair)
 
-<a name="identities"></a>[identities](documentation/identities.md) 
-  - <a name="identitiesCreate"></a>[create](documentation/identities.md#identitiesCreate) 
-  - <a name="identitiesGet"></a>[get](documentation/identities.md#identitiesGet) 
-  - <a name="identitiesKeys"></a>[keys](documentation/identities.md#identitiesKeys) 
-     - <a name="keysList"></a>[list](documentation/identities.md#keysList) 
-     - <a name="keysGet"></a>[get](documentation/identities.md#keysGet) 
-     - <a name="keysReplace"></a>[replace](documentation/identities.md#keysReplace) 
-  
-<a name="apiInfo"></a>[apiInfo](documentation/apiInfo.md) 
-  - <a name="infoGet"></a>[get](documentation/apiInfo.md#getInfo) 
-  
-<a name="chains"></a>[chains](documentation/chains.md) 
-  - <a name="chainsGet"></a>[get](documentation/chains.md#chainsGet) 
-  - <a name="chainsCreate"></a>[create](documentation/chains.md#chainsCreate) 
-  - <a name="chainsList"></a>[list](documentation/chains.md#chainsList) 
-  - <a name="chainsSearch"></a>[search](documentation/chains.md#chainsSearch) 
-  - <a name="chainsEntries"></a>[entries](documentation/chains.md#chainsEntries) 
-     - <a name="entriesGet"></a>[get](documentation/chains.md#entriesGet) 
-     - <a name="entriesCreate"></a>[create](documentation/chains.md#entriesCreate) 
-     - <a name="entriesList"></a>[list](documentation/chains.md#entriesList) 
-     - <a name="entriesFirst"></a>[getFirst](documentation/chains.md#entriesFirst) 
-     - <a name="entriesLast"></a>[getLast](documentation/chains.md#entriesLast) 
-     - <a name="entriesSearch"></a>[search](documentation/chains.md#entriesSearch) 
-     
-# <a name="sampleapplication"></a> SAMPLE APPLICATION 
+<a name="identities"></a>[identities](documentation/identities.md)
+  - <a name="identitiesCreate"></a>[create](documentation/identities.md#identitiesCreate)
+  - <a name="identitiesGet"></a>[get](documentation/identities.md#identitiesGet)
+  - <a name="identitiesKeys"></a>[keys](documentation/identities.md#identitiesKeys)
+     - <a name="keysList"></a>[list](documentation/identities.md#keysList)
+     - <a name="keysGet"></a>[get](documentation/identities.md#keysGet)
+     - <a name="keysReplace"></a>[replace](documentation/identities.md#keysReplace)
+
+<a name="apiInfo"></a>[apiInfo](documentation/apiInfo.md)
+  - <a name="infoGet"></a>[get](documentation/apiInfo.md#getInfo)
+
+<a name="chains"></a>[chains](documentation/chains.md)
+  - <a name="chainsGet"></a>[get](documentation/chains.md#chainsGet)
+  - <a name="chainsCreate"></a>[create](documentation/chains.md#chainsCreate)
+  - <a name="chainsList"></a>[list](documentation/chains.md#chainsList)
+  - <a name="chainsSearch"></a>[search](documentation/chains.md#chainsSearch)
+  - <a name="chainsEntries"></a>[entries](documentation/chains.md#chainsEntries)
+     - <a name="entriesGet"></a>[get](documentation/chains.md#entriesGet)
+     - <a name="entriesCreate"></a>[create](documentation/chains.md#entriesCreate)
+     - <a name="entriesList"></a>[list](documentation/chains.md#entriesList)
+     - <a name="entriesFirst"></a>[getFirst](documentation/chains.md#entriesFirst)
+     - <a name="entriesLast"></a>[getLast](documentation/chains.md#entriesLast)
+     - <a name="entriesSearch"></a>[search](documentation/chains.md#entriesSearch)
+
+# <a name="sampleapplication"></a> SAMPLE APPLICATION
 
 
 <a name="overview"></a> Overview
 --------
 ![architecture](documentation/pictures/sample-app-1.jpg?raw=true)
 
-This Sample App is created to illustrate some of the core methods of this SDK and a real-world 
-business scenario of how it can be used. 
+This Sample App is created to illustrate some of the core methods of this SDK and a real-world
+business scenario of how it can be used.
 
-Since the application is built as a standalone application with a backend SDK process, 
-the reader should review the commented code [here](https://github.com/FactomProject/factom-harmony-connect-js-sdk/blob/master/sample-app/simulateNotary.js). 
+Since the application is built as a standalone application with a backend SDK process,
+the reader should review the commented code [here](https://github.com/FactomProject/factom-harmony-connect-js-sdk/blob/master/sample-app/simulateNotary.js).
 
-The concept of the Sample App is a simple Notary service with a business flow as follows: 
+The concept of the Sample App is a simple Notary service with a business flow as follows:
 
 
 -   **A Notary service begins using Factom Harmony:** To use Harmony, there should be at least 1 identity used when signing written data. So, to start, the app creates an identity’s chain for the Notary service.
 
--   **The first customer purchases the Notary service’s new “Blockchain authentication” service tier:** To track the customer’s documents, the app creates a signed chain for them, allowing easy retrieval for that customer’s records. 
+-   **The first customer purchases the Notary service’s new “Blockchain authentication” service tier:** To track the customer’s documents, the app creates a signed chain for them, allowing easy retrieval for that customer’s records.
 
 
 -   **The customer requests notarization of the first document:** The app creates a signed entry within the customer’s chain containing a hashed version of the document. At this time, the notary service should also be storing the document in a secure location.
 
 -   **The customer returns at a later date and the clerk retrieves the past work for this customer:** The app searches the blockchain for the customer’s chain, and with that data, retrieves the chain. The SDK automatically validates the authenticity of this chain, which ensures that the Notary’s systems have not been tampered with and the blockchain data was submitted by the Notary service.
 
--   **The customer requests the document that was notarized:** The app searches for an entry in the chain validated in the step above and gets that entry info, then validates the authenticity of the signature used to sign that entry. 
+-   **The customer requests the document that was notarized:** The app searches for an entry in the chain validated in the step above and gets that entry info, then validates the authenticity of the signature used to sign that entry.
 
 
--   **The document’s authenticity is validated:** The app pulls out the document’s hash from the entry’s content and compares it against a freshly generated hash of a stored document. 
+-   **The document’s authenticity is validated:** The app pulls out the document’s hash from the entry’s content and compares it against a freshly generated hash of a stored document.
     -   **Note:** It is recommended that in a real-world scenario, scheduled tasks are run to validate the data for proactive validation.
 
--   **A developer who had access to one of the keys leaves employment with the Notary company, so they carry out proactive security:** The app replaces the old key pair that the employee had access to. 
+-   **A developer who had access to one of the keys leaves employment with the Notary company, so they carry out proactive security:** The app replaces the old key pair that the employee had access to.
 
 
 <a name="appinstallation"></a> Installation
