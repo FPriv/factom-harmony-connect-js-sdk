@@ -156,6 +156,7 @@ getStatus = (status) => {
   var result = '';
   switch (status) {
     case 'not_signed/invalid_chain_format':
+    case 'key_not_found':
       result = 'error';
       break;
     case 'invalid_signature':

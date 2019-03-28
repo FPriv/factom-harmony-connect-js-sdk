@@ -58,6 +58,7 @@ Displays an empty string ("") when `signatureValidation` is set to `false`.
     -   **invalid_signature:** A chain was created in the proper SignedChain structure, but the signature does not match the attached key.
     -   **retired_height:** A chain that conformed to the SignedChain structure and the signature was verified with the listed key, but
     that key was retired for the signer identity at a height lower than when this chain reached the `factom` immutability stage.
+    -   **key_not_found:** A chain that conformed to the SignedChain structure but the signer public key does not belong to the signer identity chain. 
     -   **valid_signature:** A chain that conformed to the SignedChain structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this chain reached the `factom` immutability stage.
 
 ```JS
@@ -301,6 +302,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
     - **not_signed/invalid_entry_format:** An entry that was not signed or did not conform to the SignedEntry structure.
     - **invalid_signature:** An entry was created in the proper SignedEntry structure, but the signature does not match the attached key.
     - **retired_height:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key, but that key was retired for the signer identity at a height lower than when this entry reached the `factom` immutability stage.
+    -   **key_not_found:** An entry that conformed to the SignedEntry structure but the signer public key does not belong to the signer identity chain. 
     - **valid_signature:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this entry reached the `factom` immutability stage.
 
 ```JS
@@ -493,6 +495,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
     - **not_signed/invalid_entry_format:** An entry that was not signed or did not conform to the SignedEntry structure.
     - **invalid_signature:** An entry was created in the proper SignedEntry structure, but the signature does not match the attached key.
     - **retired_height:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key, but that key was retired for the signer identity at a height lower than when this entry reached the `factom` immutability stage.
+    -   **key_not_found:** An entry that conformed to the SignedEntry structure but the signer public key does not belong to the signer identity chain. 
     - **valid_signature:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this entry reached the `factom` immutability stage.
 
 ```JS
@@ -571,6 +574,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
     - **not_signed/invalid_entry_format:** An entry that was not signed or did not conform to the SignedEntry structure.
     - **invalid_signature:** An entry was created in the proper SignedEntry structure, but the signature does not match the attached key.
     - **retired_height:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key, but that key was retired for the signer identity at a height lower than when this entry reached the `factom` immutability stage.
+    -   **key_not_found:** An entry that conformed to the SignedEntry structure but the signer public key does not belong to the signer identity chain. 
     - **valid_signature:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this entry reached the `factom` immutability stage.
 
 ```JS
