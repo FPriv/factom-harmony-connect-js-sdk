@@ -38,7 +38,7 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
 var _core = createCommonjsModule(function (module) {
-var core = module.exports = { version: '2.6.3' };
+var core = module.exports = { version: '2.6.5' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
 var _core_1 = _core.version;
@@ -244,7 +244,7 @@ var runtime = createCommonjsModule(function (module) {
 
   var Op = Object.prototype;
   var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
+  var undefined$1; // More compressible than void 0.
   var $Symbol = typeof Symbol === "function" ? Symbol : {};
   var iteratorSymbol = $Symbol.iterator || "@@iterator";
   var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
@@ -559,7 +559,7 @@ var runtime = createCommonjsModule(function (module) {
   // setting context.delegate to null, and returning the ContinueSentinel.
   function maybeInvokeDelegate(delegate, context) {
     var method = delegate.iterator[context.method];
-    if (method === undefined) {
+    if (method === undefined$1) {
       // A .throw or .return when the delegate iterator has no .throw
       // method always terminates the yield* loop.
       context.delegate = null;
@@ -569,7 +569,7 @@ var runtime = createCommonjsModule(function (module) {
           // If the delegate iterator has a return method, give it a
           // chance to clean up.
           context.method = "return";
-          context.arg = undefined;
+          context.arg = undefined$1;
           maybeInvokeDelegate(delegate, context);
 
           if (context.method === "throw") {
@@ -621,7 +621,7 @@ var runtime = createCommonjsModule(function (module) {
       // outer generator.
       if (context.method !== "return") {
         context.method = "next";
-        context.arg = undefined;
+        context.arg = undefined$1;
       }
 
     } else {
@@ -733,7 +733,7 @@ var runtime = createCommonjsModule(function (module) {
             }
           }
 
-          next.value = undefined;
+          next.value = undefined$1;
           next.done = true;
 
           return next;
@@ -749,7 +749,7 @@ var runtime = createCommonjsModule(function (module) {
   runtime.values = values;
 
   function doneResult() {
-    return { value: undefined, done: true };
+    return { value: undefined$1, done: true };
   }
 
   Context.prototype = {
@@ -760,12 +760,12 @@ var runtime = createCommonjsModule(function (module) {
       this.next = 0;
       // Resetting context._sent for legacy support of Babel's
       // function.sent implementation.
-      this.sent = this._sent = undefined;
+      this.sent = this._sent = undefined$1;
       this.done = false;
       this.delegate = null;
 
       this.method = "next";
-      this.arg = undefined;
+      this.arg = undefined$1;
 
       this.tryEntries.forEach(resetTryEntry);
 
@@ -775,7 +775,7 @@ var runtime = createCommonjsModule(function (module) {
           if (name.charAt(0) === "t" &&
               hasOwn.call(this, name) &&
               !isNaN(+name.slice(1))) {
-            this[name] = undefined;
+            this[name] = undefined$1;
           }
         }
       }
@@ -808,7 +808,7 @@ var runtime = createCommonjsModule(function (module) {
           // If the dispatched exception was caught by a catch block,
           // then let that catch block handle the exception normally.
           context.method = "next";
-          context.arg = undefined;
+          context.arg = undefined$1;
         }
 
         return !! caught;
@@ -945,7 +945,7 @@ var runtime = createCommonjsModule(function (module) {
       if (this.method === "next") {
         // Deliberately forget the last sent value so that we don't
         // accidentally pass it on to the delegate.
-        this.arg = undefined;
+        this.arg = undefined$1;
       }
 
       return ContinueSentinel;
@@ -1283,8 +1283,6 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
     if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
       // Set @@toStringTag to native iterators
       _setToStringTag(IteratorPrototype, TAG, true);
-      // fix for some old engines
-      if (!_library && typeof IteratorPrototype[ITERATOR] != 'function') _hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
@@ -1293,7 +1291,7 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
     $default = function values() { return $native.call(this); };
   }
   // Define iterator
-  if ((!_library || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+  if ((FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
     _hide(proto, ITERATOR, $default);
   }
   // Plug for library
@@ -1938,10 +1936,10 @@ _export(_export.S + _export.F * !USE_NATIVE, PROMISE, {
     return capability.promise;
   }
 });
-_export(_export.S + _export.F * (_library || !USE_NATIVE), PROMISE, {
+_export(_export.S + _export.F * (_library), PROMISE, {
   // 25.4.4.6 Promise.resolve(x)
   resolve: function resolve(x) {
-    return _promiseResolve(_library && this === Wrapper ? $Promise : this, x);
+    return _promiseResolve(this === Wrapper ? $Promise : this, x);
   }
 });
 _export(_export.S + _export.F * !(USE_NATIVE && _iterDetect(function (iter) {
@@ -2245,10 +2243,10 @@ module.exports = { "default": iterator, __esModule: true };
 
 unwrapExports(iterator$1);
 
-var defineProperty$3 = _objectDp.f;
+var defineProperty$2 = _objectDp.f;
 var _wksDefine = function (name) {
   var $Symbol = _core.Symbol || (_core.Symbol = {});
-  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$3($Symbol, name, { value: _wksExt.f(name) });
+  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$2($Symbol, name, { value: _wksExt.f(name) });
 };
 
 var f$3 = Object.getOwnPropertySymbols;
