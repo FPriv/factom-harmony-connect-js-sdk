@@ -111,7 +111,7 @@ When the Factom SDK is initialized, there will be an optional
 -   When this initial config is set to `true` as default, all chain
     and entry POST methods require passing the params:
     `signerPrivateKey` and `signerChainId` which will be used to create signed chains and entries,
-    as per the Factom Signing Standard.
+    as per the [Factom Signing Standard](https://docs.harmony.factom.com/docs/factom-signing-standard).
 
 -   When this initial config is set to `false`, the FactomSDK will not sign the chains and entries that are
     created and therefore it does not require the params: `signerPrivateKey` and `signerChainId`.
