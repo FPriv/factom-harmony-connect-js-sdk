@@ -219,6 +219,46 @@ describe('CHAINS Test', () => {
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual(resp.data);
     });
+    it('should create a chain with client overrides successfully.', async () => {
+      const resp = {
+        status: 200,
+        data: {
+          chain_id: '123456',
+        },
+      };
+
+      const data = {
+        externalIds: ['1'],
+        content: '123',
+        callbackUrl: 'http://callback.com',
+        callbackStages: ['factom', 'replicated'],
+        clientOverrides: {
+          baseUrl: 'https://apicast.io.overrides',
+          accessToken: {
+            appId: '123456',
+            appKey: '123456789',
+          },
+          automaticSigning: false,
+        },
+      };
+
+      const dataPostAPI = {
+        external_ids: [
+          Buffer.from('1').toString('base64'),
+        ],
+        content: Buffer.from('123').toString('base64'),
+        callback_url: 'http://callback.com',
+        callback_stages: [
+          'factom',
+          'replicated',
+        ],
+      };
+
+      axios.mockImplementationOnce(() => Promise.resolve(resp));
+      const response = await chains.create(data);
+      expect(axios).toHaveBeenCalledWith('https://apicast.io.overrides/chains', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
+      expect(response).toEqual(resp.data);
+    });
   });
   describe('Create a Chain with signing', () => {
     let chains;

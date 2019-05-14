@@ -219,6 +219,47 @@ describe('ENTRIES Test', () => {
       expect(axios).toHaveBeenCalledWith('https://apicast.io/chains/123456/entries', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
       expect(response).toEqual({ entry_hash: '123456' });
     });
+    it('should create an entry with client overrides successfully.', async () => {
+      const data = {
+        chainId: '123456',
+        externalIds: ['1'],
+        content: '123',
+        callbackUrl: 'http://callback.com',
+        callbackStages: ['factom', 'replicated'],
+        clientOverrides: {
+          baseUrl: 'https://apicast.io.overrides',
+          accessToken: {
+            appId: '123456',
+            appKey: '123456789',
+          },
+          automaticSigning: false,
+        },
+      };
+
+      const resp = {
+        status: 200,
+        data: {
+          entry_hash: '123456',
+        },
+      };
+
+      const dataPostAPI = {
+        external_ids: [
+          Buffer.from('1').toString('base64'),
+        ],
+        content: Buffer.from('123').toString('base64'),
+        callback_url: 'http://callback.com',
+        callback_stages: [
+          'factom',
+          'replicated',
+        ],
+      };
+
+      axios.mockImplementationOnce(() => Promise.resolve(resp));
+      const response = await entries.create(data);
+      expect(axios).toHaveBeenCalledWith('https://apicast.io.overrides/chains/123456/entries', { data: dataPostAPI, headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'POST' });
+      expect(response).toEqual({ entry_hash: '123456' });
+    });
   });
   describe('Create An Entry with signing', () => {
     let entries;

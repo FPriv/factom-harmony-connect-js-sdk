@@ -76,6 +76,25 @@ describe('APICall Test', () => {
         expect(axios).toHaveBeenCalledWith('https://apicast.io', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
         expect(response).toEqual({ api_version: 'v1' });
       });
+      it('should send request with client overrides sucessfully.', async () => {
+        const resp = {
+          status: 200,
+          data: {
+            api_version: 'v1',
+          },
+        };
+        const overrides = {
+          baseUrl: 'https://apicast.io.overrides',
+          accessToken: {
+            appId: '123456',
+            appKey: '123456',
+          },
+        };
+        axios.mockImplementationOnce(() => Promise.resolve(resp));
+        const response = await apiCall.send('GET', '', {}, overrides);
+        expect(axios).toHaveBeenCalledWith('https://apicast.io.overrides', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456' }, method: 'GET' });
+        expect(response).toEqual({ api_version: 'v1' });
+      });
       it('should return empty object when receiving response status > 202 and < 400.', async () => {
         const resp = {
           status: 300,
