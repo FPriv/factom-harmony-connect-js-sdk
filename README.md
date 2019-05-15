@@ -181,7 +181,7 @@ const entry = await FactomSDK.chains.entries.get({
 ```
 The SDK allows for override values that were set in the instatiation of the SDK on a per-method call basis. To override desired parameters, you need to add `clientOverrides` to any properties that are part of the instantiated SDK class (`appId`, `appKey`, `baseURL`, `automaticSigning`).
 
-Patterns to execute the override:
+Example:
 ```js
 // Create a chain with automaticSigning turned off for one call
 const createChainResponse = await factomConnectSDK.chains.create({
