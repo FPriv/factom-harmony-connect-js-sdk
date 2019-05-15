@@ -76,6 +76,20 @@ describe('APICall Test', () => {
         expect(axios).toHaveBeenCalledWith('https://apicast.io', { data: '', headers: { 'Content-Type': 'application/json', app_id: '123456', app_key: '123456789' }, method: 'GET' });
         expect(response).toEqual({ api_version: 'v1' });
       });
+      it('should return error when base url for override is not valid.', async () => {
+        try {
+          const overrides = {
+            baseUrl: 'apicast.io.overrides',
+            accessToken: {
+              appId: '123456',
+              appKey: '123456',
+            },
+          };
+          await apiCall.send('GET', '', {}, overrides);
+        } catch (error) {
+          expect(error).toEqual(new Error('The base URL provided for override is not valid.'));
+        }
+      });
       it('should send request with client overrides sucessfully.', async () => {
         const resp = {
           status: 200,
