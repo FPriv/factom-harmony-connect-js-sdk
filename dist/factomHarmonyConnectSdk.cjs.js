@@ -12,7 +12,7 @@ var sha256 = _interopDefault(require('js-sha256'));
 var elliptic = _interopDefault(require('elliptic'));
 
 function unwrapExports (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
 function createCommonjsModule(fn, module) {
@@ -2210,6 +2210,8 @@ var constants = _Object$freeze({
   FIRST_URL: 'first',
   LAST_URL: 'last',
   IDENTITIES_URL: 'identities',
+  RECEIPTS_URL: 'receipts',
+  ANCHORS_URL: 'anchors',
   KEYS_STRING: 'keys',
   UTF8_ENCODE: 'utf-8',
   BASE64_ENCODE: 'base64'
@@ -2734,13 +2736,24 @@ var APICall = function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(method) {
         var url = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
         var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-        var callURL, headers, body, response;
+        var clientOverrides = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+        var baseUrl, callURL, headers, body, response;
         return regenerator.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                callURL = urlJoin(this.baseUrl, url);
-                headers = createAuthHeader(this.accessToken);
+                baseUrl = clientOverrides.baseUrl || this.baseUrl;
+
+                if (isUrl(baseUrl)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                throw new Error('The base URL provided for override is not valid.');
+
+              case 3:
+                callURL = urlJoin(baseUrl, url);
+                headers = createAuthHeader(clientOverrides.accessToken || this.accessToken);
                 body = '';
 
 
@@ -2749,27 +2762,27 @@ var APICall = function () {
                 } else if (_Object$keys(data).length && data.constructor === Object) {
                   callURL = urlJoinQuery(callURL, data);
                 }
-                _context.prev = 4;
-                _context.next = 7;
+                _context.prev = 7;
+                _context.next = 10;
                 return axios(callURL, {
                   method: method,
                   data: body,
                   headers: headers
                 });
 
-              case 7:
+              case 10:
                 response = _context.sent;
 
                 if (!(response.status >= 200 && response.status <= 202)) {
-                  _context.next = 10;
+                  _context.next = 13;
                   break;
                 }
 
                 return _context.abrupt('return', CommonUtil.decodeResponse(response.data));
 
-              case 10:
+              case 13:
                 if (!(response.status >= 400)) {
-                  _context.next = 12;
+                  _context.next = 15;
                   break;
                 }
 
@@ -2778,20 +2791,20 @@ var APICall = function () {
                   message: response.statusText
                 })));
 
-              case 12:
+              case 15:
                 return _context.abrupt('return', {});
 
-              case 15:
-                _context.prev = 15;
-                _context.t0 = _context['catch'](4);
+              case 18:
+                _context.prev = 18;
+                _context.t0 = _context['catch'](7);
                 throw _context.t0;
 
-              case 18:
+              case 21:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[4, 15]]);
+        }, _callee, this, [[7, 18]]);
       }));
 
       function send(_x) {
@@ -3144,7 +3157,8 @@ var ValidateSignatureUtil = function () {
             obj = _ref2$obj === undefined ? {} : _ref2$obj,
             _ref2$validateForChai = _ref2.validateForChain,
             validateForChain = _ref2$validateForChai === undefined ? true : _ref2$validateForChai,
-            apiCall = _ref2.apiCall;
+            apiCall = _ref2.apiCall,
+            clientOverrides = _ref2.clientOverrides;
 
         var externalIds, typeName, invalidFormat, signerChainId, signerPublicKey, signature, timeStamp, keyHeight, keyResponse, message;
         return regenerator.wrap(function _callee$(_context) {
@@ -3184,7 +3198,7 @@ var ValidateSignatureUtil = function () {
 
                 _context.prev = 12;
                 _context.next = 15;
-                return apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + signerChainId + '/' + constants.KEYS_STRING + '/' + signerPublicKey);
+                return apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + signerChainId + '/' + constants.KEYS_STRING + '/' + signerPublicKey, {}, clientOverrides);
 
               case 15:
                 keyResponse = _context.sent;
@@ -3305,7 +3319,7 @@ var Entries = function () {
 
               case 4:
                 _context.next = 6;
-                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL + '/' + params.entryHash);
+                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL + '/' + params.entryHash, {}, params.clientOverrides);
 
               case 6:
                 response = _context.sent;
@@ -3324,7 +3338,8 @@ var Entries = function () {
                 return ValidateSignatureUtil.validateSignature({
                   obj: response,
                   validateForChain: false,
-                  apiCall: this.apiCall
+                  apiCall: this.apiCall,
+                  clientOverrides: params.clientOverrides
                 });
 
               case 12:
@@ -3390,7 +3405,7 @@ var Entries = function () {
 
               case 2:
                 _context2.next = 4;
-                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL + '/' + constants.FIRST_URL);
+                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL + '/' + constants.FIRST_URL, {}, params.clientOverrides);
 
               case 4:
                 response = _context2.sent;
@@ -3409,7 +3424,8 @@ var Entries = function () {
                 return ValidateSignatureUtil.validateSignature({
                   obj: response,
                   validateForChain: false,
-                  apiCall: this.apiCall
+                  apiCall: this.apiCall,
+                  clientOverrides: params.clientOverrides
                 });
 
               case 10:
@@ -3475,7 +3491,7 @@ var Entries = function () {
 
               case 2:
                 _context3.next = 4;
-                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL + '/' + constants.LAST_URL);
+                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL + '/' + constants.LAST_URL, {}, params.clientOverrides);
 
               case 4:
                 response = _context3.sent;
@@ -3494,7 +3510,8 @@ var Entries = function () {
                 return ValidateSignatureUtil.validateSignature({
                   obj: response,
                   validateForChain: false,
-                  apiCall: this.apiCall
+                  apiCall: this.apiCall,
+                  clientOverrides: params.clientOverrides
                 });
 
               case 10:
@@ -3550,7 +3567,7 @@ var Entries = function () {
     value: function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee4() {
         var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        var idsBase64, timeStamp, message, signature, signerPublicKey, data, response;
+        var autoSign, idsBase64, timeStamp, message, signature, signerPublicKey, data, response;
         return regenerator.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
@@ -3563,114 +3580,122 @@ var Entries = function () {
                 throw new Error('chainId is required.');
 
               case 2:
-                if (!this.automaticSigning) {
-                  _context4.next = 13;
+                autoSign = this.automaticSigning;
+
+                if (params.clientOverrides) {
+                  if (typeof params.clientOverrides.automaticSigning === 'boolean') {
+                    autoSign = params.clientOverrides.automaticSigning;
+                  }
+                }
+
+                if (!autoSign) {
+                  _context4.next = 15;
                   break;
                 }
 
                 if (!(params.externalIds && !Array.isArray(params.externalIds))) {
-                  _context4.next = 5;
+                  _context4.next = 7;
                   break;
                 }
 
                 throw new Error('externalIds must be an array.');
 
-              case 5:
+              case 7:
                 if (!CommonUtil.isEmptyString(params.signerPrivateKey)) {
-                  _context4.next = 7;
+                  _context4.next = 9;
                   break;
                 }
 
                 throw new Error('signerPrivateKey is required.');
 
-              case 7:
+              case 9:
                 if (KeyCommon.validateCheckSum({ signerKey: params.signerPrivateKey })) {
-                  _context4.next = 9;
+                  _context4.next = 11;
                   break;
                 }
 
                 throw new Error('signerPrivateKey is invalid.');
 
-              case 9:
+              case 11:
                 if (!CommonUtil.isEmptyString(params.signerChainId)) {
-                  _context4.next = 11;
+                  _context4.next = 13;
                   break;
                 }
 
                 throw new Error('signerChainId is required.');
 
-              case 11:
-                _context4.next = 23;
+              case 13:
+                _context4.next = 25;
                 break;
 
-              case 13:
+              case 15:
                 if (!CommonUtil.isEmptyArray(params.externalIds)) {
-                  _context4.next = 15;
+                  _context4.next = 17;
                   break;
                 }
 
                 throw new Error('at least 1 externalId is required.');
 
-              case 15:
+              case 17:
                 if (Array.isArray(params.externalIds)) {
-                  _context4.next = 17;
+                  _context4.next = 19;
                   break;
                 }
 
                 throw new Error('externalIds must be an array.');
 
-              case 17:
+              case 19:
                 if (!(params.signerPrivateKey && CommonUtil.isEmptyString(params.signerChainId))) {
-                  _context4.next = 19;
+                  _context4.next = 21;
                   break;
                 }
 
                 throw new Error('signerChainId is required when passing a signerPrivateKey.');
 
-              case 19:
+              case 21:
                 if (!(params.signerPrivateKey && !KeyCommon.validateCheckSum({ signerKey: params.signerPrivateKey }))) {
-                  _context4.next = 21;
+                  _context4.next = 23;
                   break;
                 }
 
                 throw new Error('signerPrivateKey is invalid.');
 
-              case 21:
+              case 23:
                 if (!(params.signerChainId && CommonUtil.isEmptyString(params.signerPrivateKey))) {
-                  _context4.next = 23;
+                  _context4.next = 25;
                   break;
                 }
 
                 throw new Error('signerPrivateKey is required when passing a signerChainId.');
 
-              case 23:
+              case 25:
                 if (!CommonUtil.isEmptyString(params.content)) {
-                  _context4.next = 25;
+                  _context4.next = 27;
                   break;
                 }
 
                 throw new Error('content is required.');
 
-              case 25:
+              case 27:
                 if (!(!CommonUtil.isEmptyString(params.callbackUrl) && !isUrl(params.callbackUrl))) {
-                  _context4.next = 27;
+                  _context4.next = 29;
                   break;
                 }
 
                 throw new Error('callbackUrl is an invalid url format.');
 
-              case 27:
+              case 29:
                 if (!(params.callbackStages && !Array.isArray(params.callbackStages))) {
-                  _context4.next = 29;
+                  _context4.next = 31;
                   break;
                 }
 
                 throw new Error('callbackStages must be an array.');
 
-              case 29:
+              case 31:
                 idsBase64 = [];
 
-                if (this.automaticSigning) {
+                if (autoSign) {
                   timeStamp = new Date().toISOString();
                   message = '' + params.signerChainId + params.content + timeStamp;
                   signature = KeyCommon.signContent({
@@ -3709,14 +3734,14 @@ var Entries = function () {
                   data.callback_stages = params.callbackStages;
                 }
 
-                _context4.next = 37;
-                return this.apiCall.send(constants.POST_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL, data);
+                _context4.next = 39;
+                return this.apiCall.send(constants.POST_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL, data, params.clientOverrides);
 
-              case 37:
+              case 39:
                 response = _context4.sent;
                 return _context4.abrupt('return', response);
 
-              case 39:
+              case 41:
               case 'end':
                 return _context4.stop();
             }
@@ -3810,7 +3835,7 @@ var Entries = function () {
 
               case 16:
                 _context5.next = 18;
-                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL, data);
+                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL, data, params.clientOverrides);
 
               case 18:
                 response = _context5.sent;
@@ -3925,7 +3950,7 @@ var Entries = function () {
                   external_ids: idsBase64
                 };
                 _context6.next = 21;
-                return this.apiCall.send(constants.POST_METHOD, url, data);
+                return this.apiCall.send(constants.POST_METHOD, url, data, params.clientOverrides);
 
               case 21:
                 response = _context6.sent;
@@ -3997,7 +4022,7 @@ var Chains = function () {
 
               case 2:
                 _context.next = 4;
-                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId);
+                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId, {}, params.clientOverrides);
 
               case 4:
                 response = _context.sent;
@@ -4016,7 +4041,8 @@ var Chains = function () {
                 return ValidateSignatureUtil.validateSignature({
                   obj: response,
                   validateForChain: true,
-                  apiCall: this.apiCall
+                  apiCall: this.apiCall,
+                  clientOverrides: params.clientOverrides
                 });
 
               case 10:
@@ -4071,120 +4097,128 @@ var Chains = function () {
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2() {
         var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        var idsBase64, timeStamp, message, signature, signerPublicKey, data, response;
+        var autoSign, idsBase64, timeStamp, message, signature, signerPublicKey, data, response;
         return regenerator.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                if (!this.automaticSigning) {
-                  _context2.next = 11;
+                autoSign = this.automaticSigning;
+
+                if (params.clientOverrides) {
+                  if (typeof params.clientOverrides.automaticSigning === 'boolean') {
+                    autoSign = params.clientOverrides.automaticSigning;
+                  }
+                }
+
+                if (!autoSign) {
+                  _context2.next = 13;
                   break;
                 }
 
                 if (!(params.externalIds && !Array.isArray(params.externalIds))) {
-                  _context2.next = 3;
+                  _context2.next = 5;
                   break;
                 }
 
                 throw new Error('externalIds must be an array.');
 
-              case 3:
+              case 5:
                 if (!CommonUtil.isEmptyString(params.signerPrivateKey)) {
-                  _context2.next = 5;
+                  _context2.next = 7;
                   break;
                 }
 
                 throw new Error('signerPrivateKey is required.');
 
-              case 5:
+              case 7:
                 if (KeyCommon.validateCheckSum({ signerKey: params.signerPrivateKey })) {
-                  _context2.next = 7;
+                  _context2.next = 9;
                   break;
                 }
 
                 throw new Error('signerPrivateKey is invalid.');
 
-              case 7:
+              case 9:
                 if (!CommonUtil.isEmptyString(params.signerChainId)) {
-                  _context2.next = 9;
+                  _context2.next = 11;
                   break;
                 }
 
                 throw new Error('signerChainId is required.');
 
-              case 9:
-                _context2.next = 21;
+              case 11:
+                _context2.next = 23;
                 break;
 
-              case 11:
+              case 13:
                 if (!CommonUtil.isEmptyArray(params.externalIds)) {
-                  _context2.next = 13;
+                  _context2.next = 15;
                   break;
                 }
 
                 throw new Error('at least 1 externalId is required.');
 
-              case 13:
+              case 15:
                 if (Array.isArray(params.externalIds)) {
-                  _context2.next = 15;
+                  _context2.next = 17;
                   break;
                 }
 
                 throw new Error('externalIds must be an array.');
 
-              case 15:
+              case 17:
                 if (!(params.signerPrivateKey && CommonUtil.isEmptyString(params.signerChainId))) {
-                  _context2.next = 17;
+                  _context2.next = 19;
                   break;
                 }
 
                 throw new Error('signerChainId is required when passing a signerPrivateKey.');
 
-              case 17:
+              case 19:
                 if (!(params.signerPrivateKey && !KeyCommon.validateCheckSum({ signerKey: params.signerPrivateKey }))) {
-                  _context2.next = 19;
+                  _context2.next = 21;
                   break;
                 }
 
                 throw new Error('signerPrivateKey is invalid.');
 
-              case 19:
+              case 21:
                 if (!(params.signerChainId && CommonUtil.isEmptyString(params.signerPrivateKey))) {
-                  _context2.next = 21;
+                  _context2.next = 23;
                   break;
                 }
 
                 throw new Error('signerPrivateKey is required when passing a signerChainId.');
 
-              case 21:
+              case 23:
                 if (!CommonUtil.isEmptyString(params.content)) {
-                  _context2.next = 23;
+                  _context2.next = 25;
                   break;
                 }
 
                 throw new Error('content is required.');
 
-              case 23:
+              case 25:
                 if (!(!CommonUtil.isEmptyString(params.callbackUrl) && !isUrl(params.callbackUrl))) {
-                  _context2.next = 25;
+                  _context2.next = 27;
                   break;
                 }
 
                 throw new Error('callbackUrl is an invalid url format.');
 
-              case 25:
+              case 27:
                 if (!(params.callbackStages && !Array.isArray(params.callbackStages))) {
-                  _context2.next = 27;
+                  _context2.next = 29;
                   break;
                 }
 
                 throw new Error('callbackStages must be an array.');
 
-              case 27:
+              case 29:
                 idsBase64 = [];
 
 
-                if (this.automaticSigning) {
+                if (autoSign) {
                   timeStamp = new Date().toISOString();
                   message = '' + params.signerChainId + params.content + timeStamp;
                   signature = KeyCommon.signContent({
@@ -4223,14 +4257,14 @@ var Chains = function () {
                   data.callback_stages = params.callbackStages;
                 }
 
-                _context2.next = 35;
-                return this.apiCall.send(constants.POST_METHOD, constants.CHAINS_URL, data);
+                _context2.next = 37;
+                return this.apiCall.send(constants.POST_METHOD, constants.CHAINS_URL, data, params.clientOverrides);
 
-              case 35:
+              case 37:
                 response = _context2.sent;
                 return _context2.abrupt('return', response);
 
-              case 37:
+              case 39:
               case 'end':
                 return _context2.stop();
             }
@@ -4315,7 +4349,7 @@ var Chains = function () {
 
               case 14:
                 _context3.next = 16;
-                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL, data);
+                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL, data, params.clientOverrides);
 
               case 16:
                 response = _context3.sent;
@@ -4421,7 +4455,7 @@ var Chains = function () {
                   external_ids: idsBase64
                 };
                 _context4.next = 19;
-                return this.apiCall.send(constants.POST_METHOD, url, data);
+                return this.apiCall.send(constants.POST_METHOD, url, data, params.clientOverrides);
 
               case 19:
                 response = _context4.sent;
@@ -4515,7 +4549,7 @@ var IdentitiesKeyUtil = function () {
 
               case 6:
                 _context.next = 8;
-                return this.apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + params.identityChainId + '/' + constants.KEYS_STRING + '/' + params.key);
+                return this.apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + params.identityChainId + '/' + constants.KEYS_STRING + '/' + params.key, {}, params.clientOverrides);
 
               case 8:
                 response = _context.sent;
@@ -4603,7 +4637,7 @@ var IdentitiesKeyUtil = function () {
 
               case 12:
                 _context2.next = 14;
-                return this.apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + identityChainId + '/' + constants.KEYS_STRING, data);
+                return this.apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + identityChainId + '/' + constants.KEYS_STRING, data, params.clientOverrides);
 
               case 14:
                 response = _context2.sent;
@@ -4763,7 +4797,7 @@ var IdentitiesKeyUtil = function () {
                 }
 
                 _context3.next = 34;
-                return this.apiCall.send(constants.POST_METHOD, constants.IDENTITIES_URL + '/' + identityChainId + '/' + constants.KEYS_STRING, data);
+                return this.apiCall.send(constants.POST_METHOD, constants.IDENTITIES_URL + '/' + identityChainId + '/' + constants.KEYS_STRING, data, params.clientOverrides);
 
               case 34:
                 response = _context3.sent;
@@ -4826,16 +4860,13 @@ var Identity = function () {
     key: 'get',
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
-        var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-            _ref2$identityChainId = _ref2.identityChainId,
-            identityChainId = _ref2$identityChainId === undefined ? '' : _ref2$identityChainId;
-
+        var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
         var response;
         return regenerator.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (identityChainId) {
+                if (params.identityChainId) {
                   _context.next = 2;
                   break;
                 }
@@ -4844,7 +4875,7 @@ var Identity = function () {
 
               case 2:
                 _context.next = 4;
-                return this.apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + identityChainId);
+                return this.apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + params.identityChainId, {}, params.clientOverrides);
 
               case 4:
                 response = _context.sent;
@@ -4877,7 +4908,7 @@ var Identity = function () {
   }, {
     key: 'create',
     value: function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2() {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2() {
         var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
         var keyPairs, signerKeys, i, pair, keysInvalid, duplicates, nameByteCounts, totalBytes, namesBase64, data, response, pairs;
         return regenerator.wrap(function _callee2$(_context2) {
@@ -5015,7 +5046,7 @@ var Identity = function () {
                 }
 
                 _context2.next = 37;
-                return this.apiCall.send(constants.POST_METHOD, constants.IDENTITIES_URL, data);
+                return this.apiCall.send(constants.POST_METHOD, constants.IDENTITIES_URL, data, params.clientOverrides);
 
               case 37:
                 response = _context2.sent;
@@ -5043,7 +5074,7 @@ var Identity = function () {
       }));
 
       function create() {
-        return _ref3.apply(this, arguments);
+        return _ref2.apply(this, arguments);
       }
 
       return create;
@@ -5080,13 +5111,14 @@ var Info = function () {
     key: 'get',
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+        var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
         var response;
         return regenerator.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return this.apiCall.send(constants.GET_METHOD);
+                return this.apiCall.send(constants.GET_METHOD, '', {}, params.clientOverrides);
 
               case 2:
                 response = _context.sent;
@@ -5109,6 +5141,150 @@ var Info = function () {
   }]);
 
   return Info;
+}();
+
+/**
+ * @classdesc Represents the Receipts. It allows the user to make call to the Receipts API
+ * with a single function.
+ * @class
+ */
+
+var Receipts = function () {
+  /**
+   * @constructor
+   * @param  {Object} options - An object containing the access token and the base URL
+   */
+  function Receipts(options) {
+    _classCallCheck(this, Receipts);
+
+    this.apiCall = new APICall(options);
+    this.automaticSigning = options.automaticSigning;
+  }
+
+  /**
+   * @param  {String} params.entryHash=''
+   * @param  {Boolean | Function} params.signatureValidation The signature validation may
+   * be True/False or callback function
+   * @return  {Promise} Returns a Promise that, when fulfilled, will either return an Object
+   * with the Chain Info or an Error with the problem.
+   */
+
+
+  _createClass(Receipts, [{
+    key: 'get',
+    value: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+        var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var response;
+        return regenerator.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(CommonUtil.isEmptyString(params.entryHash) && CommonUtil.isEmptyString(params.height))) {
+                  _context.next = 2;
+                  break;
+                }
+
+                throw new Error('entryHash or height is required.');
+
+              case 2:
+                _context.next = 4;
+                return this.apiCall.send(constants.GET_METHOD, constants.RECEIPTS_URL + '/' + params.entryHash, {}, params.clientOverrides);
+
+              case 4:
+                response = _context.sent;
+                return _context.abrupt('return', response);
+
+              case 6:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function get() {
+        return _ref.apply(this, arguments);
+      }
+
+      return get;
+    }()
+  }]);
+
+  return Receipts;
+}();
+
+/**
+ * @classdesc Represents the Anchors. It allows the user to make call to the Anchors API
+ * with a single function.
+ * @class
+ */
+
+var Anchors = function () {
+  /**
+   * @constructor
+   * @param  {Object} options - An object containing the access token and the base URL
+   */
+  function Anchors(options) {
+    _classCallCheck(this, Anchors);
+
+    this.apiCall = new APICall(options);
+    this.automaticSigning = options.automaticSigning;
+  }
+
+  /**
+   * @param  {String} params.height or params.entryHash = The entry hash
+   * or height being used to queryanchors
+   * @param  {Boolean | Function} params.signatureValidation The signature validation may
+   * be True/False or callback function
+   * @return  {Promise} Returns a Promise that, when fulfilled, will either return an Object
+   * with the Chain Info or an Error with the problem.
+   */
+
+
+  _createClass(Anchors, [{
+    key: 'get',
+    value: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+        var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var finalParam, response;
+        return regenerator.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(CommonUtil.isEmptyString(params.entryHash) && CommonUtil.isEmptyString(params.height))) {
+                  _context.next = 2;
+                  break;
+                }
+
+                throw new Error('entryHash or height is required.');
+
+              case 2:
+                finalParam = !CommonUtil.isEmptyString(params.entryHash) ? params.entryHash : params.height;
+                _context.next = 5;
+                return this.apiCall.send(constants.GET_METHOD, constants.ANCHORS_URL + '/' + finalParam, {}, params.clientOverrides);
+
+              case 5:
+                response = _context.sent;
+                return _context.abrupt('return', response);
+
+              case 7:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function get() {
+        return _ref.apply(this, arguments);
+      }
+
+      return get;
+    }()
+  }]);
+
+  return Anchors;
 }();
 
 var Utils = function () {
@@ -5159,6 +5335,8 @@ function FactomSDK(options) {
   this.apiInfo = new Info(this.options);
   this.chains = new Chains(this.options);
   this.identities = new Identity(this.options);
+  this.receipts = new Receipts(this.options);
+  this.anchors = new Anchors(this.options);
   this.utils = Utils;
 };
 
