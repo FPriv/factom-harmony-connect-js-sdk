@@ -179,7 +179,7 @@ const entry = await FactomSDK.chains.entries.get({
   entryHash: 'e0e2b7f7920ce25c20cf98c13ae454566e7cda7bb815b8a9ca568320d7bdeb93',
 });
 ```
-**Note:** The SDK allows for override values that were set in the instatiation of the SDK on a per-method call basis. To override desired parameters, you need to add `clientOverrides` to any properties that are part of the instantiated SDK class (`appId`, `appKey`, `baseURL`, `automaticSigning`).
+**Note:** The SDK allows for override values that were set in the instatiation of the SDK on a per-method call basis. To override desired parameters, you need to add `clientOverrides` to any properties that are part of the instantiated SDK class (`appId`, `appKey`, `baseUrl`, `automaticSigning`).
 
 Example:
 ```js
