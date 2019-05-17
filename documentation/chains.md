@@ -14,7 +14,7 @@ chains
 	- [getLast](#entriesLast)
 	- [search](#entriesSearch)
 
-### <a name="chainsGet"></a> get 
+### <a name="chainsGet"></a> get
 
 Gets information about a specific chain from Connect.
 
@@ -30,8 +30,9 @@ await factomConnectSDK.chains.get({
 | **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                       | **SDK Error Message & Description**       <img width=400/>                          |
 |------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
 | `params.chainId`             | required | string </br> The unique identifier created for each chain.                                                                                                                                                                                                                            | **chainId is required** </br> `chainId` parameter was not provided. |
-| `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`) </br> Default value is `true`. Indicates whether the SDK automatically validates that the chain was signed based on our signing standard. </br> `custom function`: allows for validating the chain's signature  based on custom logic. |   
-| `params.clientOverrides`  | optional                               | object </br>  This is the override parameter that allows user to specify which instantiation of the SDK to be overridden simply by adding `params.clientOverrides.[property]`.</br> Properties are allowed to be overridden are: </br>   - accessToken</br>   - accessToken.appId</br>   - accessToken.appKey</br>   - baseUrl</br> |       
+| `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`) </br> Default value is `true`. Indicates whether the SDK automatically validates that the chain was signed based on our signing standard. </br> `custom function`: allows for validating the chain's signature  based on custom logic. |
+| `params.accessToken` | optional | object </br>  This is the override parameter that allows user to specify the following two authentication parameters which will override the same parameters which have already been set on the instantiation of the SDK class </br>  * `appId` (string) </br> * `appKey`  (string)|
+| `params.baseUrl` | optional | string </br>  This is the override parameter that allows user to specify a different API Base URL for your application (which you can see by clicking on any of the applications in the application list the you see upon logging into https://account.factom.com)   |
 
 **Returns**
 
@@ -59,7 +60,7 @@ Displays an empty string ("") when `signatureValidation` is set to `false`.
     -   **invalid_signature:** A chain was created in the proper SignedChain structure, but the signature does not match the attached key.
     -   **retired_height:** A chain that conformed to the SignedChain structure and the signature was verified with the listed key, but
     that key was retired for the signer identity at a height lower than when this chain reached the `factom` immutability stage.
-    -   **key_not_found:** A chain that conformed to the SignedChain structure but the signer public key does not belong to the signer identity chain. 
+    -   **key_not_found:** A chain that conformed to the SignedChain structure but the signer public key does not belong to the signer identity chain.
     -   **valid_signature:** A chain that conformed to the SignedChain structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this chain reached the `factom` immutability stage.
 
 ```JS
@@ -92,7 +93,7 @@ Displays an empty string ("") when `signatureValidation` is set to `false`.
 }
 ```
 
-### <a name="chainsCreate"></a>create 
+### <a name="chainsCreate"></a>create
 
 Creates a new chain with or without signature:
 
@@ -120,8 +121,11 @@ await factomConnectSDK.chains.create({
 | `params.signerChainId`    | required </br> or </br> optional </br> | string </br> The chain id of the signer identity.</br> **Note:** This parameter is optional for creating an unsigned chain. However, if `signerPrivateKey` is inputted then `signerChainId` must also be inputted.                                                                                                                                                                                                                                                         | In case of creating a signed chain: </br> **signerChainId is required.** </br> `signerChainId` parameter was not provided. </br></br> In case of creating an unsigned chain:</br> **signerChainId is required when passing a signerPrivateKey.**</br> `signerPrivateKey` parameter was provided but lacking `signerChainId` parameter.                                                                                                                                                                                                                                                                                                                                       |
 | `params.signerPrivateKey` | required </br> or </br> optional </br> | base58 string in Idsec format</br> The private key signer would like to sign with. In fact, private key is used to generate the public key, which is included as an external ID on the created signed entry. </br> **Note:** This parameter is optional for creating an unsigned chain. However, if `signerChainId` is inputted then `signerPrivateKey` must also be inputted.                                     | In case of creating a signed chain:</br> **signerPrivateKey is required.**</br> `signerPrivateKey` parameter was not provided.</br></br>  **signerPrivateKey is invalid.** </br> An invalid `signerPrivateKey` parameter was provided or key’s byte length is not equal to 41. </br></br> In case of creating an unsigned chain: </br> **signerPrivateKey is required when passing a signerChainId.** </br>   `signerChainId` parameter was provided but lacking `signerPrivateKey` parameter.  </br></br>  **signerPrivateKey is invalid.**  `signerChainId` was provided but either an invalid `signerPrivateKey` parameter was also provided or key’s byte length is not equal to 41. |
 | `params.callbackUrl`      | optional                               | string </br> The URL where you would like to receive the callback from Connect. </br> **Note:** If this is not specified, callbacks will not be activated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | **callbackUrl is an invalid url format.** </br> An invalid `callbackUrl` format was provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `params.callbackStages`   | optional                               | array of strings </br> The immutability stages you would like to be notified about. This list can include any or all of the three stages: `replicated`, `factom`, and `anchored`. For example, when you would like to trigger the callback from Connect at `replicated` and `factom` stage, you would send them in the format: [‘replicated’, ‘factom’]. </br> **Note:** For this field to matter, the URL must be provided. If callbacks are activated (URL has been specified) and this field is not sent, it will default to `factom` and `anchored`. | **callbackStages must be an array.** </br> An invalid `callbackStages` format was provided.   |                                                                                           
-| `params.clientOverrides`  | optional                               | object </br>  This is the override parameter that allows user to specify which instantiation of the SDK to be overridden simply by adding `params.clientOverrides.[property]`.</br> Properties are allowed to be overridden are: </br>   - accessToken</br>   - accessToken.appId</br>   - accessToken.appKey</br>   - baseUrl</br>   - automaticSigning</br> |       
+| `params.callbackStages`   | optional                               | array of strings </br> The immutability stages you would like to be notified about. This list can include any or all of the three stages: `replicated`, `factom`, and `anchored`. For example, when you would like to trigger the callback from Connect at `replicated` and `factom` stage, you would send them in the format: [‘replicated’, ‘factom’]. </br> **Note:** For this field to matter, the URL must be provided. If callbacks are activated (URL has been specified) and this field is not sent, it will default to `factom` and `anchored`. | **callbackStages must be an array.** </br> An invalid `callbackStages` format was provided.   |
+| `params.accessToken` | optional | object </br>  This is the override parameter that allows user to specify the following two authentication parameters which will override the same parameters which have already been set on the instantiation of the SDK class </br>  * `appId` (string) </br> * `appKey`  (string)|
+| `params.baseUrl` | optional | string </br>  This is the override parameter that allows user to specify a different API Base URL for your application (which you can see by clicking on any of the applications in the application list the you see upon logging into https://account.factom.com)   |
+| `params.automaticSigning` | optional | boolean </br>  Setting this property to `false` allows user to create an unsigned entry, or implement their own way of signing the entry (it is set to `true` by default in the SDK class that gets instantiated)    |
+
 
 **Returns**
 
@@ -139,7 +143,7 @@ await factomConnectSDK.chains.create({
 }
 ```
 
-### <a name="chainsList"></a>list 
+### <a name="chainsList"></a>list
 
 Gets all of the chains on Factom.
 
@@ -154,8 +158,9 @@ await factomConnectSDK.chains.list();
 |-----------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|---|
 | `params.limit`  | optional | integer </br>  The number of items you would like to return back in each stage. The default value is 15.                                                                                                                                                                                                                                                                          | **limit must be an integer.**</br>   An invalid `limit` format was provided.  |   |
 | `params.offset` | optional | integer </br>   The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position. | **offset must be an integer.**  </br>   An invalid `offset` format was provided. |   |
-| `params.stages` | optional | array of strings </br>  The immutability stages you want to restrict results to. You can choose any from `replicated`, `factom`, and `anchored`. The default value are these three stages: `replicated`, `factom`, and `anchored`. </br>  **Note**: If you would like to search among multiple stages, you would send them in the format: [‘replicated’, ‘factom’]. | **stages must be an array.**</br>  An invalid `stages` format was provided.   |   
-| `params.clientOverrides`  | optional                               | object </br>  This is the override parameter that allows user to specify which instantiation of the SDK to be overridden simply by adding `params.clientOverrides.[property]`.</br> Properties are allowed to be overridden are: </br>   - accessToken</br>   - accessToken.appId</br>   - accessToken.appKey</br>   - baseUrl</br> |       
+| `params.stages` | optional | array of strings </br>  The immutability stages you want to restrict results to. You can choose any from `replicated`, `factom`, and `anchored`. The default value are these three stages: `replicated`, `factom`, and `anchored`. </br>  **Note**: If you would like to search among multiple stages, you would send them in the format: [‘replicated’, ‘factom’]. | **stages must be an array.**</br>  An invalid `stages` format was provided.   |
+| `params.accessToken` | optional | object </br>  This is the override parameter that allows user to specify the following two authentication parameters which will override the same parameters which have already been set on the instantiation of the SDK class </br>  * `appId` (string) </br> * `appKey`  (string)|
+| `params.baseUrl` | optional | string </br>  This is the override parameter that allows user to specify a different API Base URL for your application (which you can see by clicking on any of the applications in the application list the you see upon logging into https://account.factom.com)   |
 
 **Returns**
 
@@ -197,9 +202,9 @@ await factomConnectSDK.chains.list();
 }
 ```
 
-### <a name="chainsSearch"></a>search 
+### <a name="chainsSearch"></a>search
 
-Finds all of the chains with `externalIds` that match what you entered. 
+Finds all of the chains with `externalIds` that match what you entered.
 
 **Sample**
 ```JS
@@ -214,8 +219,9 @@ await factomConnectSDK.chains.search({
 |----------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|
 | `params.externalIds` | required | array of strings </br>  A list of external IDs associated with the chains user would like to search by.                                                                                                                                                                                                                                                                              | **at least 1 externalId is required.**</br>  `externalIds` parameter was not provided.</br> </br>  **externalIds must be an array.** </br>  An invalid `externalIds` format was provided. |   |
 | `params.limit`       | optional | integer </br> The number of items you would like to return back in each stage. The default value is 15.                                                                                                                                                                                                                                                                             | **limit must be an integer.** </br> An invalid `limit` format was provided.                                                                                                          |   |
-| `params.offset`      | optional | integer </br>  The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position. | **offset must be an integer.**</br>  An invalid `offset` format was provided.                                                                                                      |   
-| `params.clientOverrides`  | optional                               | object </br>  This is the override parameter that allows user to specify which instantiation of the SDK to be overridden simply by adding `params.clientOverrides.[property]`.</br> Properties are allowed to be overridden are: </br>   - accessToken</br>   - accessToken.appId</br>   - accessToken.appKey</br>   - baseUrl</br> |       
+| `params.offset`      | optional | integer </br>  The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position. | **offset must be an integer.**</br>  An invalid `offset` format was provided.                                                                                                      |
+| `params.accessToken` | optional | object </br>  This is the override parameter that allows user to specify the following two authentication parameters which will override the same parameters which have already been set on the instantiation of the SDK class </br>  * `appId` (string) </br> * `appKey`  (string)|
+| `params.baseUrl` | optional | string </br>  This is the override parameter that allows user to specify a different API Base URL for your application (which you can see by clicking on any of the applications in the application list the you see upon logging into https://account.factom.com)   |
 
 **Returns**
 
@@ -257,9 +263,9 @@ await factomConnectSDK.chains.search({
 }
 ```
 
-### <a name="chainsEntries"></a>entries 
+### <a name="chainsEntries"></a>entries
 
-##### <a name="entriesGet"></a> get 
+##### <a name="entriesGet"></a> get
 
 Gets information about a specific entry on Connect.
 
@@ -277,8 +283,9 @@ await factomConnectSDK.chains.entries.get({
 |------------------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
 | `params.chainId`             | required | string </br>  The chain identifier.                                                                                                                                                                                                                                                                                    | **chainId is required.**</br>  `chainId` parameter was not provided.</br>      |
 | `params.entryHash`           | required | string </br> The SHA256 hash of the entry.                                                                                                                                                                                                                                                                             | **entryHash is required.** </br> `entryHash` parameter was not provided. |
-| `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`) </br> The default value is `true`. Indicates whether the SDK automatically validates that the entry was signed based on our signing standard. </br> `custom function`: allows for validating the entry's signature based on custom logic. |          
-| `params.clientOverrides`  | optional                               | object </br>  This is the override parameter that allows user to specify which instantiation of the SDK to be overridden simply by adding `params.clientOverrides.[property]`.</br> Properties are allowed to be overridden are: </br>   - accessToken</br>   - accessToken.appId</br>   - accessToken.appKey</br>   - baseUrl</br> |       
+| `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`) </br> The default value is `true`. Indicates whether the SDK automatically validates that the entry was signed based on our signing standard. </br> `custom function`: allows for validating the entry's signature based on custom logic. |
+| `params.accessToken` | optional | object </br>  This is the override parameter that allows user to specify the following two authentication parameters which will override the same parameters which have already been set on the instantiation of the SDK class </br>  * `appId` (string) </br> * `appKey`  (string)|
+| `params.baseUrl` | optional | string </br>  This is the override parameter that allows user to specify a different API Base URL for your application (which you can see by clicking on any of the applications in the application list the you see upon logging into https://account.factom.com)   |
 
 **Returns**
 
@@ -306,7 +313,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
     - **not_signed/invalid_entry_format:** An entry that was not signed or did not conform to the SignedEntry structure.
     - **invalid_signature:** An entry was created in the proper SignedEntry structure, but the signature does not match the attached key.
     - **retired_height:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key, but that key was retired for the signer identity at a height lower than when this entry reached the `factom` immutability stage.
-    -   **key_not_found:** An entry that conformed to the SignedEntry structure but the signer public key does not belong to the signer identity chain. 
+    -   **key_not_found:** An entry that conformed to the SignedEntry structure but the signer public key does not belong to the signer identity chain.
     - **valid_signature:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this entry reached the `factom` immutability stage.
 
 ```JS
@@ -340,7 +347,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 }
 ```
 
-##### <a name="entriesCreate"></a>create 
+##### <a name="entriesCreate"></a>create
 
 Creates a new entry for the selected chain with or without signature:
 
@@ -350,7 +357,7 @@ Creates a new entry for the selected chain with or without signature:
 -   When the Factom SDK is initialized, if `automaticSigning` =
     `false`, SDK creates an unsigned entry and therefore it does
     not require these parameters.
-    
+
 **Sample**
 ```JS
 await factomConnectSDK.chains.entries.create({
@@ -372,8 +379,10 @@ await factomConnectSDK.chains.entries.create({
 | `params.signerChainId`    | required</br> or</br> optional   | string</br> The chain ID of the signer identity.</br>  **Note:** This parameter is optional for creating an unsigned entry. However, if `signerPrivateKey` is inputted then `signerChainId` must also be inputted.                                                                                                                                                                                                                                                                                                                                                                                       | In case of creating a signed entry:</br> **signerChainId is required.**</br> `signerChainId` parameter was not provided.</br></br>  In case of creating an unsigned entry:</br>  **signerChainId is required when passing a signerPrivateKey.**</br> `signerPrivateKey` was provided but lacking `signerChainId` parameter.                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `params.signerPrivateKey` | required</br>  or</br>  optional | a base58 string in Idsec format </br> The private key signer would like to sign with. In fact, private key is used to generate the public key, which is included as an external ID on the created signed entry.</br>   **Note:** This parameter is optional for creating an unsigned entry. However, if `signerChainId` is inputted then `signerPrivateKey` must also be inputted.                                                                                                                                                                                               | In case of creating a signed entry:</br>  **signerPrivateKey is required.**</br> `signerPrivateKey` parameter was not provided.</br></br>  **signerPrivateKey is invalid.**</br> An invalid `signerPrivateKey` parameter was provided or key's byte length is not equal to 41. </br></br>  In case of creating an unsigned  entry:</br>  **signerPrivateKey is required when passing a signerChainId.**</br> `signerChainId` was provided but lacking `signerPrivateKey` parameter.</br></br>  **signerPrivateKey is invalid.**</br>  `signerChainId` was provided but an invalid `signerPrivateKey` parameter was provided or key's byte length is not equal to 41. |
 | `params.callbackUrl`      | optional                         | string</br> the URL you would like the callbacks to be sent to **Note:** If this is not specified, callbacks will not be activated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | **callbackUrl is an invalid url format.**</br> An invalid `callbackUrl` format was provided                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `params.callbackStages`   | optional                         | array of strings</br>  The immutability stages you would like to be notified about. This list can include any or all of these three stages: `replicated`,  `factom`, and `anchored`. For example, when you would like to trigger the callback from Connect from `replicated` and `factom` then you would send them in the format: ['replicated', 'factom'].</br> **Note:** For this field to matter, the URL must be provided.</br> If callbacks are activated (URL has been specified) and this field is not sent, it will default to `factom` and `anchored`. | **callbackStages must be an array.**</br> An invalid `callbackStages` format was provided   |                                                                                               
-|`params.clientOverrides`  | optional                               | object </br>  This is the override parameter that allows user to specify which instantiation of the SDK to be overridden simply by adding `params.clientOverrides.[property]`.</br> Properties are allowed to be overridden are: </br>   - accessToken</br>   - accessToken.appId</br>   - accessToken.appKey</br>   - baseUrl</br> - automaticSigning</br>  |       
+| `params.callbackStages`   | optional                         | array of strings</br>  The immutability stages you would like to be notified about. This list can include any or all of these three stages: `replicated`,  `factom`, and `anchored`. For example, when you would like to trigger the callback from Connect from `replicated` and `factom` then you would send them in the format: ['replicated', 'factom'].</br> **Note:** For this field to matter, the URL must be provided.</br> If callbacks are activated (URL has been specified) and this field is not sent, it will default to `factom` and `anchored`. | **callbackStages must be an array.**</br> An invalid `callbackStages` format was provided   |
+| `params.accessToken` | optional | object </br>  This is the override parameter that allows user to specify the following two authentication parameters which will override the same parameters which have already been set on the instantiation of the SDK class </br>  * `appId` (string) </br> * `appKey`  (string)|
+| `params.baseUrl` | optional | string </br>  This is the override parameter that allows user to specify a different API Base URL for your application (which you can see by clicking on any of the applications in the application list the you see upon logging into https://account.factom.com)   |
+| `params.automaticSigning` | optional | boolean </br>  Setting this property to `false` allows user to create an unsigned entry, or implement their own way of signing the entry (it is set to `true` by default in the SDK class that gets instantiated)    |
 
 **Returns**
 
@@ -390,7 +399,7 @@ await factomConnectSDK.chains.entries.create({
 }
 ```
 
-##### <a name="entriesList"></a> list 
+##### <a name="entriesList"></a> list
 
 Gets list of all entries contained on a specified chain.
 
@@ -409,7 +418,8 @@ await factomConnectSDK.chains.entries.list({
 | `params.limit`   | optional | integer </br> The number of items you would like back in each page. The default value is 15.                                                                                                                                                     | **limit must ben an integer.**</br> An invalid `limit` format was provided.  |
 | `params.offset`  | optional | integer</br> The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position.  | **offset must be an integer.**</br> An invalid `offset` format was provided.|
 | `params.stages`  | optional | array of strings</br>  The immutability stages you want to restrict results to. You can choose any from `replicated`, `factom`, and `anchored`. The default value are these three stages: `replicated`, `factom` and `anchored`.</br>  **Note:** If you would like to search among multiple stages, you would send them in the format ['replicated', 'factom'].  | **stages must be an array.**</br>  An invalid `stages` format was provided. |
-| `params.clientOverrides`  | optional                               | object </br>  This is the override parameter that allows user to specify which instantiation of the SDK to be overridden simply by adding `params.clientOverrides.[property]`.</br> Properties are allowed to be overridden are: </br>   - accessToken</br>   - accessToken.appId</br>   - accessToken.appKey</br>   - baseUrl</br> |       
+| `params.accessToken` | optional | object </br>  This is the override parameter that allows user to specify the following two authentication parameters which will override the same parameters which have already been set on the instantiation of the SDK class </br>  * `appId` (string) </br> * `appKey`  (string)|
+| `params.baseUrl` | optional | string </br>  This is the override parameter that allows user to specify a different API Base URL for your application (which you can see by clicking on any of the applications in the application list the you see upon logging into https://account.factom.com)   |
 
 **Returns**
 
@@ -456,7 +466,7 @@ await factomConnectSDK.chains.entries.list({
 }
 ```
 
-##### <a name="entriesFirst"></a>getFirst 
+##### <a name="entriesFirst"></a>getFirst
 
 Retrieves the first entry that has been saved to this chain.
 
@@ -472,8 +482,9 @@ await factomConnectSDK.chains.entries.getFirst({
 | **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                                                   | **SDK Error Message & Description**          <img width=400/>                             |
 |------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
 | `params.chainId`             | required | string </br>  The chain identifier.                                                                                                                                                                                                                                                                               | **chainId is required.**</br>  `chainId` parameter was not provided.|
-| `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`)</br> Default value is `true`. Indicates whether the SDK automatically validates that the entry was signed based on our signing standard.</br>`custom function`: allows for validating the entry's signature based on custom logic. |        
-| `params.clientOverrides`  | optional                               | object </br>  This is the override parameter that allows user to specify which instantiation of the SDK to be overridden simply by adding `params.clientOverrides.[property]`.</br> Properties are allowed to be overridden are: </br>   - accessToken</br>   - accessToken.appId</br>   - accessToken.appKey</br>   - baseUrl</br> |       
+| `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`)</br> Default value is `true`. Indicates whether the SDK automatically validates that the entry was signed based on our signing standard.</br>`custom function`: allows for validating the entry's signature based on custom logic. |
+| `params.accessToken` | optional | object </br>  This is the override parameter that allows user to specify the following two authentication parameters which will override the same parameters which have already been set on the instantiation of the SDK class </br>  * `appId` (string) </br> * `appKey`  (string)|
+| `params.baseUrl` | optional | string </br>  This is the override parameter that allows user to specify a different API Base URL for your application (which you can see by clicking on any of the applications in the application list the you see upon logging into https://account.factom.com)   |
 
 **Returns**
 
@@ -502,7 +513,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
     - **not_signed/invalid_entry_format:** An entry that was not signed or did not conform to the SignedEntry structure.
     - **invalid_signature:** An entry was created in the proper SignedEntry structure, but the signature does not match the attached key.
     - **retired_height:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key, but that key was retired for the signer identity at a height lower than when this entry reached the `factom` immutability stage.
-    -   **key_not_found:** An entry that conformed to the SignedEntry structure but the signer public key does not belong to the signer identity chain. 
+    -   **key_not_found:** An entry that conformed to the SignedEntry structure but the signer public key does not belong to the signer identity chain.
     - **valid_signature:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this entry reached the `factom` immutability stage.
 
 ```JS
@@ -536,7 +547,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
 }
 ```
 
-##### <a name="entriesLast"></a> getLast 
+##### <a name="entriesLast"></a> getLast
 
 Gets the last entry that has been saved to this chain.
 
@@ -552,8 +563,9 @@ await factomConnectSDK.chains.entries.getLast({
 | **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                                                   | **SDK Error Message & Description**        <img width=400/>                               |
 |------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
 | `params.chainId`             | required | string </br>  The chain identifier.                                                                                                                                                                                                                                                                               | **chainId is required.**</br>  `chainId` parameter was not provided.</br> |
-| `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`)</br> Default value is `true`. Indicates whether the SDK automatically validates that the entry</br> was signed based on our signing standard.</br>`custom function`: allows for validating the entry's signature based on custom logic.|   
-| `params.clientOverrides`  | optional                               | object </br>  This is the override parameter that allows user to specify which instantiation of the SDK to be overridden simply by adding `params.clientOverrides.[property]`.</br> Properties are allowed to be overridden are: </br>   - accessToken</br>   - accessToken.appId</br>   - accessToken.appKey</br>   - baseUrl</br> |       
+| `params.signatureValidation` | optional | boolean (`true`/`false`/`custom function`)</br> Default value is `true`. Indicates whether the SDK automatically validates that the entry</br> was signed based on our signing standard.</br>`custom function`: allows for validating the entry's signature based on custom logic.|
+| `params.accessToken` | optional | object </br>  This is the override parameter that allows user to specify the following two authentication parameters which will override the same parameters which have already been set on the instantiation of the SDK class </br>  * `appId` (string) </br> * `appKey`  (string)|
+| `params.baseUrl` | optional | string </br>  This is the override parameter that allows user to specify a different API Base URL for your application (which you can see by clicking on any of the applications in the application list the you see upon logging into https://account.factom.com)   |
 
 **Returns**
 
@@ -583,7 +595,7 @@ In case `signatureValidation` is set to `true` then one of the following values 
     - **not_signed/invalid_entry_format:** An entry that was not signed or did not conform to the SignedEntry structure.
     - **invalid_signature:** An entry was created in the proper SignedEntry structure, but the signature does not match the attached key.
     - **retired_height:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key, but that key was retired for the signer identity at a height lower than when this entry reached the `factom` immutability stage.
-    -   **key_not_found:** An entry that conformed to the SignedEntry structure but the signer public key does not belong to the signer identity chain. 
+    -   **key_not_found:** An entry that conformed to the SignedEntry structure but the signer public key does not belong to the signer identity chain.
     - **valid_signature:** An entry that conformed to the SignedEntry structure and the signature was verified with the listed key. That key was also active for the signer identity at the height when this entry reached the `factom` immutability stage.
 
 ```JS
@@ -617,9 +629,9 @@ In case `signatureValidation` is set to `true` then one of the following values 
 }
 ```
 
-##### <a name="entriesSearch"></a>search 
+##### <a name="entriesSearch"></a>search
 
-Finds all of the entries with `externalIds` that match what you entered. 
+Finds all of the entries with `externalIds` that match what you entered.
 
 **Sample**
 ```JS
@@ -636,8 +648,9 @@ await factomConnectSDK.chains.entries.search({
 | `params.chainId`     | required | string </br>  The chain identifier.                                                                                                                                                                                                                                                                                                                                                        | **chainId is required.**</br>  `chainId` parameter was not provided.</br>                                                                                                           |
 | `params.externalIds` | required | array of strings</br> A list of external IDs.</br> **Note:** Since the Connect API requires each array element to be Base64 encoded, the SDK will do so before  making the API request.                                                                                                                                                                                   | **at least 1 externalId is required.**</br> `externalIds` parameter was not provided. </br></br>  **externalIds must be an array.**</br> An invalid `externalIds`parameter was provided. |
 | `params.limit`       | optional | integer</br> The number of items you would like to return back in each page. The default value is 15.                                                                                                                                                                                                                                                                              | **limit must be an integer.**</br> An invalid `limit` format was provided.</br>                                                                                                      |
-| `params.offset`      | optional | integer </br> The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position. | **offset must be an integer.**</br> An invalid `offset` format was provided. |   
-| `params.clientOverrides`  | optional                               | object </br>  This is the override parameter that allows user to specify which instantiation of the SDK to be overridden simply by adding `params.clientOverrides.[property]`.</br> Properties are allowed to be overridden are: </br>   - accessToken</br>   - accessToken.appId</br>   - accessToken.appKey</br>   - baseUrl</br> |       
+| `params.offset`      | optional | integer </br> The offset parameter allows you to select which item you would like to start from when a list is returned from Connect. For example, if you have already seen the first 15 items and you would like the next set, you would send an offset of 15. `offset=0` starts from the first item of the set and is the default position. | **offset must be an integer.**</br> An invalid `offset` format was provided. |
+| `params.accessToken` | optional | object </br>  This is the override parameter that allows user to specify the following two authentication parameters which will override the same parameters which have already been set on the instantiation of the SDK class </br>  * `appId` (string) </br> * `appKey`  (string)|
+| `params.baseUrl` | optional | string </br>  This is the override parameter that allows user to specify a different API Base URL for your application (which you can see by clicking on any of the applications in the application list the you see upon logging into https://account.factom.com)   |
 
 **Returns**
 
