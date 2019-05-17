@@ -12,7 +12,7 @@ var sha256 = _interopDefault(require('js-sha256'));
 var elliptic = _interopDefault(require('elliptic'));
 
 function unwrapExports (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
 }
 
 function createCommonjsModule(fn, module) {
