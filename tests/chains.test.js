@@ -232,14 +232,12 @@ describe('CHAINS Test', () => {
         content: '123',
         callbackUrl: 'http://callback.com',
         callbackStages: ['factom', 'replicated'],
-        clientOverrides: {
-          baseUrl: 'https://apicast.io.overrides',
-          accessToken: {
-            appId: '123456',
-            appKey: '123456789',
-          },
-          automaticSigning: false,
+        baseUrl: 'https://apicast.io.overrides',
+        accessToken: {
+          appId: '123456',
+          appKey: '123456789',
         },
+        automaticSigning: false,
       };
 
       const dataPostAPI = {

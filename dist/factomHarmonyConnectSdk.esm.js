@@ -2732,13 +2732,14 @@ var APICall = function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(method) {
         var url = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
         var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-        var clientOverrides = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+        var overrideBaseUrl = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
+        var overrideAccessToken = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
         var baseUrl, callURL, headers, body, response;
         return regenerator.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                baseUrl = clientOverrides.baseUrl || this.baseUrl;
+                baseUrl = overrideBaseUrl || this.baseUrl;
 
                 if (isUrl(baseUrl)) {
                   _context.next = 3;
@@ -2749,7 +2750,7 @@ var APICall = function () {
 
               case 3:
                 callURL = urlJoin(baseUrl, url);
-                headers = createAuthHeader(clientOverrides.accessToken || this.accessToken);
+                headers = createAuthHeader(overrideAccessToken || this.accessToken);
                 body = '';
 
 
@@ -3154,7 +3155,8 @@ var ValidateSignatureUtil = function () {
             _ref2$validateForChai = _ref2.validateForChain,
             validateForChain = _ref2$validateForChai === undefined ? true : _ref2$validateForChai,
             apiCall = _ref2.apiCall,
-            clientOverrides = _ref2.clientOverrides;
+            baseUrl = _ref2.baseUrl,
+            accessToken = _ref2.accessToken;
 
         var externalIds, typeName, invalidFormat, signerChainId, signerPublicKey, signature, timeStamp, keyHeight, keyResponse, message;
         return regenerator.wrap(function _callee$(_context) {
@@ -3194,7 +3196,7 @@ var ValidateSignatureUtil = function () {
 
                 _context.prev = 12;
                 _context.next = 15;
-                return apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + signerChainId + '/' + constants.KEYS_STRING + '/' + signerPublicKey, {}, clientOverrides);
+                return apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + signerChainId + '/' + constants.KEYS_STRING + '/' + signerPublicKey, {}, baseUrl, accessToken);
 
               case 15:
                 keyResponse = _context.sent;
@@ -3315,7 +3317,7 @@ var Entries = function () {
 
               case 4:
                 _context.next = 6;
-                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL + '/' + params.entryHash, {}, params.clientOverrides);
+                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL + '/' + params.entryHash, {}, params.baseUrl, params.accessToken);
 
               case 6:
                 response = _context.sent;
@@ -3335,7 +3337,8 @@ var Entries = function () {
                   obj: response,
                   validateForChain: false,
                   apiCall: this.apiCall,
-                  clientOverrides: params.clientOverrides
+                  baseUrl: params.baseUrl,
+                  accessToken: params.accessToken
                 });
 
               case 12:
@@ -3401,7 +3404,7 @@ var Entries = function () {
 
               case 2:
                 _context2.next = 4;
-                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL + '/' + constants.FIRST_URL, {}, params.clientOverrides);
+                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL + '/' + constants.FIRST_URL, {}, params.baseUrl, params.accessToken);
 
               case 4:
                 response = _context2.sent;
@@ -3421,7 +3424,8 @@ var Entries = function () {
                   obj: response,
                   validateForChain: false,
                   apiCall: this.apiCall,
-                  clientOverrides: params.clientOverrides
+                  baseUrl: params.baseUrl,
+                  accessToken: params.accessToken
                 });
 
               case 10:
@@ -3487,7 +3491,7 @@ var Entries = function () {
 
               case 2:
                 _context3.next = 4;
-                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL + '/' + constants.LAST_URL, {}, params.clientOverrides);
+                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL + '/' + constants.LAST_URL, {}, params.baseUrl, params.accessToken);
 
               case 4:
                 response = _context3.sent;
@@ -3507,7 +3511,8 @@ var Entries = function () {
                   obj: response,
                   validateForChain: false,
                   apiCall: this.apiCall,
-                  clientOverrides: params.clientOverrides
+                  baseUrl: params.baseUrl,
+                  accessToken: params.accessToken
                 });
 
               case 10:
@@ -3578,10 +3583,8 @@ var Entries = function () {
               case 2:
                 autoSign = this.automaticSigning;
 
-                if (params.clientOverrides) {
-                  if (typeof params.clientOverrides.automaticSigning === 'boolean') {
-                    autoSign = params.clientOverrides.automaticSigning;
-                  }
+                if (typeof params.automaticSigning === 'boolean') {
+                  autoSign = params.automaticSigning;
                 }
 
                 if (!autoSign) {
@@ -3731,7 +3734,7 @@ var Entries = function () {
                 }
 
                 _context4.next = 39;
-                return this.apiCall.send(constants.POST_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL, data, params.clientOverrides);
+                return this.apiCall.send(constants.POST_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL, data, params.baseUrl, params.accessToken);
 
               case 39:
                 response = _context4.sent;
@@ -3831,7 +3834,7 @@ var Entries = function () {
 
               case 16:
                 _context5.next = 18;
-                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL, data, params.clientOverrides);
+                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId + '/' + constants.ENTRIES_URL, data, params.baseUrl, params.accessToken);
 
               case 18:
                 response = _context5.sent;
@@ -3946,7 +3949,7 @@ var Entries = function () {
                   external_ids: idsBase64
                 };
                 _context6.next = 21;
-                return this.apiCall.send(constants.POST_METHOD, url, data, params.clientOverrides);
+                return this.apiCall.send(constants.POST_METHOD, url, data, params.baseUrl, params.accessToken);
 
               case 21:
                 response = _context6.sent;
@@ -4018,7 +4021,7 @@ var Chains = function () {
 
               case 2:
                 _context.next = 4;
-                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId, {}, params.clientOverrides);
+                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL + '/' + params.chainId, {}, params.baseUrl, params.accessToken);
 
               case 4:
                 response = _context.sent;
@@ -4038,7 +4041,8 @@ var Chains = function () {
                   obj: response,
                   validateForChain: true,
                   apiCall: this.apiCall,
-                  clientOverrides: params.clientOverrides
+                  baseUrl: params.baseUrl,
+                  accessToken: params.accessToken
                 });
 
               case 10:
@@ -4100,10 +4104,8 @@ var Chains = function () {
               case 0:
                 autoSign = this.automaticSigning;
 
-                if (params.clientOverrides) {
-                  if (typeof params.clientOverrides.automaticSigning === 'boolean') {
-                    autoSign = params.clientOverrides.automaticSigning;
-                  }
+                if (typeof params.automaticSigning === 'boolean') {
+                  autoSign = params.automaticSigning;
                 }
 
                 if (!autoSign) {
@@ -4254,7 +4256,7 @@ var Chains = function () {
                 }
 
                 _context2.next = 37;
-                return this.apiCall.send(constants.POST_METHOD, constants.CHAINS_URL, data, params.clientOverrides);
+                return this.apiCall.send(constants.POST_METHOD, constants.CHAINS_URL, data, params.baseUrl, params.accessToken);
 
               case 37:
                 response = _context2.sent;
@@ -4345,7 +4347,7 @@ var Chains = function () {
 
               case 14:
                 _context3.next = 16;
-                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL, data, params.clientOverrides);
+                return this.apiCall.send(constants.GET_METHOD, constants.CHAINS_URL, data, params.baseUrl, params.accessToken);
 
               case 16:
                 response = _context3.sent;
@@ -4451,7 +4453,7 @@ var Chains = function () {
                   external_ids: idsBase64
                 };
                 _context4.next = 19;
-                return this.apiCall.send(constants.POST_METHOD, url, data, params.clientOverrides);
+                return this.apiCall.send(constants.POST_METHOD, url, data, params.baseUrl, params.accessToken);
 
               case 19:
                 response = _context4.sent;
@@ -4545,7 +4547,7 @@ var IdentitiesKeyUtil = function () {
 
               case 6:
                 _context.next = 8;
-                return this.apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + params.identityChainId + '/' + constants.KEYS_STRING + '/' + params.key, {}, params.clientOverrides);
+                return this.apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + params.identityChainId + '/' + constants.KEYS_STRING + '/' + params.key, {}, params.baseUrl, params.accessToken);
 
               case 8:
                 response = _context.sent;
@@ -4633,7 +4635,7 @@ var IdentitiesKeyUtil = function () {
 
               case 12:
                 _context2.next = 14;
-                return this.apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + identityChainId + '/' + constants.KEYS_STRING, data, params.clientOverrides);
+                return this.apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + identityChainId + '/' + constants.KEYS_STRING, data, params.baseUrl, params.accessToken);
 
               case 14:
                 response = _context2.sent;
@@ -4793,7 +4795,7 @@ var IdentitiesKeyUtil = function () {
                 }
 
                 _context3.next = 34;
-                return this.apiCall.send(constants.POST_METHOD, constants.IDENTITIES_URL + '/' + identityChainId + '/' + constants.KEYS_STRING, data, params.clientOverrides);
+                return this.apiCall.send(constants.POST_METHOD, constants.IDENTITIES_URL + '/' + identityChainId + '/' + constants.KEYS_STRING, data, params.baseUrl, params.accessToken);
 
               case 34:
                 response = _context3.sent;
@@ -4871,7 +4873,7 @@ var Identity = function () {
 
               case 2:
                 _context.next = 4;
-                return this.apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + params.identityChainId, {}, params.clientOverrides);
+                return this.apiCall.send(constants.GET_METHOD, constants.IDENTITIES_URL + '/' + params.identityChainId, {}, params.baseUrl, params.accessToken);
 
               case 4:
                 response = _context.sent;
@@ -5042,7 +5044,7 @@ var Identity = function () {
                 }
 
                 _context2.next = 37;
-                return this.apiCall.send(constants.POST_METHOD, constants.IDENTITIES_URL, data, params.clientOverrides);
+                return this.apiCall.send(constants.POST_METHOD, constants.IDENTITIES_URL, data, params.baseUrl, params.accessToken);
 
               case 37:
                 response = _context2.sent;
@@ -5114,7 +5116,7 @@ var Info = function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return this.apiCall.send(constants.GET_METHOD, '', {}, params.clientOverrides);
+                return this.apiCall.send(constants.GET_METHOD, '', {}, params.baseUrl, params.accessToken);
 
               case 2:
                 response = _context.sent;
@@ -5185,7 +5187,7 @@ var Receipts = function () {
 
               case 2:
                 _context.next = 4;
-                return this.apiCall.send(constants.GET_METHOD, constants.RECEIPTS_URL + '/' + params.entryHash, {}, params.clientOverrides);
+                return this.apiCall.send(constants.GET_METHOD, constants.RECEIPTS_URL + '/' + params.entryHash, {}, params.baseUrl, params.accessToken);
 
               case 4:
                 response = _context.sent;
@@ -5258,7 +5260,7 @@ var Anchors = function () {
               case 2:
                 finalParam = !CommonUtil.isEmptyString(params.entryHash) ? params.entryHash : params.height;
                 _context.next = 5;
-                return this.apiCall.send(constants.GET_METHOD, constants.ANCHORS_URL + '/' + finalParam, {}, params.clientOverrides);
+                return this.apiCall.send(constants.GET_METHOD, constants.ANCHORS_URL + '/' + finalParam, {}, params.baseUrl, params.accessToken);
 
               case 5:
                 response = _context.sent;
