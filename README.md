@@ -179,6 +179,53 @@ const entry = await FactomSDK.chains.entries.get({
   entryHash: 'e0e2b7f7920ce25c20cf98c13ae454566e7cda7bb815b8a9ca568320d7bdeb93',
 });
 ```
+**Note:** The SDK allows for override values that were set in the instatiation of the SDK on a per-method call basis. To override the parameters that were set in the instantiated SDK class, you may specify any of the following properties in the calls where these properties apply:
+* `appId`
+* `appKey`
+* `baseUrl`
+* `automaticSigning`
+
+Example:
+```js
+// Create a chain with automaticSigning turned off for one call
+const createChainResponse = await factomConnectSDK.chains.create({
+  externalIds: ["NotarySimulation", "CustomerChain", "cust123"],
+  content: "This chain represents a notary service's customer in the NotarySimulation, a sample implementation provided as part of the Factom Harmony SDKs. Learn more here: https://docs.harmony.factom.com/docs/sdks-clients",
+  automaticSigning: false
+
+});
+
+// Return a JSON chain object as is from the API with new appId, appKey, and baseUrl.
+const chain = await FactomSDK.chains.get({
+  chainId: '5dc94c605769d8e9dac1423048f8e5a1182e575aab6d923207a3a8d15771ad63',
+  accessToken: {
+    appId: "YOUR APP ID",
+    appKey: "YOUR APP KEY"
+  },
+  baseUrl: "YOUR API URL"
+});
+
+// Return JSON entries array as is from API with new appId, appKey, and baseUrl.
+const entries = await FactomSDK.chains.entries.list({
+  chainId: '5dc94c605769d8e9dac1423048f8e5a1182e575aab6d923207a3a8d15771ad63',
+  accessToken: {
+    appId: "YOUR APP ID",
+    appKey: "YOUR APP KEY"
+  },
+  baseUrl: "YOUR API URL"
+});
+
+// Return a JSON single entry object as is from the API with new appId, appKey, and baseUrl.
+const entry = await FactomSDK.chains.entries.get({
+  chainId: '5dc94c605769d8e9dac1423048f8e5a1182e575aab6d923207a3a8d15771ad63',
+  entryHash: 'e0e2b7f7920ce25c20cf98c13ae454566e7cda7bb815b8a9ca568320d7bdeb93',
+  accessToken: {
+    appId: "YOUR APP ID",
+    appKey: "YOUR APP KEY"
+  },
+  baseUrl: "YOUR API URL"
+});
+```
 
 
 <a name="license"></a> License
