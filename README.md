@@ -264,6 +264,12 @@ The Harmony Connect SDK is provided with an MIT License.
      - <a name="entriesLast"></a>[getLast](documentation/chains.md#entriesLast)
      - <a name="entriesSearch"></a>[search](documentation/chains.md#entriesSearch)
 
+<a name="anchors"></a>[anchors](documentation/anchors.md)
+  - <a name="getAnchors"></a>[get](documentation/anchors.md#getAnchors)
+
+<a name="receipts"></a>[receipts](documentation/receipts.md)
+  - <a name="getReceipts"></a>[get](documentation/receipts.md#getReceipts)
+
 # <a name="sampleapplication"></a> SAMPLE APPLICATION
 
 
