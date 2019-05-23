@@ -95,7 +95,9 @@ yet, you can get one
 [here](https://account.factom.com).
 
 ```js
-const factom = new Factom({
+import Factom from "factom-harmony-connect"
+
+const factomConnectSDK = new Factom({
   baseUrl: "YOUR API URL",
   accessToken: {
     appId: "YOUR APP ID",
@@ -134,7 +136,7 @@ All **Method** calls take an object as a parameter.
 ```js
 const DoSomeThingWithData = async () => {
   try {
-    const response = await factom.identities.create({
+    const response = await factomConnectSDK.identities.create({
       name: [... < your names array > ]
       keys: [... < your public key array > ]
     })
@@ -148,7 +150,7 @@ const DoSomeThingWithData = async () => {
 **ES5 syntax**
 ```js
 function DoSomeThingWithData() {
-  factom.identities.create({
+  factomConnectSDK.identities.create({
     name: [... < your names array > ]
     keys: [... < your public key array > ]
   }).then((response) => {
@@ -162,19 +164,19 @@ function DoSomeThingWithData() {
 Patterns to utilize the Factom SDK:
 ```js
 // Return a JSON chain object as is from the API.
-const chain = await FactomSDK.chains.get({
+const chain = await factomConnectSDK.chains.get({
   chainId: '5dc94c605769d8e9dac1423048f8e5a1182e575aab6d923207a3a8d15771ad63',
 });
 
 // Return JSON entries array as is from API.
 
-const entries = await FactomSDK.chains.entries.list({
+const entries = await factomConnectSDK.chains.entries.list({
   chainId: '5dc94c605769d8e9dac1423048f8e5a1182e575aab6d923207a3a8d15771ad63',
 });
 
 // Return a JSON single entry object as is from the API.
 
-const entry = await FactomSDK.chains.entries.get({
+const entry = await factomConnectSDK.chains.entries.get({
   chainId: '5dc94c605769d8e9dac1423048f8e5a1182e575aab6d923207a3a8d15771ad63',
   entryHash: 'e0e2b7f7920ce25c20cf98c13ae454566e7cda7bb815b8a9ca568320d7bdeb93',
 });
