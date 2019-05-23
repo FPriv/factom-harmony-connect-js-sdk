@@ -45,13 +45,13 @@ await factomConnectSDK.anchors.get({
   "data": {
     "dblock": {
       "keymr": "9423f275c4bfe567ff74cefdee646cb2ac639af0a32fb7ba43265d30a86b412e",
-      "height": 14396,
+      "height": "14396",
       "href": "/v1/dblocks/9423f275c4bfe567ff74cefdee646cb2ac639af0a32fb7ba43265d30a86b412e",
     },
     "anchors": [
       {
         "network": "factom",
-        "status: "confirmed",
+        "status": "confirmed",
         "created_at": "2019-04-15T15:46:04Z",
         "entry_serialized": "008774e15f162f4e3a8f03bc7d4c5845bf9bee9bc9c4155802366f90ae92b47c900012000474657374000474657374000474657374746573740a",
         "entry_hash": "36993363235ba2204877e78e9e1b4d5055edfa838df58ebb077098697adbeee5",
@@ -89,7 +89,7 @@ await factomConnectSDK.anchors.get({
         ],
         "dblock": {
           "keymr": "7818914aff2c1f1c224c1542a2c33ba639dce2ccac14c346cd6f82fa60dea84c",
-          "height": 180678,
+          "height": "180678",
           "href": "/v1/dblocks/7818914aff2c1f1c224c1542a2c33ba639dce2ccac14c346cd6f82fa60dea84c",
         }
       }
