@@ -17,6 +17,14 @@ await factomConnectSDK.anchors.get({
 });
 ```
 
+**Parameters**
+
+| **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                       | **SDK Error Message & Description**       <img width=400/>                          |
+|------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| `params.entryHash`             | optional | string </br> The unique identifier created for each entry.                                                                                                                                                                                                                            | **entryHash or height is required** </br> `entryHash` or `height` parameter was not provided. |
+| `params.height` | optional | string </br> The factom block height of the requested directory block. | **entryHash or height is required** </br> `entryHash` or `height` parameter was not provided. |
+|
+
 **Returns**
 
 **Response:** OK
