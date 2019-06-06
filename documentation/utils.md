@@ -15,13 +15,13 @@ arrays. For details, please refer to Identity API Documentation [here](https://d
 
 **Sample**
 ```JS
-factomConnectSDK.utils.generateKeyPair()
+const keyPairObj = factomConnectSDK.utils.generateKeyPair()
 ```
 
 **Returns**</br>
 A key pair object with Public and Private keys.
 - **privateKey:** string</br>
-The private key in base58 Idsec format. 
+The private key in base58 Idsec format.
 - **publicKey:** string</br>
 The public key in base58 Idpub format.</br>
 

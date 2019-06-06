@@ -6,7 +6,7 @@ Gets general information about the Connect API.
 
 **Sample**
 ```JS
-await factomConnectSDK.apiInfo.get();
+const apiInfo = await factomConnectSDK.apiInfo.get();
 ```
 **Parameters**
 

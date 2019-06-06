@@ -20,7 +20,7 @@ Gets information about a specific chain from Connect.
 
 **Sample**
 ```JS
-await factomConnectSDK.chains.get({
+const chainObj = await factomConnectSDK.chains.get({
       chainId: '4b9532c79d53ab22b85951b4a5853f81c2682132b3c810a95128c30401cd1e58'
 });
 ```
@@ -104,7 +104,7 @@ Creates a new chain with or without signature:
 
 **Sample**
 ```JS
-await factomConnectSDK.chains.create({
+const chainObj = await factomConnectSDK.chains.create({
       signerPrivateKey: 'idsec2rY42dadPcytBLEx9sanpCJk3PHqLnVwMYuPF7jcmDULVRySH2',
       signerChainId: 'd22fd62b2c64061d48121d24bfa4e57826caaf532df1524da6eb243da3daa84f',
       externalIds: ["TestFunction", "CustomerChain", "cust123"],
@@ -208,7 +208,7 @@ Finds all of the chains with `externalIds` that match what you entered.
 
 **Sample**
 ```JS
-await factomConnectSDK.chains.search({
+const chainObj = await factomConnectSDK.chains.search({
       externalIds: ["TestFunction", "CustomerChain", "cust123"]
 });
 ```
@@ -271,7 +271,7 @@ Gets information about a specific entry on Connect.
 
 **Sample**
 ```JS
-await factomConnectSDK.chains.entries.get({
+const entryObj = await factomConnectSDK.chains.entries.get({
       chainId: 'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2',
       entryHash: 'cccf02ac98c9e04f556508aa4dc9e277d44e8ce2006a244ebec082e0bed36efc'
 });
@@ -360,7 +360,7 @@ Creates a new entry for the selected chain with or without signature:
 
 **Sample**
 ```JS
-await factomConnectSDK.chains.entries.create({
+const entryObj = await factomConnectSDK.chains.entries.create({
       chainId: 'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2',
       signerPrivateKey: 'idsec1xbKD6tkgLPMBuNQbTnHPr6mFoeF7iQV4ybTN63sKdFg7h1uWH',
       signerChainId: '8c33e7432cdfd3933beb6de5ccbc3706ac21458ed53352e02658daf2dce8f27c',
@@ -405,7 +405,7 @@ Gets list of all entries contained on a specified chain.
 
 **Sample**
 ```JS
-await factomConnectSDK.chains.entries.list({
+const entriesObj = await factomConnectSDK.chains.entries.list({
       chainId: 'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2'
 });
 ```
@@ -472,7 +472,7 @@ Retrieves the first entry that has been saved to this chain.
 
 **Sample**
 ```JS
-await factomConnectSDK.chains.entries.getFirst({
+const entryObj = await factomConnectSDK.chains.entries.getFirst({
       chainId: 'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2'
 });
 ```
@@ -553,7 +553,7 @@ Gets the last entry that has been saved to this chain.
 
 **Sample**
 ```JS
-await factomConnectSDK.chains.entries.getLast({
+const entryObj = await factomConnectSDK.chains.entries.getLast({
       chainId: 'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2'
 });
 ```
@@ -635,7 +635,7 @@ Finds all of the entries with `externalIds` that match what you entered.
 
 **Sample**
 ```JS
-await factomConnectSDK.chains.entries.search({
+const entriesObj = await factomConnectSDK.chains.entries.search({
       chainId: 'c15f9e51781a8a4c520c15fd135e761b922b709217ebea974537e8689c74d0c2',
       externalIds: ["TestFunction", "DocumentEntry", "doc987"]
 });
