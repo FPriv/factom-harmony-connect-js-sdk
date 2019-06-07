@@ -26,7 +26,7 @@ Creates a new Identity chain. You will need to include a unique names array for 
 
 **Sample**
 ```JS
-await factomConnectSDK.identities.create({
+const identityObj = await factomConnectSDK.identities.create({
       names: ["NotarySimulation", "Test Identity"]
 });
 ```
@@ -83,7 +83,7 @@ Gets a summary of the identity chain's current state.
 
 **Sample**
 ```JS
-await factomConnectSDK.identities.get({
+const identityObj = await factomConnectSDK.identities.get({
       identityChainId: '107c8e488e95b63ca6fe1c409aa22c380b5c7be387d139c1cd0afaf608d1ae42'
 });
 ```
@@ -168,7 +168,7 @@ are paginated.
 
 **Sample**
 ```JS
-await factomConnectSDK.identities.keys.list({
+const keyObj = await factomConnectSDK.identities.keys.list({
       identityChainId: '107c8e488e95b63ca6fe1c409aa22c380b5c7be387d139c1cd0afaf608d1ae42'
 });
 ```
@@ -239,7 +239,7 @@ applicable.
 
 **Sample**
 ```JS
-await factomConnectSDK.identities.keys.get({
+const keyObj = await factomConnectSDK.identities.keys.get({
       identityChainId: '107c8e488e95b63ca6fe1c409aa22c380b5c7be387d139c1cd0afaf608d1ae42',
       key: 'idpub1zbpmSTnvErRkzoXus1hBmHSSFxvagqD3nZiMyna4JmnSnUDwF'
 });
@@ -286,7 +286,7 @@ This method will automatically generate a new key pair for you and return it. Op
 
 **Sample**
 ```JS
-await factomConnectSDK.identities.keys.replace({
+const keyObj = await factomConnectSDK.identities.keys.replace({
       identityChainId: '20ea6362994571c477e8b552fa38a6028760f2089ac1024fffee828279c9baa7',
       oldPublicKey: 'idpub1uAysiWct2XpmRSk7ydNHNRdtynXn46GwTKyPYM2t5q2chHaBA',
       signerPrivateKey: 'idsec32pHEsJfcx98eBD4WTZDvAfxSwtFeyVy5ZSAad7R2dLgaurKkh',

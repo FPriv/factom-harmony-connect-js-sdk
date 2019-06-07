@@ -6,7 +6,7 @@ Gets general information about the Connect API.
 
 **Sample**
 ```JS
-await factomConnectSDK.receipts.get({
+const receiptObj = await factomConnectSDK.receipts.get({
   'entryHash': 'ee20a02ea6c30ef5b8bc3449cb97008f1b56f064362994ec5e012ee955dbeb4a'
 });
 ```

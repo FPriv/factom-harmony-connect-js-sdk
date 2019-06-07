@@ -6,13 +6,13 @@ Gets a receipt that describes the series of hashes going from the raw entry data
 
 **Sample**
 ```JS
-await factomConnectSDK.anchors.get({
+const anchorObj = await factomConnectSDK.anchors.get({
   entryHash: 'ee20a02ea6c30ef5b8bc3449cb97008f1b56f064362994ec5e012ee955dbeb4a'
 });
 ```
 or
 ```JS
-await factomConnectSDK.anchors.get({
+const anchorObj = await factomConnectSDK.anchors.get({
   height: '22'
 });
 ```
