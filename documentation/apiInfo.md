@@ -12,8 +12,8 @@ const apiInfo = await factomConnectSDK.apiInfo.get();
 
 | **Name**                 | **Type** | **Description**                                                                                                                                                                                                                                                                                                                               | **SDK Error Message & Description** |
 |--------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|
-| `params.accessToken` | optional | object </br>  This is the override parameter that allows user to specify the following two authentication parameters which will override the same parameters which have already been set on the instantiation of the SDK class </br>  * `appId` (string) </br> * `appKey`  (string)|
-| `params.baseUrl` | optional | string </br>  This is the override parameter that allows user to specify a different API Base URL for your application (which you can see by clicking on any of the applications in the application list the you see upon logging into https://account.factom.com)   |
+| `params.accessToken` | object | This is the override parameter that allows user to specify the following two authentication parameters which will override the same parameters which have already been set on the instantiation of the SDK class </br>  * `appId` (string) </br> * `appKey`  (string)|
+| `params.baseUrl` | string | This is the override parameter that allows user to specify a different API Base URL for your application (which you can see by clicking on any of the applications in the application list the you see upon logging into https://account.factom.com)   |
 
 **Returns**
 

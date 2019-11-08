@@ -15,7 +15,7 @@ const receiptObj = await factomConnectSDK.receipts.get({
 
 | **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                       | **SDK Error Message & Description**       <img width=400/>                          |
 |------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
-| `params.entryHash`             | required | string </br> The unique identifier created for each entry.                                                                                                                                                                                                                            | **entryHash is required** </br> `entryHash` parameter was not provided. |
+| `params.entryHash`             | string | The unique identifier created for each entry.                                                                                                                                                                                                                            | **entryHash is required** </br> `entryHash` parameter was not provided. |
 |
 
 
