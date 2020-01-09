@@ -5324,17 +5324,6 @@ var Utils = function () {
     }
 
     /**
-     * @param  {String} params.signerKey='' - A base58 string in idpub or idsec format
-     * @return  {Buffer} Returns key bytes array
-     */
-
-  }, {
-    key: 'convertToRaw',
-    value: function convertToRaw(params) {
-      return KeyCommon.getKeyBytesFromKey(params);
-    }
-
-    /**
      * @param  {String} params.rawPrivateKey='' - A base58 string in idpub or idsec format
      * @return  {Buffer} Returns key bytes array
      */
@@ -5343,6 +5332,17 @@ var Utils = function () {
     key: 'convertRawToKeyPair',
     value: function convertRawToKeyPair(params) {
       return KeyCommon.createKeyPair(params);
+    }
+
+    /**
+     * @param  {String} params.signerKey='' - A base58 string in idpub or idsec format
+     * @return  {Buffer} Returns key bytes array
+     */
+
+  }, {
+    key: 'convertToRaw',
+    value: function convertToRaw(params) {
+      return KeyCommon.getKeyBytesFromKey(params);
     }
   }]);
 

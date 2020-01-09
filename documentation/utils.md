@@ -4,8 +4,8 @@ utils
 ### Table of Contents
 
 - [generateKeyPair](#generateKeyPair)
-- [convertToRaw](#convertToRaw)
 - [convertRawToKeyPair](#convertRawToKeyPair)
+- [convertToRaw](#convertToRaw)
 
 ### generateKeyPair <a name="generateKeyPair"></a>
 
@@ -39,7 +39,41 @@ The public key in base58 Idpub format.</br>
 }
 ```
 
+### convertRawToKeyPair <a name="convertRawToKeyPair"></a>
+Very similar to `generateKeyPair()` in that it creates a public/private key pair which can be applied to Identity creation or replacement. However, this method allows you to pass in your own standard ed25519 key, which is converted into a key pair.
+
+**Sample**
+```JS
+const keyPairObj = factomConnectSDK.utils.convertRawToKeyPair({
+  rawPrivateKey: 'abcdefghijklmnopqrstuvwxyz123456'
+})
+```
+
+**Parameters**
+
+| **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                       | **SDK Error Message & Description**       <img width=400/>                          |
+|------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| `params.rawPrivateKey`             | string <br> `Required` | The ed25519 key to be converted                                                                                                                                                                                                | |
+|
+
+**Returns**</br>
+A key pair object with public and private keys.
+- **privateKey:** string</br>
+The private key in base58 Idsec format.
+- **publicKey:** string</br>
+The public key in base58 Idpub format.</br>
+
+Response
+```JS
+{
+  privateKey: 'idseaoBBq4DskQwXGffkKQgYxT7zCuQFAPqVic3ZFayDZThXas1z2jv',
+  publicKey: 'idpub3g5z2JPJCRqvPB1S4NtD6BWiVhDtV15CxdrgQadX1L9qzYzQKC'
+}
+```
+
 ### convertToRaw <a name="convertToRaw"></a>
+
+This method converts an idpub/idsec key to a raw Uint8Array.
 
 **Sample**
 ```JS
@@ -52,7 +86,7 @@ const keyBytesArray = factomConnectSDK.utils.convertToRaw({
 
 | **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                       | **SDK Error Message & Description**       <img width=400/>                          |
 |------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
-| `params.signerKey`             | string <br> `Required` | Here us where you supply an idsec/idpub key that the method will covert to a raw Uint8Array.                                                                                                                                                                                                | |
+| `params.signerKey`             | string <br> `Required` | The idsec/idpub key to be converted                                                                                                                                                                                                | |
 |
 
 **Returns**</br>
@@ -93,30 +127,4 @@ Uint8Array [
   252,
   23,
   203 ]
-```
-
-### convertRawToKeyPair <a name="convertRawToKeyPair"></a>
-Very similar to `generateKeyPair()` in that it creates a public/private key pair which can be applied to Identities
-during creation or when replacing a key -  however, this allows you to pass in your own standard ed25519 key, and have it be converted to a key pair.
-
-**Sample**
-```JS
-const keyPairObj = factomConnectSDK.utils.convertRawToKeyPair({
-  rawPrivateKey: 'abcdefghijklmnopqrstuvwxyz123456'
-})
-```
-
-**Returns**</br>
-A key pair object with public and private keys.
-- **privateKey:** string</br>
-The private key in base58 Idsec format.
-- **publicKey:** string</br>
-The public key in base58 Idpub format.</br>
-
-Response
-```JS
-{
-  privateKey: 'idseaoBBq4DskQwXGffkKQgYxT7zCuQFAPqVic3ZFayDZThXas1z2jv',
-  publicKey: 'idpub3g5z2JPJCRqvPB1S4NtD6BWiVhDtV15CxdrgQadX1L9qzYzQKC'
-}
 ```
