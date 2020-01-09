@@ -15,8 +15,8 @@ describe('UTILS Test', () => {
         rawPrivateKey: 'abcdefghijklmnopqrstuvwxyz123456'
       });
       expect(pairs).toEqual({
-        privateKey: 'idseaoBBq4DskQwXGffkKQgYxT7zCuQFAPqVic3ZFayDZThXas1z2jv',
-        publicKey: 'idpub3g5z2JPJCRqvPB1S4NtD6BWiVhDtV15CxdrgQadX1L9qzYzQKC'
+        privateKey: 'idsec19zBQP2RjHg8Cb8xH2XHzhsB1a6ZkB23cbS21RjTAk6uvC5oDe',
+        publicKey: 'idpub2CJqp8nKNrUzfyT3SZMqeHYmZFPsZApuPrqULS1kycrzgMUqvr'
       });
     });
 

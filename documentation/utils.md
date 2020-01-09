@@ -53,7 +53,8 @@ const keyPairObj = factomConnectSDK.utils.convertRawToKeyPair({
 
 | **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                       | **SDK Error Message & Description**       <img width=400/>                          |
 |------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
-| `params.rawPrivateKey`             | string <br> `Required` | The ed25519 key to be converted                                                                                                                                                                                                | |
+| `params.rawPrivateKey`             | string <br> `Required` | The ed25519 key to be converted                                                                                                                                                                                                | **provided ed25519 private key is invalid**<br>The `rawPrivateKey` parameter is not a properly ed25519 key.
+|
 |
 
 **Returns**</br>
@@ -86,7 +87,7 @@ const keyBytesArray = factomConnectSDK.utils.convertToRaw({
 
 | **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                       | **SDK Error Message & Description**       <img width=400/>                          |
 |------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
-| `params.signerKey`             | string <br> `Required` | The idsec/idpub key to be converted                                                                                                                                                                                                | |
+| `params.signerKey`             | string <br> `Required` | The idsec/idpub key to be converted                                                                                                                                                                                                |**key is invalid**<br>The provided value for the key is not a properly formatted idsec or idpub key.|
 |
 
 **Returns**</br>

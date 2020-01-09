@@ -237,9 +237,6 @@ The Harmony Connect SDK is provided with an MIT License.
 
 # <a name="methods"></a> METHODS
 
-<a name="utils"></a>[utils](documentation/utils.md)
- - <a name="generateKeyPair"></a>[generateKeyPair](documentation/utils.md#generateKeyPair)
-
 <a name="identities"></a>[identities](documentation/identities.md)
   - <a name="identitiesCreate"></a>[create](documentation/identities.md#identitiesCreate)
   - <a name="identitiesGet"></a>[get](documentation/identities.md#identitiesGet)
@@ -269,6 +266,11 @@ The Harmony Connect SDK is provided with an MIT License.
 
 <a name="receipts"></a>[receipts](documentation/receipts.md)
   - <a name="getReceipts"></a>[get](documentation/receipts.md#getReceipts)
+
+<a name="utils"></a>[utils](documentation/utils.md)
+ - <a name="generateKeyPair"></a>[generateKeyPair](documentation/utils.md#generateKeyPair)
+ - <a name="convertRawToKeyPair"></a>[convertRawToKeyPair](documentation/utils.md#convertRawToKeyPair)
+ - <a name="convertToRaw"></a>[convertToRaw](documentation/utils.md#convertToRaw)
 
 # <a name="sampleapplication"></a> SAMPLE APPLICATION
 

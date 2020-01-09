@@ -2911,7 +2911,7 @@ var KeyCommon = function () {
 
       if (rawPrivateKey) {
         if (typeof rawPrivateKey === 'string' && rawPrivateKey.length === 32) {
-          privateKeyBytes = rawPrivateKey;
+          privateKeyBytes = Uint8Array.from(rawPrivateKey);
         } else {
           throw new Error('provided ed25519 private key is invalid.');
         }
