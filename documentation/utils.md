@@ -1,6 +1,12 @@
 utils
 -----
 
+### Table of Contents
+
+- [generateKeyPair](#generateKeyPair)
+- [convertToRaw](#convertToRaw)
+- [convertRawToKeyPair](#convertRawToKeyPair)
+
 ### generateKeyPair <a name="generateKeyPair"></a>
 
 Creates a Public/Private Key Pair which can be applied to Identities
@@ -31,4 +37,53 @@ The public key in base58 Idpub format.</br>
    'privateKey':'idsec2rk3MH1kwZVeKD4Br3UTaU2VHxZF99kdkx27ryAhfMGYBgPgQH',
    'publicKey':'idpub2WL2aH5Y2s7atB1LwjEyaKa62pnuJXUaL5kcbahzwahc1Hiba6'
 }
+```
+
+### convertToRaw <a name="convertToRaw"></a>
+
+**Sample**
+```JS
+const keyBytesArray = factomConnectSDK.utils.convertToRaw({
+  signerKey: 'idsec2ioPQqJvJzzwqskEW67yrWd2GwQMs1oCuLHsLHxejmBbEFpEY8'
+})
+```
+
+**Returns**</br>
+A key bytes array
+
+Response
+```JS
+Uint8Array [
+  206,
+  52,
+  64,
+  7,
+  230,
+  61,
+  24,
+  192,
+  43,
+  186,
+  215,
+  44,
+  182,
+  4,
+  8,
+  81,
+  1,
+  203,
+  226,
+  186,
+  148,
+  125,
+  4,
+  67,
+  251,
+  60,
+  240,
+  170,
+  194,
+  252,
+  23,
+  203 ]
 ```
