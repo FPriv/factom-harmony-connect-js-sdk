@@ -2907,20 +2907,35 @@ var KeyCommon = function () {
      * @return  {Object} Returns an Key Pair Object with Private and Public keys
      */
     value: function createKeyPair() {
-      var privateKeyBytes = secureRandom.randomUint8Array(32);
+      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref$rawPrivateKey = _ref.rawPrivateKey,
+          rawPrivateKey = _ref$rawPrivateKey === undefined ? '' : _ref$rawPrivateKey;
+
+      var privateKeyBytes = void 0;
+
+      if (rawPrivateKey) {
+        if (typeof rawPrivateKey === 'string' && rawPrivateKey.length === 32) {
+          privateKeyBytes = Uint8Array.from(rawPrivateKey);
+        } else {
+          throw new Error('provided ed25519 private key is invalid.');
+        }
+      } else {
+        privateKeyBytes = secureRandom.randomUint8Array(32);
+      }
+
       var tmp = void 0;
       var checkSum = void 0;
 
       tmp = sha256.digest(sha256.digest([].concat(privatePrefixBytes, _toConsumableArray(privateKeyBytes))));
       checkSum = tmp.slice(0, 4);
-      var privateKey = base58.encode([].concat(privatePrefixBytes, _toConsumableArray(privateKeyBytes), _toConsumableArray(checkSum)));
+      var generatedPrivateKey = base58.encode([].concat(privatePrefixBytes, _toConsumableArray(privateKeyBytes), _toConsumableArray(checkSum)));
       var publicKeyBytes = ec.keyFromSecret(privateKeyBytes).getPublic();
       tmp = sha256.digest(sha256.digest([].concat(publicPrefixBytes, _toConsumableArray(publicKeyBytes))));
       checkSum = tmp.slice(0, 4);
-      var publicKey = base58.encode([].concat(publicPrefixBytes, _toConsumableArray(publicKeyBytes), _toConsumableArray(checkSum)));
+      var generatedPublicKey = base58.encode([].concat(publicPrefixBytes, _toConsumableArray(publicKeyBytes), _toConsumableArray(checkSum)));
       return {
-        privateKey: privateKey,
-        publicKey: publicKey
+        privateKey: generatedPrivateKey,
+        publicKey: generatedPublicKey
       };
     }
 
@@ -2932,9 +2947,9 @@ var KeyCommon = function () {
   }, {
     key: 'validateCheckSum',
     value: function validateCheckSum() {
-      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref$signerKey = _ref.signerKey,
-          signerKey = _ref$signerKey === undefined ? '' : _ref$signerKey;
+      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref2$signerKey = _ref2.signerKey,
+          signerKey = _ref2$signerKey === undefined ? '' : _ref2$signerKey;
 
       if (!signerKey) {
         return false;
@@ -2969,9 +2984,9 @@ var KeyCommon = function () {
     value: function getInvalidKeys() {
       var _this = this;
 
-      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref2$signerKeys = _ref2.signerKeys,
-          signerKeys = _ref2$signerKeys === undefined ? [] : _ref2$signerKeys;
+      var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref3$signerKeys = _ref3.signerKeys,
+          signerKeys = _ref3$signerKeys === undefined ? [] : _ref3$signerKeys;
 
       var errors = [];
       signerKeys.forEach(function (o) {
@@ -2991,9 +3006,9 @@ var KeyCommon = function () {
   }, {
     key: 'getDuplicateKeys',
     value: function getDuplicateKeys() {
-      var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref3$signerKeys = _ref3.signerKeys,
-          signerKeys = _ref3$signerKeys === undefined ? [] : _ref3$signerKeys;
+      var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref4$signerKeys = _ref4.signerKeys,
+          signerKeys = _ref4$signerKeys === undefined ? [] : _ref4$signerKeys;
 
       var duplicates = [];
       var unique = [];
@@ -3020,9 +3035,9 @@ var KeyCommon = function () {
 
   }, {
     key: 'getKeyBytesFromKey',
-    value: function getKeyBytesFromKey(_ref4) {
-      var _ref4$signerKey = _ref4.signerKey,
-          signerKey = _ref4$signerKey === undefined ? '' : _ref4$signerKey;
+    value: function getKeyBytesFromKey(_ref5) {
+      var _ref5$signerKey = _ref5.signerKey,
+          signerKey = _ref5$signerKey === undefined ? '' : _ref5$signerKey;
 
       if (!this.validateCheckSum({ signerKey: signerKey })) {
         throw new Error('key is invalid.');
@@ -3041,9 +3056,9 @@ var KeyCommon = function () {
   }, {
     key: 'getPublicKeyFromPrivateKey',
     value: function getPublicKeyFromPrivateKey() {
-      var _ref5 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref5$signerPrivateKe = _ref5.signerPrivateKey,
-          signerPrivateKey = _ref5$signerPrivateKe === undefined ? '' : _ref5$signerPrivateKe;
+      var _ref6 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref6$signerPrivateKe = _ref6.signerPrivateKey,
+          signerPrivateKey = _ref6$signerPrivateKe === undefined ? '' : _ref6$signerPrivateKe;
 
       if (!this.validateCheckSum({ signerKey: signerPrivateKey })) {
         throw new Error('signerPrivateKey is invalid.');
@@ -3065,11 +3080,11 @@ var KeyCommon = function () {
   }, {
     key: 'signContent',
     value: function signContent() {
-      var _ref6 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref6$signerPrivateKe = _ref6.signerPrivateKey,
-          signerPrivateKey = _ref6$signerPrivateKe === undefined ? '' : _ref6$signerPrivateKe,
-          _ref6$message = _ref6.message,
-          message = _ref6$message === undefined ? '' : _ref6$message;
+      var _ref7 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref7$signerPrivateKe = _ref7.signerPrivateKey,
+          signerPrivateKey = _ref7$signerPrivateKe === undefined ? '' : _ref7$signerPrivateKe,
+          _ref7$message = _ref7.message,
+          message = _ref7$message === undefined ? '' : _ref7$message;
 
       if (!signerPrivateKey) {
         throw new Error('signerPrivateKey is required.');
@@ -3100,13 +3115,13 @@ var KeyCommon = function () {
   }, {
     key: 'validateSignature',
     value: function validateSignature() {
-      var _ref7 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref7$signerPublicKey = _ref7.signerPublicKey,
-          signerPublicKey = _ref7$signerPublicKey === undefined ? '' : _ref7$signerPublicKey,
-          _ref7$signature = _ref7.signature,
-          signature = _ref7$signature === undefined ? '' : _ref7$signature,
-          _ref7$message = _ref7.message,
-          message = _ref7$message === undefined ? '' : _ref7$message;
+      var _ref8 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref8$signerPublicKey = _ref8.signerPublicKey,
+          signerPublicKey = _ref8$signerPublicKey === undefined ? '' : _ref8$signerPublicKey,
+          _ref8$signature = _ref8.signature,
+          signature = _ref8$signature === undefined ? '' : _ref8$signature,
+          _ref8$message = _ref8.message,
+          message = _ref8$message === undefined ? '' : _ref8$message;
 
       if (!signerPublicKey) {
         throw new Error('signerPublicKey is required.');
@@ -5182,12 +5197,12 @@ var Receipts = function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!(CommonUtil.isEmptyString(params.entryHash) && CommonUtil.isEmptyString(params.height))) {
+                if (!CommonUtil.isEmptyString(params.entryHash)) {
                   _context.next = 2;
                   break;
                 }
 
-                throw new Error('entryHash or height is required.');
+                throw new Error('entryHash is required.');
 
               case 2:
                 _context.next = 4;
@@ -5235,8 +5250,9 @@ var Anchors = function () {
   }
 
   /**
-   * @param  {String} params.height or params.entryHash = The entry hash
-   * or height being used to queryanchors
+   * @param  {String} params.objectIdentifier = The entry hash, chain id, directory block height,
+   * directory block keymr, entry block keymr, or facotid block keymr
+   * being used to queryanchors
    * @param  {Boolean | Function} params.signatureValidation The signature validation may
    * be True/False or callback function
    * @return  {Promise} Returns a Promise that, when fulfilled, will either return an Object
@@ -5249,28 +5265,35 @@ var Anchors = function () {
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
         var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        var finalParam, response;
+        var response;
         return regenerator.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!(CommonUtil.isEmptyString(params.entryHash) && CommonUtil.isEmptyString(params.height))) {
+                if (!CommonUtil.isEmptyString(params.objectIdentifier)) {
                   _context.next = 2;
                   break;
                 }
 
-                throw new Error('entryHash or height is required.');
+                throw new Error('objectIdentifier is required.');
 
               case 2:
-                finalParam = !CommonUtil.isEmptyString(params.entryHash) ? params.entryHash : params.height;
-                _context.next = 5;
-                return this.apiCall.send(constants.GET_METHOD, constants.ANCHORS_URL + '/' + finalParam, {}, params.baseUrl, params.accessToken);
+                if (!(!(!isNaN(params.objectIdentifier) && Number(params.objectIdentifier) > 0) && params.objectIdentifier.length !== 64)) {
+                  _context.next = 4;
+                  break;
+                }
 
-              case 5:
+                throw new Error('objectIdentifier is in an invalid format.');
+
+              case 4:
+                _context.next = 6;
+                return this.apiCall.send(constants.GET_METHOD, constants.ANCHORS_URL + '/' + params.objectIdentifier, {}, params.baseUrl, params.accessToken);
+
+              case 6:
                 response = _context.sent;
                 return _context.abrupt('return', response);
 
-              case 7:
+              case 8:
               case 'end':
                 return _context.stop();
             }
@@ -5302,6 +5325,28 @@ var Utils = function () {
      */
     value: function generateKeyPair() {
       return KeyCommon.createKeyPair();
+    }
+
+    /**
+     * @param  {String} params.rawPrivateKey='' - A base58 string in idpub or idsec format
+     * @return  {Buffer} Returns key bytes array
+     */
+
+  }, {
+    key: 'convertRawToKeyPair',
+    value: function convertRawToKeyPair(params) {
+      return KeyCommon.createKeyPair(params);
+    }
+
+    /**
+     * @param  {String} params.signerKey='' - A base58 string in idpub or idsec format
+     * @return  {Buffer} Returns key bytes array
+     */
+
+  }, {
+    key: 'convertToRaw',
+    value: function convertToRaw(params) {
+      return KeyCommon.getKeyBytesFromKey(params);
     }
   }]);
 
