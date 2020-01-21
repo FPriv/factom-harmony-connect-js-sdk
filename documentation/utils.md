@@ -21,8 +21,31 @@ arrays. For details, please refer to Identity API Documentation [here](https://d
 
 **Sample**
 ```JS
+// ed25519signature2018 key pair
 const keyPairObj = factomConnectSDK.utils.generateKeyPair()
+
+// ecdsasecp256k1signature2019 key pairr
+const keyPairObj = factomConnectSDK.utils.generateKeyPair({
+  "keyType": "ecdsasecp256k1signature2019",
+})
+
+// rsasignature2018 key pair
+const keyPairObj = factomConnectSDK.utils.generateKeyPair({
+  "keyType": "rsasignature2018",
+  "secretPassphrase": "mySecretPhrase",
+})
 ```
+
+**Parameters**
+
+| **Name**                     | **Type** | **Description**                                                                                                                                                                                                                                                                       | **SDK Error Message & Description**       <img width=400/>                          |
+|------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| `params.keyType`             | string <br> `Required` | Possible types of key pairs to generate include: `ed25519signature2018`, `ecdsasecp256k1signature2019`, `rsasignature2018`. Defaults to `ed25519signature2018`                                                                                                                                                                                                | **provided ed25519 private key is invalid**<br>The `rawPrivateKey` parameter is not a properly ed25519 key.
+|
+| `params.secretPassphrase`             | string <br> `Required` | The passphrase required when generating RSA key pairs                                                                                                                                                                                               | **a secret passphrase is required to generate a RSA key pair**<br>The `secretPassphrase` parameter is either blank or missing from the argument object.
+|
+|
+
 
 **Returns**</br>
 A key pair object with public and private keys.
@@ -33,6 +56,7 @@ The public key in base58 Idpub format.</br>
 
 
 ```JS
+// ed25519signature2018 key pair
 {
    'privateKey':'idsec2rk3MH1kwZVeKD4Br3UTaU2VHxZF99kdkx27ryAhfMGYBgPgQH',
    'publicKey':'idpub2WL2aH5Y2s7atB1LwjEyaKa62pnuJXUaL5kcbahzwahc1Hiba6'

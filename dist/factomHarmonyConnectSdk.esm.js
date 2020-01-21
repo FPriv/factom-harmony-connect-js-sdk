@@ -2,13 +2,15 @@ import isUrl from 'is-url';
 import axios from 'axios';
 import urlJoin from 'url-join';
 import urlJoinQuery from 'url-join-query';
+import crypto from 'crypto';
+import secp256k1 from 'secp256k1';
 import secureRandom from 'secure-random';
 import base58 from 'base-58';
 import sha256 from 'js-sha256';
 import elliptic from 'elliptic';
 
 function unwrapExports (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
 function createCommonjsModule(fn, module) {
@@ -38,7 +40,7 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
 var _core = createCommonjsModule(function (module) {
-var core = module.exports = { version: '2.6.5' };
+var core = module.exports = { version: '2.6.11' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
 var _core_1 = _core.version;
@@ -263,7 +265,7 @@ var runtime = createCommonjsModule(function (module) {
 
   // Define the runtime globally (as expected by generated code) as either
   // module.exports (if we're in a module) or a new, empty object.
-  runtime = global.regeneratorRuntime = module.exports;
+  runtime = global.regeneratorRuntime =  module.exports ;
 
   function wrap(innerFn, outerFn, self, tryLocsList) {
     // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
@@ -1098,7 +1100,7 @@ var store = _global[SHARED] || (_global[SHARED] = {});
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
   version: _core.version,
-  mode: 'pure',
+  mode:  'pure' ,
   copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 });
 });
@@ -1291,7 +1293,7 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
     $default = function values() { return $native.call(this); };
   }
   // Define iterator
-  if ((FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+  if (( FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
     _hide(proto, ITERATOR, $default);
   }
   // Plug for library
@@ -1696,6 +1698,8 @@ var SAFE_CLOSING = false;
 try {
   var riter = [7][ITERATOR$3]();
   riter['return'] = function () { SAFE_CLOSING = true; };
+  // eslint-disable-next-line no-throw-literal
+  Array.from(riter, function () { throw 2; });
 } catch (e) { /* empty */ }
 
 var _iterDetect = function (exec, skipClosing) {
@@ -1936,10 +1940,10 @@ _export(_export.S + _export.F * !USE_NATIVE, PROMISE, {
     return capability.promise;
   }
 });
-_export(_export.S + _export.F * (_library), PROMISE, {
+_export(_export.S + _export.F * (_library ), PROMISE, {
   // 25.4.4.6 Promise.resolve(x)
   resolve: function resolve(x) {
-    return _promiseResolve(this === Wrapper ? $Promise : this, x);
+    return _promiseResolve( this === Wrapper ? $Promise : this, x);
   }
 });
 _export(_export.S + _export.F * !(USE_NATIVE && _iterDetect(function (iter) {
@@ -2247,7 +2251,7 @@ unwrapExports(iterator$1);
 
 var defineProperty$2 = _objectDp.f;
 var _wksDefine = function (name) {
-  var $Symbol = _core.Symbol || (_core.Symbol = {});
+  var $Symbol = _core.Symbol || (_core.Symbol =  {} );
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$2($Symbol, name, { value: _wksExt.f(name) });
 };
 
@@ -2362,6 +2366,8 @@ var META = _meta.KEY;
 
 
 
+
+
 var gOPD$1 = _objectGopd.f;
 var dP$1 = _objectDp.f;
 var gOPN$1 = _objectGopnExt.f;
@@ -2376,7 +2382,7 @@ var SymbolRegistry = _shared('symbol-registry');
 var AllSymbols = _shared('symbols');
 var OPSymbols = _shared('op-symbols');
 var ObjectProto$1 = Object[PROTOTYPE$2];
-var USE_NATIVE$1 = typeof $Symbol == 'function';
+var USE_NATIVE$1 = typeof $Symbol == 'function' && !!_objectGops.f;
 var QObject = _global.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 var setter = !QObject || !QObject[PROTOTYPE$2] || !QObject[PROTOTYPE$2].findChild;
@@ -2535,6 +2541,16 @@ _export(_export.S + _export.F * !USE_NATIVE$1, 'Object', {
   getOwnPropertyNames: $getOwnPropertyNames,
   // 19.1.2.8 Object.getOwnPropertySymbols(O)
   getOwnPropertySymbols: $getOwnPropertySymbols
+});
+
+// Chrome 38 and 39 `Object.getOwnPropertySymbols` fails on primitives
+// https://bugs.chromium.org/p/v8/issues/detail?id=3443
+var FAILS_ON_PRIMITIVES = _fails(function () { _objectGops.f(1); });
+
+_export(_export.S + _export.F * FAILS_ON_PRIMITIVES, 'Object', {
+  getOwnPropertySymbols: function getOwnPropertySymbols(it) {
+    return _objectGops.f(_toObject(it));
+  }
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
@@ -2820,7 +2836,7 @@ var _createProperty = function (object, index, value) {
   else object[index] = value;
 };
 
-_export(_export.S + _export.F * !_iterDetect(function (iter) { }), 'Array', {
+_export(_export.S + _export.F * !_iterDetect(function (iter) { Array.from(iter); }), 'Array', {
   // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
   from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
     var O = _toObject(arrayLike);
@@ -2900,38 +2916,79 @@ var KeyCommon = function () {
     key: 'createKeyPair',
 
     /**
+     * Returns an Key Pair Object with Private and Public keys
+     * @param {Object} keyGenOptions - An optional object for specifying the creation of different key pair types
+     * @param {string} keyGenOptions.keyType - The type of key pair being generated, defaults to ed25519signature2018
+     * @param {string} keyGenOptions.secretPassphrase - The required pass phrase used to generate a rsasignature2018 type key pair
      * @return  {Object} Returns an Key Pair Object with Private and Public keys
      */
     value: function createKeyPair() {
       var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
           _ref$rawPrivateKey = _ref.rawPrivateKey,
-          rawPrivateKey = _ref$rawPrivateKey === undefined ? '' : _ref$rawPrivateKey;
+          rawPrivateKey = _ref$rawPrivateKey === undefined ? '' : _ref$rawPrivateKey,
+          _ref$keyType = _ref.keyType,
+          keyType = _ref$keyType === undefined ? 'ed25519signature2018' : _ref$keyType,
+          _ref$secretPassphrase = _ref.secretPassphrase,
+          secretPassphrase = _ref$secretPassphrase === undefined ? '' : _ref$secretPassphrase;
 
-      var privateKeyBytes = void 0;
+      var publicKey = void 0;
+      var privateKey = void 0;
 
-      if (rawPrivateKey) {
-        if (typeof rawPrivateKey === 'string' && rawPrivateKey.length === 32) {
-          privateKeyBytes = Uint8Array.from(rawPrivateKey);
-        } else {
-          throw new Error('provided ed25519 private key is invalid.');
+      if (keyType === 'ecdsasecp256k1signature2019') {
+        do {
+          privateKey = crypto.randomBytes(32);
+        } while (!secp256k1.privateKeyVerify(privateKey));
+
+        publicKey = secp256k1.publicKeyCreate(privateKey);
+      } else if (keyType === 'rsasignature2018') {
+        if (!secretPassphrase) {
+          throw new Error('a secret passphrase is required to generate a RSA key pair');
         }
+
+        var _crypto$generateKeyPa = crypto.generateKeyPairSync('rsa', {
+          modulusLength: 2048,
+          publicKeyEncoding: {
+            type: 'spki',
+            format: 'pem'
+          },
+          privateKeyEncoding: {
+            type: 'pkcs8',
+            format: 'pem',
+            cipher: 'aes-256-cbc',
+            passphrase: secretPassphrase
+          }
+        });
+
+        privateKey = _crypto$generateKeyPa.privateKey;
+        publicKey = _crypto$generateKeyPa.publicKey;
       } else {
-        privateKeyBytes = secureRandom.randomUint8Array(32);
+        var privateKeyBytes = void 0;
+
+        if (rawPrivateKey) {
+          if (typeof rawPrivateKey === 'string' && rawPrivateKey.length === 32) {
+            privateKeyBytes = Uint8Array.from(rawPrivateKey);
+          } else {
+            throw new Error('provided ed25519 private key is invalid.');
+          }
+        } else {
+          privateKeyBytes = secureRandom.randomUint8Array(32);
+        }
+
+        var tmp = void 0;
+        var checkSum = void 0;
+
+        tmp = sha256.digest(sha256.digest([].concat(privatePrefixBytes, _toConsumableArray(privateKeyBytes))));
+        checkSum = tmp.slice(0, 4);
+        privateKey = base58.encode([].concat(privatePrefixBytes, _toConsumableArray(privateKeyBytes), _toConsumableArray(checkSum)));
+        var publicKeyBytes = ec.keyFromSecret(privateKeyBytes).getPublic();
+        tmp = sha256.digest(sha256.digest([].concat(publicPrefixBytes, _toConsumableArray(publicKeyBytes))));
+        checkSum = tmp.slice(0, 4);
+        publicKey = base58.encode([].concat(publicPrefixBytes, _toConsumableArray(publicKeyBytes), _toConsumableArray(checkSum)));
       }
 
-      var tmp = void 0;
-      var checkSum = void 0;
-
-      tmp = sha256.digest(sha256.digest([].concat(privatePrefixBytes, _toConsumableArray(privateKeyBytes))));
-      checkSum = tmp.slice(0, 4);
-      var generatedPrivateKey = base58.encode([].concat(privatePrefixBytes, _toConsumableArray(privateKeyBytes), _toConsumableArray(checkSum)));
-      var publicKeyBytes = ec.keyFromSecret(privateKeyBytes).getPublic();
-      tmp = sha256.digest(sha256.digest([].concat(publicPrefixBytes, _toConsumableArray(publicKeyBytes))));
-      checkSum = tmp.slice(0, 4);
-      var generatedPublicKey = base58.encode([].concat(publicPrefixBytes, _toConsumableArray(publicKeyBytes), _toConsumableArray(checkSum)));
       return {
-        privateKey: generatedPrivateKey,
-        publicKey: generatedPublicKey
+        privateKey: privateKey,
+        publicKey: publicKey
       };
     }
 
@@ -5317,10 +5374,13 @@ var Utils = function () {
     key: 'generateKeyPair',
 
     /**
+     * @param {Object} keyGenOptions - An optional object to specify creating different key pair types
+     * @param {string} keyGenOptions.keyType - The key pair type being generated, defaults to ed25519signature2018
+     * @param {string} keyGenOptions.secretPassphrase - The required pass phrase used to generate a rsasignature2018 type key pair
      * @return  {Object} Returns a key pair object
      */
-    value: function generateKeyPair() {
-      return KeyCommon.createKeyPair();
+    value: function generateKeyPair(keyGenOptions) {
+      return KeyCommon.createKeyPair(keyGenOptions);
     }
 
     /**
