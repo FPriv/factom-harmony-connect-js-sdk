@@ -1,11 +1,39 @@
 /* eslint-env jest */
+import crypto from 'crypto';
+import secp256k1 from 'secp256k1';
 import Utils from '../lib/utils/utils';
 
 describe('UTILS Test', () => {
   describe('Generate Pair', () => {
-    it('should return an object with private and public keys.', () => {
+    it('should return an object with ed25519 private and public keys.', () => {
       const pairs = Utils.generateKeyPair();
       expect(pairs.publicKey).toContain('idpub');
+    });
+
+    it('should return an object with secp256k1 private and public keys.', () => {
+      const pairs = Utils.generateKeyPair({
+        keyType: 'ecdsasecp256k1signature2019',
+      });
+
+      expect(pairs.privateKey).not.toEqual(null);
+      expect(pairs.publicKey).not.toEqual(null);
+    });
+
+    it('should return an object with rsa private and public keys.', () => {
+      const pairs = Utils.generateKeyPair({
+        keyType: 'rsasignature2018',
+        secretPassphrase: 'mySecretPassphrase',
+      });
+
+      expect(pairs.privateKey).not.toEqual(null);
+      expect(pairs.publicKey).not.toEqual(null);
+    });
+
+    it('should return error message when creating rsa keys with no secret passphrase.', () => {
+      expect(() => (Utils.generateKeyPair({
+        keyType: 'rsasignature2018',
+        secretPassphrase: '',
+      }))).toThrow();
     });
   });
 
